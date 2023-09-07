@@ -14,6 +14,8 @@ endfunction()
 
 add_executable(Raytracing 
         source/main.cpp
+        source/ray.cpp
+        include/ray.h
 )
 
 enable_warnings(Raytracing)
