@@ -12,10 +12,10 @@ $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall -Wextra>
 )
 endfunction()
 
-add_executable(Raytracing 
-        source/main.cpp
-        source/ray.cpp
-        include/ray.h
-)
+# Collect all source files in the 'src' and 'include' directories
+file(GLOB SOURCES "source/*.cpp")
+file(GLOB HEADERS "include/*.h")
+
+add_executable(Raytracing ${SOURCES} ${HEADERS})
 
 enable_warnings(Raytracing)
