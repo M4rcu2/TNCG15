@@ -1,4 +1,6 @@
 #include "../include/scene.h"
+#include "../include/object.h"
+#include "../include/light.h"
 
 // Constructor
 Scene::Scene() {
@@ -22,7 +24,7 @@ const std::vector<Object*>& Scene::getObjects() const {
     return objects;
 }
 
-// Get the list of lights in the scene
+
 const std::vector<Light*>& Scene::getLights() const {
     return lights;
 }

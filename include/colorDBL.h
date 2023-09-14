@@ -1,14 +1,18 @@
 #pragma once
+
 #include "../include/glm/glm.hpp"
 #include <vector>
 
 class ColorDBL {
 public:
-    ColorDBL(double red, double green, double blue) : r(red), g(green), b(blue) {}//Constructor
+    // Constructor
+    ColorDBL(double red, double green, double blue) : r(red), g(green), b(blue) {}
     
-    void changeColor(const double& red, const double& green, const double& blue);//Change color function
+    // Change color function
+    void changeColor(const double& red, const double& green, const double& blue);
     
-    std::vector<double> getColor();//rerturns a vector with rgb
+    // Returns a vector with rgb
+    std::vector<double> getColor(); 
     
 private:
     double r, g, b;
