@@ -1,46 +1,43 @@
 #pragma once
 
-#include "../include/glm/glm.hpp"
-
 class Camera {
 public:
-
     // Constructor
-    Camera(const glm::vec3& position, const glm::vec3& target, const glm::vec3& up) : position_(position), target_(target), up_(up) {}
+    Camera(const glm::vec3& position, const glm::vec3& target, const glm::vec3& up);
 
-    // Set functions
-    void setPosition(const glm::vec3& position) {
-        position_ = position;
-    }
+    // Sets position of the camera
+    void setPosition(const glm::vec3& position);
 
-    void setTarget(const glm::vec3& target) {
-        target_ = target;
-    }
+    // Sets target direction
+    void setTarget(const glm::vec3& target);
 
-    void setUp(const glm::vec3& up) {
-        up_ = up;
-    }
+    // Sets up direction
+    void setUp(const glm::vec3& up);
 
-    // Get functions
-    glm::vec3 getPosition() const {
-        return position_;
-    }
+    // Gets the position
+    glm::vec3 getPosition() const;
 
-    glm::vec3 getTarget() const {
-        return target_;
-    }
+    // Gets the target direction
+    glm::vec3 getTarget() const;
 
-    glm::vec3 getUp() const {
-        return up_;
-    }
+    // Gets the up direction
+    glm::vec3 getUp() const;
 
     // Get the view matrix
-    glm::mat4 getViewMatrix() const {
-        return glm::lookAt(position_, target_, up_);
-    }
+    glm::mat4 getViewMatrix() const;
+
+    // Set the projection matrix for perspective projection
+    void setPerspectiveProjection(float fov, float aspectRatio, float nearClip, float farClip);
+
+    // Get the projection matrix
+    glm::mat4 getProjectionMatrix() const;
 
 private:
+
+    // Variables
     glm::vec3 position_;
     glm::vec3 target_;
     glm::vec3 up_;
+    glm::mat4 projectionMatrix_ = glm::mat4(1.0f);
+    
 };
