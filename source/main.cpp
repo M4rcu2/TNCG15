@@ -6,43 +6,42 @@
 #include "../include/ray.h"   
 
 int main() {
+    
+    // Creates a camera placed in the room
+    Camera Camera(glm::vec3(0, 0, 0), glm::vec3(1, 0, 0), glm::vec3(0, 0, 1));
 
+    // Define image width and height
+    int imageWidth = 800;
+    int imageHeight = 600;
 
-    int main() {
-        // Create a camera with appropriate parameters
-        Camera Camera();
+    // Create a vector to store generated rays
+    std::vector<Ray> rays;
 
-        // Define image width and height
-        int imageWidth = 800;
-        int imageHeight = 600;
+    // Loop through each pixel on the image plane
+    for (int y = 0; y < imageHeight; ++y) {
+        for (int x = 0; x < imageWidth; ++x) {
 
-        // Create a vector to store generated rays
-        std::vector<Ray> rays;
+            // Calculate normalized device coordinates (NDC)
+            float ndcX = (2.0f * x / imageWidth) - 1.0f;
+            float ndcY = 1.0f - (2.0f * y / imageHeight);
 
-        // Loop through each pixel on the image plane
-        for (int y = 0; y < imageHeight; ++y) {
-            for (int x = 0; x < imageWidth; ++x) {
+            // For orthographic projection, the ray direction is constant
+            glm::vec3 rayDirection(0.0f, 0.0f, -1.0f); // Straight along the negative Z-axis
 
-                // Calculate normalized device coordinates (NDC)
-                float ndcX = (2.0f * x / imageWidth) - 1.0f;
-                float ndcY = 1.0f - (2.0f * y / imageHeight);
+            // Create a ray with the camera position as the origin and the constant direction
+            Ray ray(Camera.getPosition(), rayDirection);
 
-                // For orthographic projection, the ray direction is constant
-                glm::vec3 rayDirection(0.0f, 0.0f, -1.0f); // Straight along the negative Z-axis
-
-                // Create a ray with the camera position as the origin and the constant direction
-                Ray ray(camera.getPosition(), rayDirection);
-
-                // Store the ray in the vector
-                rays.push_back(ray);
-            }
+            // Store the ray in the vector
+            rays.push_back(ray);
         }
+    }
 
-        // Now, you have a vector of rays, and you can use them for ray tracing.
+    // Now, you have a vector of rays, and you can use them for ray tracing.
 
-        // ... (Ray tracing code)
+    // ... (Ray tracing code)
 
-        // ... (Image saving code)
+    // ... (Image saving code)
 
-        return 0;
+    return 0;
+    
 }
