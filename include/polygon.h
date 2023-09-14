@@ -21,7 +21,7 @@ public:
     virtual bool Intersect(const Ray& ray, Point3D& intersectionPoint) const = 0;
 };
 
-// Rectangle subclass
+// Rectangle subclass----------------------------------------------------------------------
 class Rectangle : public Polygon {
 public:
     Point3D vertices[4]; // Define vertices of the rectangle
@@ -68,7 +68,7 @@ public:
     }
 };
 
-// Triangle subclass
+// Triangle subclass----------------------------------------------------------------------
 class Triangle : public Polygon {
 public:
     Point3D vertices[3]; // Defines vertices of the triangle
