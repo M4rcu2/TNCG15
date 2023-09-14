@@ -1,21 +1,21 @@
 #pragma once
 
 #include "../include/glm/glm.hpp"
+#include "../include/colorDBL.h"
 
 class Ray {
 public:
     glm::vec3 startVertex;
-    glm::vec3 endVertex; // Optional, may not need it
+    glm::vec3 endVertex;
     glm::vec3 direction;
-    //Surface* surface;
     Ray* previousRay;
     Ray* nextRay;
-    //ColorRGB color;
+    ColorDBL color;
 
-    // Constructor for rays with an optional end vertex
-    //Ray(glm::vec3 start, glm::vec3 direction, Surface* surface, Ray* prev = nullptr, Ray* next = nullptr, ColorRGB color = ColorRGB(0.0, 0.0, 0.0))
-    //    : startVertex(start), direction(direction), surface(surface), previousRay(prev), nextRay(next), color(color) {
-    //    // You can set endVertex here if needed based on startVertex and direction
-    //}
+    // Constructor
+    Ray(glm::vec3 start, glm::vec3 direction, Ray* prev = nullptr, Ray* next = nullptr, ColorDBL color = ColorDBL(0.0, 0.0, 0.0))
+        : startVertex(start), direction(direction), previousRay(prev), nextRay(next), color(color) {
+        
+    }
 };
 
