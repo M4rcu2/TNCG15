@@ -3,41 +3,48 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include "glm/glm.hpp"
 #include "../include/glm/glm.hpp"
 #include "../include/ray.h"
 
 // 3D point for homogeneous coordinates
+/*  Is this needed??
 class Point3D {
 public:
-    double x, y, z, w;  // Homogeneous coordinates (x, y, z, w)
-
     // Constructor
-    Point3D(double _x, double _y, double _z, double _w) : x(_x), y(_y), z(_z), w(_w) {}
-};
+    //Vad är _w? Vad ska vi använda den för???????????
+    Point3D(double _x, double _y, double _z, double _w) : point(_x,_y,_z) {}
+private:
+    glm::vec3 point;
+};*/
 
 // Base class for Polygon
 class Polygon {
 public:
-    virtual bool Intersect(const Ray& ray, Point3D& intersectionPoint) const = 0;
+    //Used to calculate if the ray intercepts the infinitaly large plane (should be used to get the point later)
+    virtual bool IntersectPlane(const Ray& ray, glm::vec3& intersectionPoint) const = 0;
+    //This maybe need to be a vec3 to get the point of intersection but this function will calculate the point of intersection, firstly it should call intersectPlane so it doesn't need to calculate if the ray never go in that direction.
+    virtual bool PointOfIntersection() const = 0;
+    //returns the normal, should be used in the constructor
+    virtual glm::vec3 getNormal() const = 0;
+private:
+    glm::vec3 planeNormal;
+    const double EPSILON = 1e-6; //error margin i guess ;)
 };
 
 // Rectangle subclass----------------------------------------------------------------------
 class Rectangle : public Polygon {
 public:
-    Point3D vertices[4]; // Define vertices of the rectangle
-
-    const double EPSILON = 1e-6;
-
-    Rectangle(const Point3D& p1, const Point3D& p2, const Point3D& p3, const Point3D& p4) {
-        vertices[0] = p1;
-        vertices[1] = p2;
-        vertices[2] = p3;
-        vertices[3] = p4;
+    Rectangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4) {
+        recCorners[0] = p1;
+        recCorners[1] = p2;
+        recCorners[2] = p3;
+        recCorners[3] = p4;
     }
 
-    bool Intersect(const Ray& ray, Point3D& intersectionPoint) const override {
+    bool IntersectPlane(const Ray& ray, glm::vec3& intersectionPoint) const override {
         // Compute the normal vector of the rectangle
-        glm::vec3 normal = CalculateNormal();
+        glm::vec3 normal = getNormal();
 
         // Calculate the dot product of the ray direction and the normal
         double dotProduct = glm::dot(ray.direction, normal);
@@ -66,6 +73,8 @@ public:
             return false; // Intersection point is outside the rectangle
         }
     }
+private:
+    glm::vec3 recCorners[4];
 };
 
 // Triangle subclass----------------------------------------------------------------------
