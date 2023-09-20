@@ -32,6 +32,9 @@ public:
     // Get the projection matrix
     glm::mat4 getProjectionMatrix() const;
 
+    // Renders the image to a png
+    void renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight);
+
 private:
 
     // Variables
