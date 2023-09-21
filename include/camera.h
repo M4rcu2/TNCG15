@@ -6,7 +6,6 @@
 #include "../include/glm/gtc/matrix_transform.hpp"
 #include "../include/ray.h"
 
-    // Gets the target direction
 class Camera {
 public:
     Camera(const glm::vec3& eye, int imageWidth, int imageHeight);
