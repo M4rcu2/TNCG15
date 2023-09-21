@@ -1,4 +1,3 @@
-#include "../include/glm/glm.hpp"
 #include "../include/colorDBL.h"
 
 void ColorDBL::changeColor(const double& newRed, const double& newGreen, const double& newBlue){

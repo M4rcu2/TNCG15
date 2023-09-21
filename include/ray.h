@@ -7,6 +7,7 @@ class Ray {
 public:
     glm::vec3 startVertex;
     glm::vec3 direction;
+    // Need to add a pointer to the surface, on which the starting vertex is located
     Ray* previousRay;
     Ray* nextRay;
     ColorDBL color;
