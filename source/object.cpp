@@ -1,5 +1,4 @@
 #include "../include/object.h"
-#include "../include/material.h" 
 
 Object::Object() {
     // Initialize common properties here

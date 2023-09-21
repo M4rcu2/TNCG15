@@ -11,8 +11,12 @@ int main() {
     // Creates the scene
     Scene theScene;
 
+    // Define image width and height
+    int imageWidth = 600;
+    int imageHeight = 600;
+
     // Creates a camera placed in the room
-    Camera theCamera(glm::vec3(0, 0, 0), glm::vec3(1, 0, 0), glm::vec3(0, 0, 1));
+    Camera theCamera(glm::vec3(-1, 0, 0), imageWidth, imageHeight);
     theScene.addCamera(theCamera);
 
     // Add objects (e.g., spheres, triangles) to the scene
@@ -21,33 +25,9 @@ int main() {
     // Adds a light to the scene
     Light* theLight = new Light(glm::vec3(0, 0, 5), 4.0f, 4.0f, glm::vec3(1, 1, 1));
     theScene.addLight(theLight);
-    
-
-    // Define image width and height
-    int imageWidth = 800;
-    int imageHeight = 800;
-
-    // Create a vector to store generated rays
-    std::vector<Ray> rays;
-
-    // Loop through each pixel on the image plane
-    for (int y = 0; y < imageHeight; ++y) {
-        for (int x = 0; x < imageWidth; ++x) {
-
-            // Calculate normalized device coordinates (NDC)
-            float ndcX = (2.0f * x / imageWidth) - 1.0f;
-            float ndcY = 1.0f - (2.0f * y / imageHeight);
-
-            // For orthographic projection, the ray direction is constant
-            glm::vec3 rayDirection(0.0f, 0.0f, -1.0f); // Straight along the negative Z-axis
-
-            // Create a ray with the camera position as the origin and the constant direction
-            Ray ray(theCamera.getPosition(), rayDirection);
-
-            // Store the ray in the vector
-            rays.push_back(ray);
-        }
-    }
+   
+    // Creates a vector containing all normalized direction rays from each pixel
+    std::vector<Ray> rays = theCamera.castRay();
 
     // Loop through each ray and perform ray-object intersection tests
     for (const Ray& ray : rays) {

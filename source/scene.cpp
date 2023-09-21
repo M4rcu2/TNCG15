@@ -1,8 +1,4 @@
 #include "../include/scene.h"
-#include "../include/object.h"
-#include "../include/light.h"
-#include "../include/camera.h"
-#include <iostream>
 
 Scene::Scene() {
     std::cout << "Created a scene" << std::endl << std::endl;
