@@ -6,6 +6,7 @@
 class Ray {
 public:
     glm::vec3 startVertex;
+    glm::vec3 endVertex;
     glm::vec3 direction;
     Ray* previousRay;
     Ray* nextRay;
