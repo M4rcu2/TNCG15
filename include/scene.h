@@ -3,11 +3,15 @@
 #include <vector>
 #include "../include/light.h"
 #include "../include/camera.h" 
+#include "../include/polygon.h" 
 
 class Scene {
 public:
     // Constructor
     Scene();
+
+    // Adds a room in the scene
+    void addRoom();
 
     // Add a light to the scene
     void addLight(Light* light);

@@ -5,7 +5,9 @@
 #include <cmath>
 #include "glm/glm.hpp"
 #include "../include/glm/glm.hpp"
+
 #include "../include/ray.h"
+class Ray; // Forward declaration
 
 // Base class for Polygon
 class Polygon {

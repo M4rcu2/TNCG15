@@ -20,7 +20,7 @@ int main() {
     theScene.addCamera(theCamera);
 
     // Add objects (e.g., spheres, triangles) to the scene
-    
+    theScene.addRoom();
 
     // Adds a light to the scene
     Light* theLight = new Light(glm::vec3(0, 0, 5), 4.0f, 4.0f, glm::vec3(1, 1, 1));
