@@ -2,6 +2,7 @@
 
 #include "../include/glm/glm.hpp"
 #include "../include/colorDBL.h"
+#include "../include/polygon.h"
 
 class Ray {
 public:
@@ -12,7 +13,8 @@ public:
     Ray* previousRay;
     Ray* nextRay;
     ColorDBL color;
+    polygon* startingVertexSurface;
 
     // Constructor
-    Ray(glm::vec3 start, glm::vec3 direction,ColorDBL color = ColorDBL(0.0, 0.0, 0.0), Ray* prev = nullptr, Ray* next = nullptr);
+    Ray(glm::vec3 start, glm::vec3 direction, ColorDBL color = ColorDBL(0.0, 0.0, 0.0), Ray* prev = nullptr, Ray* next = nullptr);
 };
