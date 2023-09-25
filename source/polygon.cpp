@@ -42,8 +42,6 @@ glm::vec3 Rectangle::getNormal() const{
     return normal;
 }
 
-
-
 // Triangle subclass----------------------------------------------------------------------
 glm::vec3 Triangle::PointInPolygon(const Ray& ray) const{
     bool isOnPlane = IntersectPlane(ray);

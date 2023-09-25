@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include "glm/glm.hpp"
+#include "../include/colorDBL.h"
 #include "../include/glm/glm.hpp"
 
 #include "../include/ray.h"
@@ -20,17 +21,23 @@ public:
     virtual bool IntersectPlane(const Ray& ray) const = 0;
     //returns the normal, should be used in the constructor
     virtual glm::vec3 getNormal() const = 0;
+    //returns the color of the polygon
+    ColorDBL color_;
+    ColorDBL getColor() const {
+        return color_;
+    };
 };
 
 // Rectangle subclass----------------------------------------------------------------------
 class Rectangle : public Polygon {
 public:
-    Rectangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4) {
+    Rectangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, ColorDBL color) {
         vertices[0] = p1;
         vertices[1] = p2;
         vertices[2] = p3;
         vertices[3] = p4;
         normal = getNormal();
+        color_ = color;
     }
     glm::vec3 PointInPolygon(const Ray& ray) const override;
     glm::vec3 normal;
@@ -44,11 +51,12 @@ private:
 class Triangle : public Polygon {
 public:
     // Constructor
-    Triangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3) {
+    Triangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, ColorDBL color) {
         vertices[0] = p1;
         vertices[1] = p2;
         vertices[2] = p3;
         normal = getNormal();
+        color_ = color;
     }
     // Implement the Intersect method for triangles
     glm::vec3 PointInPolygon(const Ray& ray) const override;
