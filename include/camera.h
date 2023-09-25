@@ -5,6 +5,7 @@
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/matrix_transform.hpp"
 #include "../include/ray.h"
+#include "../include/pixel.h"
 
 class Camera {
 public:
@@ -23,5 +24,4 @@ private:
     glm::vec3 c1, c2, c3, c4;
     int imageWidth_;
     int imageHeight_;
-    double pixelSize_;
 };
