@@ -13,7 +13,7 @@ int main() {
 
     // Adds the room
     theScene.addRoom();
-
+    
     // Creates a camera placed in the room
     int imageWidth = 600;
     int imageHeight = 600;
@@ -33,6 +33,12 @@ int main() {
 
     // Loop through each ray and perform ray-object intersection tests
     for (const Ray& ray : rays) {
+        for(const Polygon* p : theScene.getTheRoom()){
+            glm::vec3 checkPoint = p->PointInPolygon(ray);
+            if(checkPoint != glm::vec3(-100,-100,-100)){
+                //We should set the pixel value here//p->getColor()
+            }
+        }
         // Find the closest intersection between the ray and objects in the scene
         // ...
 

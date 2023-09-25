@@ -8,9 +8,6 @@ Scene::Scene() {
 }
 
 void Scene::addRoom() {
-    
-    std::vector<Polygon*> theRoom;
-
     ColorDBL redColor = ColorDBL(0.7, 0.0, 0.0);
     ColorDBL greenColor = ColorDBL(0.0, 0.7, 0.0);
     ColorDBL blueColor = ColorDBL(0.0, 0.0, 0.7);
@@ -64,4 +61,8 @@ const std::vector<Light*>& Scene::getLights() const {
 
 const std::vector<Camera>& Scene::getCameras() const {
     return cameras;
+}
+
+std::vector<Polygon*> Scene::getTheRoom() const {
+    return theRoom;
 }
