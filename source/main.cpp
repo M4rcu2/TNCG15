@@ -34,7 +34,7 @@ int main() {
     // Loop through each ray and perform ray-object intersection tests
     for (const Ray& ray : rays) {
         // Find the closest intersection between the ray and objects in the scene
-        // ...
+        
 
         // If an intersection is found, calculate shading (e.g., diffuse, specular) for the point of intersection
         // ...

@@ -27,8 +27,6 @@ Ray Camera::getRay(float pixelX, float pixelY) {
     // Calculates the ray direction (Normalized)
     glm::vec3 rayDirection = glm::normalize(pixelPosition - eye_);
 
-    //std::cout << rayDirection.x << ", " << rayDirection.y << ", " << rayDirection.z << ", " << std::endl; (DEBUG!)
-
     // Initializes the ray
     Ray ray(eye_, rayDirection);
 
@@ -48,7 +46,7 @@ std::vector<Ray> Camera::castRay() {
             float ndcX = (2.0f * x / static_cast<float>(imageWidth_)) - 1.0f;
             float ndcY = 1.0f - (2.0f * y / static_cast<float>(imageWidth_));
 
-            // Create a ray with startpos at the eye and 
+            // Create a ray with startpos at the eye and endpos at the camera plane
             Ray rayFromPixel = this->getRay(ndcX, ndcY);
 
             // Store the ray in the vector
