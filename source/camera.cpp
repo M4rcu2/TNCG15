@@ -72,7 +72,7 @@ void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imag
             // Calculate the color for the pixel (x, y) and store it in imageData (NEEDS TO CHANGE!!!)
             // Assuming you have computed the color in your ray tracing loop, you would set the RGB values accordingly
             // For example, assuming color is represented as glm::vec3
-            glm::vec3 pixelColor = glm::vec3(y, 0, x); // Compute the color for this pixel
+            glm::vec3 pixelColor = glm::vec3(y, x, x); // Compute the color for this pixel
 
 
             imageData[index++] = static_cast<unsigned char>(pixelColor.r * 255); // Red
