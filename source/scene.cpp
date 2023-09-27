@@ -5,21 +5,25 @@ Scene::Scene() {
 
     cameras.clear();
     lights.clear();
+    theRoom.clear();
 }
 
 void Scene::addRoom() {
     ColorDBL redColor = ColorDBL(0.6, 0.0, 0.0);
     ColorDBL greenColor = ColorDBL(0.0, 0.6, 0.0);
     ColorDBL blueColor = ColorDBL(0.0, 0.0, 0.6);
+    ColorDBL yellowColor = ColorDBL(0.6, 0.6, 0.0);
+    ColorDBL magentaColor = ColorDBL(0.6, 0.0, 0.6);
+    ColorDBL cyanColor = ColorDBL(0.0, 0.6, 0.6);
     ColorDBL whiteColor = ColorDBL(0.8, 0.8, 0.8);
 
     // Ceiling
-    theRoom.push_back(new Triangle(glm::vec3(10, -6, 5),glm::vec3(10, 6, 5), glm::vec3(13, 0, 5), whiteColor));
+    theRoom.push_back(new Triangle(glm::vec3(10, -6, 5),glm::vec3(10, 6, 5), glm::vec3(13, 0, 5), yellowColor));
     theRoom.push_back(new Triangle(glm::vec3(0, 6, 5), glm::vec3(-3, 0, 5), glm::vec3(0, -6, 5), whiteColor));
     theRoom.push_back(new Rectangle(glm::vec3(0, 6, 5), glm::vec3(10, 6, 5), glm::vec3(0, -6, 5), glm::vec3(10, -6, 5), whiteColor));
 
     // Floor
-    theRoom.push_back(new Triangle(glm::vec3(10, 6, -5), glm::vec3(10, -6, -5), glm::vec3(13, 0, -5), whiteColor));
+    theRoom.push_back(new Triangle(glm::vec3(10, 6, -5), glm::vec3(10, -6, -5), glm::vec3(13, 0, -5), magentaColor));
     theRoom.push_back(new Triangle(glm::vec3(0, 6, -5), glm::vec3(0, -6, -5), glm::vec3(-3, 0, -5), whiteColor));
     theRoom.push_back(new Rectangle(glm::vec3(0, -6, -5), glm::vec3(10, -6, -5),glm::vec3(0, 6, -5), glm::vec3(10, 6, -5), whiteColor));
 
@@ -33,7 +37,7 @@ void Scene::addRoom() {
     theRoom.push_back(new Rectangle(glm::vec3(-3, 0, -5), glm::vec3(0, 6, -5), glm::vec3(-3, 0, 5), glm::vec3(0, 6, 5), blueColor));
 
     // Wall RF
-    theRoom.push_back(new Rectangle(glm::vec3(13, 0, -5), glm::vec3(10, -6, -5), glm::vec3(13, 0, 5), glm::vec3(10, -6, 5), blueColor));
+    theRoom.push_back(new Rectangle(glm::vec3(13, 0, -5), glm::vec3(10, -6, -5), glm::vec3(13, 0, 5), glm::vec3(10, -6, 5), cyanColor));
 
     // Wall R
     theRoom.push_back(new Rectangle(glm::vec3(10, -6, -5), glm::vec3(0, -6, -5), glm::vec3(10, -6, 5), glm::vec3(0, -6, 5), greenColor));
@@ -42,6 +46,10 @@ void Scene::addRoom() {
     theRoom.push_back(new Rectangle(glm::vec3(0, -6, -5), glm::vec3(-3, 0, -5), glm::vec3(0, -6, 5), glm::vec3(-3, 0, 5), blueColor));
 
     std::cout << "Added a room to the scene" << std::endl << std::endl;
+}
+
+void Scene::addPolygon(Polygon* polygon) {
+    theRoom.push_back(polygon);
 }
 
 void Scene::addLight(Light* light) {

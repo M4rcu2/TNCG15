@@ -28,6 +28,8 @@ Ray Camera::castRay(float pixelX, float pixelY) {
     return ray;
 }
 
+
+
 void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight, std::vector<std::vector<ColorDBL>> matrix) {
 
     // Create an array to store the image data

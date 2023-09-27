@@ -14,6 +14,9 @@ public:
     // Adds a room in the scene
     void addRoom();
 
+    // Adds a single polygon to the scene
+    void addPolygon(Polygon* polygon);        
+
     // Add a light to the scene
     void addLight(Light* light);
 
