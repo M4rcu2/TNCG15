@@ -8,7 +8,6 @@
 #include "../include/scene.h" 
 
 int main() {
-
     // Creates the scene
     Scene theScene;
 
@@ -35,11 +34,10 @@ int main() {
     // Loop through each pixel in the matrix-------------------------------------------------------------------------
     for (int row = 0; row < imageWidth; ++row) {
         for (int col = 0; col < imageHeight; ++col) {
-                      
             // Calculate normalized device coordinates (NDC)
             float ndcX = (2.0f * row / static_cast<float>(imageWidth)) - 1.0f;
             float ndcY = 1.0f - (2.0f * col / static_cast<float>(imageWidth));
-
+            
             // Create a ray with startpos at the eye and endpos at the camera plane
             Ray rayFromPixel = theCamera.getRay(ndcX, ndcY);
 
@@ -50,18 +48,16 @@ int main() {
                 if (checkPoint != glm::vec3(-100, -100, -100)) {
                     //We should set the pixel value here//p->getColor()
 
-                    pixelMatrix[row][col] = p->color_;
-                }
+                    pixelMatrix[row][col] = p->color_;                }
             }
-        
-            
         }
     }
 
     // Now you have calculated the color for each pixel in the 'rays' vector.
 
     // Saves the picture as a PNG
-    const char* outputPath = "../outputImage/rendered_image.png";
+    const char* outputPath = "../outputImage.png";
+    
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, pixelMatrix);
     
     return 0;
