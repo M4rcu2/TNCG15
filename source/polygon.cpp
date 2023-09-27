@@ -4,15 +4,18 @@
 
 // Rectangle subclass----------------------------------------------------------------------
 glm::vec3 Rectangle::PointInPolygon(const Ray& ray) const{
+
     bool isOnPlane = IntersectPlane(ray);
+
     if(isOnPlane){
         glm::vec3 s = ray.startVertex;
         glm::vec3 d = ray.direction;
         glm::vec3 v = vertices[0];
         glm::vec3 c1 = vertices[1]-v;
-        glm::vec3 c2 = vertices[2]-v;
+        glm::vec3 c2 = vertices[3]-v;
         float t = glm::dot((v-s),normal)/glm::dot(d,normal);
         glm::vec3 intersectionPoint = s + t*d;
+
         //a and b criterion
         float a = glm::dot((intersectionPoint-v),c1)/glm::dot(c1,c1);
         float b = glm::dot((intersectionPoint-v),c2)/glm::dot(c2,c2);
@@ -28,10 +31,12 @@ bool Rectangle::IntersectPlane(const Ray& ray) const{
     //Dot product calculation
     float dotProd = glm::dot(normal, ray.direction);
     //Is dot product positive, negative or zero?
-    if(dotProd < 0){//The ray and normal are opposite direction
-        return true;
+    if(dotProd < 0){
+        return true;//The ray and normal are opposite direction
     }
-    else{return false;} //Not opposite direction
+    else{
+        return false;//Not opposite direction
+    } 
 }
 //Calculate the normal and normalizes it before returning
 glm::vec3 Rectangle::getNormal() const{

@@ -38,7 +38,7 @@ int main() {
                       
             // Calculate normalized device coordinates (NDC)
             float ndcX = (2.0f * row / static_cast<float>(imageWidth)) - 1.0f;
-            float ndcY = 1.0f - (2.0f * col / static_cast<float>(imageWidth));
+            float ndcY = 1.0f - (2.0f * col / static_cast<float>(imageHeight));
 
             // Create a ray with startpos at the eye and endpos at the camera plane
             Ray rayFromPixel = theCamera.getRay(ndcX, ndcY);
@@ -47,14 +47,19 @@ int main() {
 
                 glm::vec3 checkPoint = p->PointInPolygon(rayFromPixel);
 
+                //std::cout << p->color_.r << " + " << p->color_.g << " + " << p->color_.b << std::endl;
+
                 if (checkPoint != glm::vec3(-100, -100, -100)) {
                     //We should set the pixel value here//p->getColor()
+                    
+                    //std::cout << "Intercetion! Color: " << p->color_.r << " + " << p->color_.g << " + " << p->color_.b << std::endl;
 
                     pixelMatrix[row][col] = p->color_;
+                    break;
+
+                    //std::cout << p->color_.r << " + " << p->color_.g << " + " << p->color_.b << std::endl;
                 }
             }
-        
-            
         }
     }
 
