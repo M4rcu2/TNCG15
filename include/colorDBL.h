@@ -16,7 +16,9 @@ public:
     
     // Returns a vector with rgb
     std::vector<double> getColor(); 
-    
-private:
+
     double r, g, b;
+
+private:
+    
 };

@@ -57,7 +57,7 @@ std::vector<Ray> Camera::castRay() {
     return rays;
 }
 
-void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight) {
+void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight, std::vector<std::vector<ColorDBL>> matrix) {
 
     // Create an array to store the image data
     unsigned char* imageData = new unsigned char[3 * imageWidth * imageHeight];
@@ -67,10 +67,10 @@ void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imag
     // Loop through each pixel and populate the imageData array
     for (int y = 0; y < imageHeight; ++y) {
         for (int x = 0; x < imageWidth; ++x) {
-            // Calculate the color for the pixel (x, y) and store it in imageData (NEEDS TO CHANGE!!!)
-            // Assuming you have computed the color in your ray tracing loop, you would set the RGB values accordingly
-            // For example, assuming color is represented as glm::vec3
-            glm::vec3 pixelColor = glm::vec3(y, x, x); // Compute the color for this pixel
+
+            ColorDBL pixelColor = matrix[x][y];
+
+            //glm::vec3 pixelColor = color.getColor(); // Compute the color for this pixel
 
 
             imageData[index++] = static_cast<unsigned char>(pixelColor.r * 255); // Red
