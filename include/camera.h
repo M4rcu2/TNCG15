@@ -17,7 +17,7 @@ public:
 
     std::vector<Ray> castRay();
 
-    void renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight);
+    void renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight, std::vector<std::vector<ColorDBL>> matrix);
 
 private:
     glm::vec3 eye_;
