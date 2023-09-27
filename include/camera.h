@@ -15,8 +15,6 @@ public:
 
     Ray getRay(float pixelX, float pixelY);
 
-    std::vector<Ray> castRay();
-
     void renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight, std::vector<std::vector<ColorDBL>> matrix);
 
 private:
