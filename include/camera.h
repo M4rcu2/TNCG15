@@ -13,7 +13,7 @@ public:
 
     glm::vec3 getPos();
 
-    Ray getRay(float pixelX, float pixelY);
+    Ray castRay(float pixelX, float pixelY);
 
     void renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight, std::vector<std::vector<ColorDBL>> matrix);
 

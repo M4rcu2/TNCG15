@@ -17,18 +17,10 @@ glm::vec3 Camera::getPos() {
     return eye_;
 }
 
-Ray Camera::getRay(float pixelX, float pixelY) {
-    
-    // Gives the pixel position on the camera plane
-    /*glm::vec3 pixelPosition =
-    c1 + (static_cast<float>(pixelX) / imageWidth_) * (c2 - c1) +
-    (static_cast<float>(pixelY) / imageHeight_) * (c4 - c1);*/
-
-    glm::vec3 pixelPosition =
-        c1 + pixelX * (c2 - c1) + pixelY * (c4 - c1);
+Ray Camera::castRay(float pixelX, float pixelY) {
 
     // Calculates the ray direction (Normalized)
-    glm::vec3 rayDirection = glm::normalize(pixelPosition - eye_);
+    glm::vec3 rayDirection = glm::normalize(glm::vec3(0, pixelX,pixelY) - eye_);
 
     // Initializes the ray
     Ray ray(eye_, rayDirection);
@@ -49,8 +41,6 @@ void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imag
 
             ColorDBL pixelColor = matrix[x][y];
 
-            //glm::vec3 pixelColor = color.getColor(); // Compute the color for this pixel
-
             imageData[index++] = static_cast<unsigned char>(pixelColor.r * 255); // Red
             imageData[index++] = static_cast<unsigned char>(pixelColor.g * 255); // Green
             imageData[index++] = static_cast<unsigned char>(pixelColor.b * 255); // Blue
@@ -64,6 +54,9 @@ void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imag
     // Clean up allocated memory
     delete[] imageData;
 }
+
+
+
 
 
 

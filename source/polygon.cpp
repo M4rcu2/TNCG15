@@ -12,7 +12,7 @@ glm::vec3 Rectangle::PointInPolygon(const Ray& ray) const{
         glm::vec3 d = ray.direction;
         glm::vec3 v = vertices[0];
         glm::vec3 c1 = vertices[1]-v;
-        glm::vec3 c2 = vertices[3]-v;
+        glm::vec3 c2 = vertices[2]-v;
         float t = glm::dot((v-s),normal)/glm::dot(d,normal);
         glm::vec3 intersectionPoint = s + t*d;
 
@@ -54,7 +54,7 @@ glm::vec3 Triangle::PointInPolygon(const Ray& ray) const{
         glm::vec3 E1 = vertices[1]-vertices[0];
         glm::vec3 E2 = vertices[2]-vertices[0];
         glm::vec3 T = ray.startVertex-vertices[0];
-        glm::vec3 D = ray.endVertex-ray.startVertex;
+        glm::vec3 D = ray.direction;
         glm::vec3 P = glm::cross(D, E2);
         glm::vec3 Q = glm::cross(T, E1);
         //float t = dot(Q,E2)/dot(P,E1);
@@ -75,10 +75,12 @@ bool Triangle::IntersectPlane(const Ray &ray) const{
     //Dot product calculation
     float dotProd = glm::dot(normal, ray.direction);
     //Is dot product positive, negative or zero?
-    if(dotProd < 0){//Opposite direction for normal of the triangle and the ray
-        return false;
+    if(dotProd < 0){
+        return true;//Opposite direction for normal of the triangle and the ray
     }
-    else{return false;}
+    else{
+        return false; //Not opposite direction
+    }
 }
 //Calculate the normal and normalizes it before returning
 glm::vec3 Triangle::getNormal() const{
