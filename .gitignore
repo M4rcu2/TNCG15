@@ -1,1 +1,4 @@
 build/
+.DS_Store
+include/.DS_Store
+include/stb/.DS_Store
