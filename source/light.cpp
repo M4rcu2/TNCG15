@@ -2,7 +2,11 @@
 #include <random>
 
 Light::Light(const glm::vec3& position, float width, float height, const glm::vec3& intensity)
-    : position_(position), width_(width), height_(height), intensity_(intensity) {}
+: position_(position), intensity_(intensity), width_(width), height_(height) {
+        //creates e1 and e2 along each side
+        e1 = position+width;
+        e2 = position+height;
+    }
 
 glm::vec3 Light::samplePoint() const {
     std::random_device rd;
@@ -42,6 +46,13 @@ glm::vec3 Light::getNormal() const {
     return glm::vec3(0.0f, 0.0f, -1.0f);
 }
 
-
+glm::vec3 Light::getRandomPointOnLight() const {
+    srand((unsigned) time(NULL));
+    float x = (float) rand()/RAND_MAX;
+    float y = (float) rand()/RAND_MAX;
+    glm::vec3 v1 = e1*x;
+    glm::vec3 v2 = e2*y;
+    return v1+v2;
+}
 
 

@@ -18,6 +18,9 @@ int main() {
     // Creates a camera placed in the room
     int imageWidth = 600;
     int imageHeight = 600;
+    
+    //Number of reflections the ray can do
+    int nmrOfReflections = 2;
 
     // Creates the camera with an image plane
     std::vector<std::vector<ColorDBL>> imagePlane(imageWidth, std::vector<ColorDBL>(imageHeight));
@@ -74,7 +77,7 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../outputImage/rendered_image.png";
+    const char* outputPath = "../rendered_image.png";
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     

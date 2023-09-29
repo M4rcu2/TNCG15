@@ -23,6 +23,7 @@ public:
     virtual glm::vec3 getNormal() const = 0;
     //returns the color of the polygon
     ColorDBL color_;
+    glm::vec3 normal;
     ColorDBL getColor() const {
         return color_;
     };
@@ -40,7 +41,6 @@ public:
         color_ = color;
     }
     glm::vec3 PointInPolygon(const Ray& ray) const override;
-    glm::vec3 normal;
 private:
     bool IntersectPlane(const Ray& ray) const override;
     glm::vec3 getNormal() const override;
@@ -60,7 +60,6 @@ public:
     }
     // Implement the Intersect method for triangles
     glm::vec3 PointInPolygon(const Ray& ray) const override;
-    glm::vec3 normal;
 private:
     bool IntersectPlane(const Ray& ray) const override;
     glm::vec3 getNormal() const override;
