@@ -27,6 +27,10 @@ public:
     ColorDBL getColor() const {
         return color_;
     };
+protected:
+    Polygon() {
+        std::cout << "Fuck you" << std::endl;
+    };
 };
 
 // Rectangle subclass----------------------------------------------------------------------
@@ -47,7 +51,6 @@ public:
     glm::vec3 getNormal() const override;
 private:
     bool IntersectPlane(const Ray& ray) const override;
-    
     glm::vec3 vertices[4];
 };
 

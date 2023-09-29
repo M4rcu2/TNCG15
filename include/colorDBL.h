@@ -9,13 +9,13 @@ public:
     ColorDBL() : r(0.0), g(0.0), b(0.0) {}
 
     // Constructor
-    ColorDBL(double red, double green, double blue) : r(red), g(green), b(blue) {}
+    ColorDBL(float red, float green, float blue) : r(red), g(green), b(blue) {}
     
     // Change color function
-    void changeColor(const double& red, const double& green, const double& blue);
+    void changeColor(const float& red, const float& green, const float& blue);
     
     // Returns a vector with rgb
-    std::vector<double> getColor();
+    std::vector<float> getColor();
     
     // Method to add two colors
     ColorDBL add(const ColorDBL& otherColor);
@@ -26,7 +26,7 @@ public:
     // += operator for adding colors
     ColorDBL& operator+=(const ColorDBL& other);
 
-    double r, g, b;
+    float r, g, b;
 
 private:
     
