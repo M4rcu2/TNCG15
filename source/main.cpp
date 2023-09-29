@@ -32,7 +32,8 @@ int main() {
 
 
     // Adds a light to the scene
-    Light theLight = Light(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), glm::vec3(1.0f, 1.0f, 1.0f));
+    Rectangle* theLamp = new Rectangle(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), glm::vec3(1.0f, 1.0f, 1.0f));
+    Light theLight = Light(theLamp, glm::vec3(1.0f, 1.0f, 1.0f));
     theScene.addLight(theLight);
    
     // Loop through each pixel in the matrix and assigns the color -----------------------------------------------------
@@ -63,7 +64,7 @@ int main() {
                     // Initializes the end vertex
                     rayFromPixel.endVertex = intersectionPoint;
 
-                    ColorDBL obtainedLight = rayFromPixel.castShadowRay(p,theLight);
+                    ColorDBL obtainedLight = rayFromPixel.castShadowRay(p,theLight*);
 
                     // Calculate t value for the intersection
                     float t = glm::length(intersectionPoint - rayFromPixel.startVertex);

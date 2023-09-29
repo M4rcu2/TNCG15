@@ -9,13 +9,13 @@ Scene::Scene() {
 }
 
 void Scene::addRoom() {
-    ColorDBL redColor = ColorDBL(0.6, 0.0, 0.0);
-    ColorDBL greenColor = ColorDBL(0.0, 0.6, 0.0);
-    ColorDBL blueColor = ColorDBL(0.0, 0.0, 0.6);
-    ColorDBL yellowColor = ColorDBL(0.6, 0.6, 0.0);
-    ColorDBL magentaColor = ColorDBL(0.6, 0.0, 0.6);
-    ColorDBL cyanColor = ColorDBL(0.0, 0.6, 0.6);
-    ColorDBL whiteColor = ColorDBL(0.8, 0.8, 0.8);
+    ColorDBL redColor = ColorDBL(0.6f, 0.0f, 0.0f);
+    ColorDBL greenColor = ColorDBL(0.0f, 0.6f, 0.0f);
+    ColorDBL blueColor = ColorDBL(0.0f, 0.0f, 0.6f);
+    ColorDBL yellowColor = ColorDBL(0.6f, 0.6f, 0.0f);
+    ColorDBL magentaColor = ColorDBL(0.6f, 0.0f, 0.6f);
+    ColorDBL cyanColor = ColorDBL(0.0f, 0.6f, 0.6f);
+    ColorDBL whiteColor = ColorDBL(0.8f, 0.8f, 0.8f);
 
     // Ceiling
     theRoom.push_back(new Triangle(glm::vec3(10, -6, 5),glm::vec3(10, 6, 5), glm::vec3(13, 0, 5), whiteColor));
