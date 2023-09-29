@@ -15,8 +15,19 @@ public:
     void changeColor(const double& red, const double& green, const double& blue);
     
     // Returns a vector with rgb
-    std::vector<double> getColor(); 
+    std::vector<double> getColor();
     
-private:
+    // Method to add two colors
+    ColorDBL add(const ColorDBL& otherColor);
+
+    // Method to multiply two colors
+    ColorDBL mult(const ColorDBL& otherColor);
+
+    // += operator for adding colors
+    ColorDBL& operator+=(const ColorDBL& other);
+
     double r, g, b;
+
+private:
+    
 };

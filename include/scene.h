@@ -14,6 +14,9 @@ public:
     // Adds a room in the scene
     void addRoom();
 
+    // Adds a single polygon to the scene
+    void addPolygon(Polygon* polygon);        
+
     // Add a light to the scene
     void addLight(Light* light);
 
@@ -28,6 +31,8 @@ public:
     
     //Get a room baby
     std::vector<Polygon*> getTheRoom() const;
+
+    bool isShadowed(const glm::vec3& point, const Light* light) const;
 
 private:
     std::vector<Light*> lights;   // List of lights in the scene

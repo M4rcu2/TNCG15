@@ -17,15 +17,10 @@ glm::vec3 Camera::getPos() {
     return eye_;
 }
 
-Ray Camera::getRay(float pixelX, float pixelY) {
-    
-    // Gives the pixel position on the camera plane
-    glm::vec3 pixelPosition =
-    c1 + (static_cast<float>(pixelX) / imageWidth_) * (c2 - c1) +
-    (static_cast<float>(pixelY) / imageHeight_) * (c4 - c1);
+Ray Camera::castRay(float pixelX, float pixelY) {
 
     // Calculates the ray direction (Normalized)
-    glm::vec3 rayDirection = glm::normalize(pixelPosition - eye_);
+    glm::vec3 rayDirection = glm::normalize(glm::vec3(0, pixelX,pixelY) - eye_);
 
     // Initializes the ray
     Ray ray(eye_, rayDirection);
@@ -33,31 +28,9 @@ Ray Camera::getRay(float pixelX, float pixelY) {
     return ray;
 }
 
-std::vector<Ray> Camera::castRay() {
 
-    // Create a vector to store generated rays
-    std::vector<Ray> rays;
 
-    // Loop through each pixel on the image plane
-    for (int y = 0; y < imageHeight_; ++y) {
-        for (int x = 0; x < imageWidth_; ++x) {
-
-            // Calculate normalized device coordinates (NDC)
-            float ndcX = (2.0f * x / static_cast<float>(imageWidth_)) - 1.0f;
-            float ndcY = 1.0f - (2.0f * y / static_cast<float>(imageWidth_));
-
-            // Create a ray with startpos at the eye and endpos at the camera plane
-            Ray rayFromPixel = this->getRay(ndcX, ndcY);
-
-            // Store the ray in the vector
-            rays.push_back(rayFromPixel);
-        }
-    }
-
-    return rays;
-}
-
-void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight) {
+void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight, std::vector<std::vector<ColorDBL>> matrix) {
 
     // Create an array to store the image data
     unsigned char* imageData = new unsigned char[3 * imageWidth * imageHeight];
@@ -67,11 +40,8 @@ void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imag
     // Loop through each pixel and populate the imageData array
     for (int y = 0; y < imageHeight; ++y) {
         for (int x = 0; x < imageWidth; ++x) {
-            // Calculate the color for the pixel (x, y) and store it in imageData (NEEDS TO CHANGE!!!)
-            // Assuming you have computed the color in your ray tracing loop, you would set the RGB values accordingly
-            // For example, assuming color is represented as glm::vec3
-            glm::vec3 pixelColor = glm::vec3(y, x, x); // Compute the color for this pixel
 
+            ColorDBL pixelColor = matrix[x][y];
 
             imageData[index++] = static_cast<unsigned char>(pixelColor.r * 255); // Red
             imageData[index++] = static_cast<unsigned char>(pixelColor.g * 255); // Green
@@ -86,6 +56,9 @@ void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imag
     // Clean up allocated memory
     delete[] imageData;
 }
+
+
+
 
 
 
