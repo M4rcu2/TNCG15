@@ -13,7 +13,7 @@ class Ray; // Forward declaration
 // Base class for Polygon
 class Polygon {
 public:
-    const float errorMargin = 10e-4; //error margin i guess ;)
+    const float errorMargin = 10e-4f; //error margin i guess ;)
     
     //Calculate the point where we intersect the plane and then if it is in the polygon and returns that point
     virtual glm::vec3 PointInPolygon(const Ray& ray) const = 0;
@@ -36,11 +36,11 @@ public:
         vertices[1] = p2;
         vertices[2] = p3;
         vertices[3] = p4;
-        normal = getNormal();
+        recNormal = getNormal();
         color_ = color;
     }
     glm::vec3 PointInPolygon(const Ray& ray) const override;
-    glm::vec3 normal;
+    glm::vec3 recNormal;
     float getWidth() const;
     float getHeight() const;
     glm::vec3 getNormal() const override;
@@ -58,12 +58,12 @@ public:
         vertices[0] = p1;
         vertices[1] = p2;
         vertices[2] = p3;
-        normal = getNormal();
+        triNormal = getNormal();
         color_ = color;
     }
     // Implement the Intersect method for triangles
     glm::vec3 PointInPolygon(const Ray& ray) const override;
-    glm::vec3 normal;
+    glm::vec3 triNormal;
 private:
     bool IntersectPlane(const Ray& ray) const override;
     glm::vec3 getNormal() const override;

@@ -29,10 +29,7 @@ int main() {
 
 
     // Adds a light to the scene
-    Rectangle* theLamp = new Rectangle(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), ColorDBL(1, 1, 1));
-    Rectangle theLamp2 = Rectangle(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), ColorDBL(1, 1, 1));
-    Light* theLight = new Light(theLamp2, glm::vec3(1, 1, 1));
-    theScene.addPolygon(theLamp);
+    Light* theLight = new Light(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), glm::vec3(1, 1, 1));
     theScene.addLight(theLight);
    
     // Loop through each pixel in the matrix and assigns the color -----------------------------------------------------
@@ -50,6 +47,7 @@ int main() {
             float closestT = std::numeric_limits<float>::infinity();
             glm::vec3 closestIntersectionPoint;
             ColorDBL closestColor;
+            const Polygon* closestPolygon = nullptr; // Added variable to store the closest polygon
 
             // Loop through each polygon in the scene
             for (const Polygon* p : theScene.getTheRoom()) {
@@ -67,6 +65,7 @@ int main() {
                         closestT = t;
                         closestIntersectionPoint = intersectionPoint;
                         closestColor = p->color_;
+                        closestPolygon = p; // Update the closest polygon
                     }
                 }
 
@@ -76,19 +75,24 @@ int main() {
             // If there is a valid intersection, calculate direct lighting contribution
             if (closestT != std::numeric_limits<float>::infinity()) {
 
-                glm::vec3 normal = glm::normalize(closestIntersectionPoint - theCamera.getPos());
+                // Use the normal of the intersected polygon
+                glm::vec3 theNormal = glm::normalize(closestPolygon->getNormal()); // Assuming getNormal() is a function in your Polygon class that returns the normal
+
+                //std::cout << theNormal.x << " + " << theNormal.y << " + " << theNormal.z << std::endl;
 
                 // Loop through each light in the scene
                 for (const Light* light : theScene.getLights()) {
-
+                    
                     // Check if the point on the surface is visible to the light source
                     if (!theScene.isShadowed(closestIntersectionPoint, light)) {
 
                         // Calculate the direction to the light source
-                        glm::vec3 toLight = glm::normalize(closestIntersectionPoint - light->getPosition());
-                        
+                        glm::vec3 toLight = glm::normalize(light->getPosition() - closestIntersectionPoint); // Ensure to reverse the direction
+
                         // Calculate the diffuse reflection using Lambert's law
-                        float diffuseFactor = glm::max(0.0f, glm::dot(normal, toLight));
+                        float diffuseFactor = glm::max(0.0f, glm::dot(theNormal, toLight));
+
+                        //std::cout << diffuseFactor << std::endl;
 
                         // Calculate the intensity from the light source
                         glm::vec3 lightIntensity = light->calculateIntensity(closestIntersectionPoint);

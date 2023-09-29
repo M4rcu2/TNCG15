@@ -10,7 +10,7 @@ class Light {
 public:
 
     // Constructor
-    Light(const Rectangle& position, const glm::vec3& intensity);
+    Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const glm::vec3& intensity);
 
     // Randomly sample a point on the rectangular light source
     glm::vec3 samplePoint() const;

@@ -2,13 +2,14 @@
 #include "../include/polygon.h"
 #include <random>
 
-Light::Light(const Rectangle& surface, const glm::vec3& intensity)
-    : surface_(surface), intensity_(intensity) {
-            // Idea, take in vertices and then make a rectangle! using the vertices to get the position in the room!
+Light::Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const glm::vec3& intensity)
+    : surface_(p1, p2, p3, p4, ColorDBL(intensity.x, intensity.y, intensity.z)) {
 
-    constantAttenuation_ = 1.0f;      // 1 - 0
-    linearAttenuation_ = 0.1f;        // 0.1 - 0.01
-    quadraticAttenuation_ = 0.01f;    // 0.01 - 0.001
+    constantAttenuation_ = 1.0f;
+    linearAttenuation_ = 0.1f;
+    quadraticAttenuation_ = 0.01f;
+
+    intensity_ = intensity;
     width_ = surface_.getWidth();
     height_ = surface_.getHeight();
     position_ = samplePoint();
@@ -67,5 +68,5 @@ glm::vec3 Light::getIntensity() const {
 
 glm::vec3 Light::getNormal() const {
     // Get the normal direction of the light source (pointing towards the scene)
-    return glm::vec3(0.0f, 0.0f, -1.0f);
+    return surface_.getNormal();
 }
