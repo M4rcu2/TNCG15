@@ -47,6 +47,17 @@ glm::vec3 Rectangle::getNormal() const{
     return normal;
 }
 
+// Implementations for new Rectangle methods
+float Rectangle::getWidth() const {
+    // Assuming vertices[1] and vertices[0] are adjacent edges of the rectangle
+    return glm::length(vertices[1] - vertices[0]);
+}
+
+float Rectangle::getHeight() const {
+    // Assuming vertices[2] and vertices[0] are adjacent edges of the rectangle
+    return glm::length(vertices[2] - vertices[0]);
+}
+
 // Triangle subclass----------------------------------------------------------------------
 glm::vec3 Triangle::PointInPolygon(const Ray& ray) const{
     bool isOnPlane = IntersectPlane(ray);

@@ -25,10 +25,14 @@ int main() {
     theScene.addCamera(theCamera);
 
     // Add objects (e.g., spheres, triangles) to the scene
-    theScene.addPolygon(new Triangle(glm::vec3(9, 5, -4), glm::vec3(9, -5, -4), glm::vec3(9, 5, 4), ColorDBL(0.98, 0.51, 0.01)));
+    //theScene.addPolygon(new Triangle(glm::vec3(9, 5, -4), glm::vec3(9, -5, -4), glm::vec3(9, 5, 4), ColorDBL(0.98, 0.51, 0.01)));
+
 
     // Adds a light to the scene
-    Light* theLight = new Light(glm::vec3(0, 0, 5), 4.0f, 4.0f, glm::vec3(1, 1, 1));
+    Rectangle* theLamp = new Rectangle(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), ColorDBL(1, 1, 1));
+    Rectangle theLamp2 = Rectangle(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), ColorDBL(1, 1, 1));
+    Light* theLight = new Light(theLamp2, glm::vec3(1, 1, 1));
+    theScene.addPolygon(theLamp);
     theScene.addLight(theLight);
    
     // Loop through each pixel in the matrix and assigns the color -----------------------------------------------------
@@ -63,6 +67,36 @@ int main() {
                         closestT = t;
                         closestIntersectionPoint = intersectionPoint;
                         closestColor = p->color_;
+                    }
+                }
+
+                
+            }
+
+            // If there is a valid intersection, calculate direct lighting contribution
+            if (closestT != std::numeric_limits<float>::infinity()) {
+
+                glm::vec3 normal = glm::normalize(closestIntersectionPoint - theCamera.getPos());
+
+                // Loop through each light in the scene
+                for (const Light* light : theScene.getLights()) {
+
+                    // Check if the point on the surface is visible to the light source
+                    if (!theScene.isShadowed(closestIntersectionPoint, light)) {
+
+                        // Calculate the direction to the light source
+                        glm::vec3 toLight = glm::normalize(closestIntersectionPoint - light->getPosition());
+                        
+                        // Calculate the diffuse reflection using Lambert's law
+                        float diffuseFactor = glm::max(0.0f, glm::dot(normal, toLight));
+
+                        // Calculate the intensity from the light source
+                        glm::vec3 lightIntensity = light->calculateIntensity(closestIntersectionPoint);
+
+                        // Update the color with the direct lighting contribution
+                        closestColor.r += diffuseFactor * lightIntensity.x;
+                        closestColor.g += diffuseFactor * lightIntensity.y;
+                        closestColor.b += diffuseFactor * lightIntensity.z;
                     }
                 }
             }

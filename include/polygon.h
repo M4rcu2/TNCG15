@@ -41,9 +41,12 @@ public:
     }
     glm::vec3 PointInPolygon(const Ray& ray) const override;
     glm::vec3 normal;
+    float getWidth() const;
+    float getHeight() const;
+    glm::vec3 getNormal() const override;
 private:
     bool IntersectPlane(const Ray& ray) const override;
-    glm::vec3 getNormal() const override;
+    
     glm::vec3 vertices[4];
 };
 

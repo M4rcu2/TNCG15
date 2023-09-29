@@ -17,6 +17,9 @@ public:
     // Returns a vector with rgb
     std::vector<double> getColor(); 
 
+    // += operator for adding colors
+    ColorDBL& operator+=(const ColorDBL& other);
+
     double r, g, b;
 
 private:

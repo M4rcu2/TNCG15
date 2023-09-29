@@ -18,12 +18,12 @@ void Scene::addRoom() {
     ColorDBL whiteColor = ColorDBL(0.8, 0.8, 0.8);
 
     // Ceiling
-    theRoom.push_back(new Triangle(glm::vec3(10, -6, 5),glm::vec3(10, 6, 5), glm::vec3(13, 0, 5), yellowColor));
+    theRoom.push_back(new Triangle(glm::vec3(10, -6, 5),glm::vec3(10, 6, 5), glm::vec3(13, 0, 5), whiteColor));
     theRoom.push_back(new Triangle(glm::vec3(0, 6, 5), glm::vec3(-3, 0, 5), glm::vec3(0, -6, 5), whiteColor));
     theRoom.push_back(new Rectangle(glm::vec3(0, 6, 5), glm::vec3(10, 6, 5), glm::vec3(0, -6, 5), glm::vec3(10, -6, 5), whiteColor));
 
     // Floor
-    theRoom.push_back(new Triangle(glm::vec3(10, 6, -5), glm::vec3(10, -6, -5), glm::vec3(13, 0, -5), magentaColor));
+    theRoom.push_back(new Triangle(glm::vec3(10, 6, -5), glm::vec3(10, -6, -5), glm::vec3(13, 0, -5), whiteColor));
     theRoom.push_back(new Triangle(glm::vec3(0, 6, -5), glm::vec3(0, -6, -5), glm::vec3(-3, 0, -5), whiteColor));
     theRoom.push_back(new Rectangle(glm::vec3(0, -6, -5), glm::vec3(10, -6, -5),glm::vec3(0, 6, -5), glm::vec3(10, 6, -5), whiteColor));
 
@@ -72,4 +72,24 @@ const std::vector<Camera>& Scene::getCameras() const {
 
 std::vector<Polygon*> Scene::getTheRoom() const {
     return theRoom;
+}
+
+bool Scene::isShadowed(const glm::vec3& point, const Light* light) const {
+    // Get the direction from the point to the light source
+    glm::vec3 toLight = glm::normalize(light->getPosition() - point);
+
+    // Create a shadow ray starting from the intersection point and going towards the light source
+    Ray shadowRay(point + 0.01f * toLight, toLight);
+
+    // Check for intersections with objects in the scene
+    for (const Polygon* p : theRoom) {
+        glm::vec3 intersectionPoint = p->PointInPolygon(shadowRay);
+        if (intersectionPoint != glm::vec3(-100, -100, -100)) {
+            // The shadow ray intersects with an object, so the point is in shadow
+            return true;
+        }
+    }
+
+    // No intersections with objects, so the point is not in shadow
+    return false;
 }

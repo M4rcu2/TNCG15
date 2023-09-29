@@ -32,6 +32,8 @@ public:
     //Get a room baby
     std::vector<Polygon*> getTheRoom() const;
 
+    bool isShadowed(const glm::vec3& point, const Light* light) const;
+
 private:
     std::vector<Light*> lights;   // List of lights in the scene
     std::vector<Camera> cameras; // List of cameras in the scene
