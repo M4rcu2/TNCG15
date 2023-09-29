@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <limits> // for std::numeric_limits
@@ -86,7 +87,7 @@ int main() {
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
     const char* outputPath = "../rendered_image.png";
-    
+    std::cout<<"done";
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
     return 0;

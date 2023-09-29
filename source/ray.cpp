@@ -1,3 +1,4 @@
+#pragma once
 #include "../include/ray.h"
 
 
@@ -16,7 +17,7 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
 
         Ray castedShadowRay(p, glm::normalize(p - endVertex));
 
-        lightsource.surface_.PointInPolygon(castedShadowRay);
+        lightsource.surface_->PointInPolygon(castedShadowRay);
 
     }
 

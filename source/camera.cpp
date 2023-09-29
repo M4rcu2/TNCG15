@@ -1,3 +1,4 @@
+#pragma once
 #include "../include/camera.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION

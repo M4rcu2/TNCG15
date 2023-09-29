@@ -1,3 +1,4 @@
+#pragma once
 #include "../include/material.h"
 
 Material::Material() {

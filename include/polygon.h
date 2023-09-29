@@ -27,6 +27,8 @@ public:
     ColorDBL getColor() const {
         return color_;
     };
+protected:
+    Polygon() = default;
 };
 
 // Rectangle subclass----------------------------------------------------------------------

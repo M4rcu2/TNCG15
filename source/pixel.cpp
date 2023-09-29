@@ -1,3 +1,4 @@
+#pragma once
 #include "../include/pixel.h"
 
 Pixel::Pixel() : color(glm::vec3(0, 0, 0)) {}
