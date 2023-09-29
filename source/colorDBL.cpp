@@ -17,3 +17,11 @@ ColorDBL& ColorDBL::operator+=(const ColorDBL& other) {
     b += other.b;
     return *this;
 }
+
+ColorDBL ColorDBL::add(const ColorDBL& otherColor) {
+    return ColorDBL(r + otherColor.r, g + otherColor.g, b + otherColor.b);
+}
+
+ColorDBL ColorDBL::mult(const ColorDBL& otherColor) {
+    return ColorDBL(r * otherColor.r, g * otherColor.g, b * otherColor.b);
+}

@@ -23,6 +23,7 @@ public:
     virtual glm::vec3 getNormal() const = 0;
     //returns the color of the polygon
     ColorDBL color_;
+    glm::vec3 normal;
     ColorDBL getColor() const {
         return color_;
     };

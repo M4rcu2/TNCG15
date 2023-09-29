@@ -13,6 +13,10 @@ Light::Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, cons
     width_ = surface_.getWidth();
     height_ = surface_.getHeight();
     position_ = samplePoint();
+
+    //creates e1 and e2 along each side
+        // e1 = position+width;
+        // e2 = position+height;
 }
 
 glm::vec3 Light::samplePoint() const {
@@ -68,5 +72,16 @@ glm::vec3 Light::getIntensity() const {
 
 glm::vec3 Light::getNormal() const {
     // Get the normal direction of the light source (pointing towards the scene)
-    return surface_.getNormal();
+    return surface_.normal;
 }
+
+glm::vec3 Light::getRandomPointOnLight() const {
+    srand((unsigned) time(NULL));
+    float x = (float) rand()/RAND_MAX;
+    float y = (float) rand()/RAND_MAX;
+    glm::vec3 v1 = e1*x;
+    glm::vec3 v2 = e2*y;
+    return v1+v2;
+}
+
+

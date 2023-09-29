@@ -25,6 +25,8 @@ public:
     glm::vec3 getPosition() const;
     glm::vec3 getIntensity() const;
     glm::vec3 getNormal() const;
+    
+    glm::vec3 getRandomPointOnLight() const;    //gets a random point on light where we have to implement two e1 and e2 vectors for the ligth and add these new variables to the constructor to initialize.s
 
 private:
     glm::vec3 intensity_; // Intensity (color) of the light  
@@ -35,5 +37,7 @@ private:
     float quadraticAttenuation_ ;
     float width_;         // Width of the rectangle
     float height_;        // Height of the rectangle
+    glm::vec3 e1;
+    glm::vec3 e2;
 };
 
