@@ -32,7 +32,7 @@ int main() {
 
 
     // Adds a light to the scene
-    Light* theLight = new Light(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), glm::vec3(1, 1, 1));
+    Light theLight = Light(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), glm::vec3(1, 1, 1));
     theScene.addLight(theLight);
    
     // Loop through each pixel in the matrix and assigns the color -----------------------------------------------------
@@ -53,12 +53,17 @@ int main() {
             const Polygon* closestPolygon = nullptr; // Added variable to store the closest polygon
 
             // Loop through each polygon in the scene
-            for (const Polygon* p : theScene.getTheRoom()) {
+            for (Polygon* p : theScene.getTheRoom()) {
 
                 glm::vec3 intersectionPoint = p->PointInPolygon(rayFromPixel);
 
                 // If the ray intersects the polygon
                 if (intersectionPoint != glm::vec3(-100, -100, -100)) {
+
+                    // Initializes the end vertex
+                    rayFromPixel.endVertex = intersectionPoint;
+
+                    ColorDBL obtainedLight = rayFromPixel.castShadowRay(p,theLight);
 
                     // Calculate t value for the intersection
                     float t = glm::length(intersectionPoint - rayFromPixel.startVertex);
@@ -67,43 +72,8 @@ int main() {
                     if (t < closestT) {
                         closestT = t;
                         closestIntersectionPoint = intersectionPoint;
-                        closestColor = p->color_;
+                        closestColor = p->color_.add(obtainedLight);
                         closestPolygon = p; // Update the closest polygon
-                    }
-                }
-
-                
-            }
-
-            // If there is a valid intersection, calculate direct lighting contribution
-            if (closestT != std::numeric_limits<float>::infinity()) {
-
-                // Use the normal of the intersected polygon
-                glm::vec3 theNormal = glm::normalize(closestPolygon->getNormal()); // Assuming getNormal() is a function in your Polygon class that returns the normal
-
-                //std::cout << theNormal.x << " + " << theNormal.y << " + " << theNormal.z << std::endl;
-
-                // Loop through each light in the scene
-                for (const Light* light : theScene.getLights()) {
-                    
-                    // Check if the point on the surface is visible to the light source
-                    if (!theScene.isShadowed(closestIntersectionPoint, light)) {
-
-                        // Calculate the direction to the light source
-                        glm::vec3 toLight = glm::normalize(light->getPosition() - closestIntersectionPoint); // Ensure to reverse the direction
-
-                        // Calculate the diffuse reflection using Lambert's law
-                        float diffuseFactor = glm::max(0.0f, glm::dot(theNormal, toLight));
-
-                        //std::cout << diffuseFactor << std::endl;
-
-                        // Calculate the intensity from the light source
-                        glm::vec3 lightIntensity = light->calculateIntensity(closestIntersectionPoint);
-
-                        // Update the color with the direct lighting contribution
-                        closestColor.r += diffuseFactor * lightIntensity.x;
-                        closestColor.g += diffuseFactor * lightIntensity.y;
-                        closestColor.b += diffuseFactor * lightIntensity.z;
                     }
                 }
             }

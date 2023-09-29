@@ -52,7 +52,7 @@ void Scene::addPolygon(Polygon* polygon) {
     theRoom.push_back(polygon);
 }
 
-void Scene::addLight(Light* light) {
+void Scene::addLight(Light light) {
     std::cout << "Added a light to the scene" << std::endl << std::endl;
     lights.push_back(light);
 }
@@ -62,7 +62,7 @@ void Scene::addCamera(Camera camera) {
     cameras.push_back(camera);
 }
 
-const std::vector<Light*>& Scene::getLights() const {
+const std::vector<Light>& Scene::getLights() const {
     return lights;
 }
 
@@ -74,22 +74,22 @@ std::vector<Polygon*> Scene::getTheRoom() const {
     return theRoom;
 }
 
-bool Scene::isShadowed(const glm::vec3& point, const Light* light) const {
-    // Get the direction from the point to the light source
-    glm::vec3 toLight = glm::normalize(light->getPosition() - point);
-
-    // Create a shadow ray starting from the intersection point and going towards the light source
-    Ray shadowRay(point + 0.01f * toLight, toLight);
-
-    // Check for intersections with objects in the scene
-    for (const Polygon* p : theRoom) {
-        glm::vec3 intersectionPoint = p->PointInPolygon(shadowRay);
-        if (intersectionPoint != glm::vec3(-100, -100, -100)) {
-            // The shadow ray intersects with an object, so the point is in shadow
-            return true;
-        }
-    }
-
-    // No intersections with objects, so the point is not in shadow
-    return false;
-}
+//bool Scene::isShadowed(const glm::vec3& point, const Light* light) const {
+//    // Get the direction from the point to the light source
+//    glm::vec3 toLight = glm::normalize(light->getPosition() - point);
+//
+//    // Create a shadow ray starting from the intersection point and going towards the light source
+//    Ray shadowRay(point + 0.01f * toLight, toLight);
+//
+//    // Check for intersections with objects in the scene
+//    for (const Polygon* p : theRoom) {
+//        glm::vec3 intersectionPoint = p->PointInPolygon(shadowRay);
+//        if (intersectionPoint != glm::vec3(-100, -100, -100)) {
+//            // The shadow ray intersects with an object, so the point is in shadow
+//            return true;
+//        }
+//    }
+//
+//    // No intersections with objects, so the point is not in shadow
+//    return false;
+//}
