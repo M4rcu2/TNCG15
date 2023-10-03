@@ -71,41 +71,6 @@ int main() {
                         closestPolygon = p; // Update the closest polygon
                     }
                 }
-
-                
-            }
-
-            // If there is a valid intersection, calculate direct lighting contribution
-            if (closestT != std::numeric_limits<float>::infinity()) {
-
-                // Use the normal of the intersected polygon
-                glm::vec3 theNormal = glm::normalize(closestPolygon->getNormal()); // Assuming getNormal() is a function in your Polygon class that returns the normal
-
-                //std::cout << theNormal.x << " + " << theNormal.y << " + " << theNormal.z << std::endl;
-
-                // Loop through each light in the scene
-                for (const Light* light : theScene.getLights()) {
-                    
-                    // Check if the point on the surface is visible to the light source
-                    if (!theScene.isShadowed(closestIntersectionPoint, light)) {
-
-                        // Calculate the direction to the light source
-                        glm::vec3 toLight = glm::normalize(light->getPosition() - closestIntersectionPoint); // Ensure to reverse the direction
-
-                        // Calculate the diffuse reflection using Lambert's law
-                        float diffuseFactor = glm::max(0.0f, glm::dot(theNormal, toLight));
-
-                        //std::cout << diffuseFactor << std::endl;
-
-                        // Calculate the intensity from the light source
-                        glm::vec3 lightIntensity = light->calculateIntensity(closestIntersectionPoint);
-
-                        // Update the color with the direct lighting contribution
-                        closestColor.r += diffuseFactor * lightIntensity.x;
-                        closestColor.g += diffuseFactor * lightIntensity.y;
-                        closestColor.b += diffuseFactor * lightIntensity.z;
-                    }
-                }
             }
 
             // Assign the color of the closest intersection
@@ -115,7 +80,7 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../rendered_image.png";
+    const char* outputPath = "..outputImage/rendered_image.png";
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
