@@ -1,6 +1,5 @@
 #pragma once
 #include "../include/light.h"
-#include "../include/polygon.h"
 #include <random>
 
 

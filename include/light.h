@@ -8,10 +8,11 @@
 
 class Light {
 public:
-
     // Constructor
-    Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const glm::vec3& intensity) : surface_(new Rectangle{p1, p2, p3, p4, ColorDBL(intensity.x, intensity.y, intensity.z)}){
-        
+    Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const glm::vec3& intensity){
+        ColorDBL c = ColorDBL(intensity.x, intensity.y, intensity.z);
+        surface_ = new Rectangle(p1, p2, p3, p4,c);
+        Rectangle(p1, p2, p3, p4,c);
         constantAttenuation_ = 1.0f;
         linearAttenuation_ = 0.1f;
         quadraticAttenuation_ = 0.01f;
