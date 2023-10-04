@@ -1,4 +1,3 @@
-#pragma once
 #include "../include/glm/glm.hpp"
 #include "../include/polygon.h"
 
@@ -46,6 +45,16 @@ glm::vec3 Rectangle::getNormal() const{
     glm::vec3 normal = glm::cross(edge1, edge2);
     normal = glm::normalize(normal);
     return normal;
+}
+
+// Copy assignment operator
+Rectangle& Rectangle::operator=(const Rectangle& other) {
+    if (this != &other) {
+        for (int i = 0; i < 4; ++i) {
+            vertices[i] = other.vertices[i];
+        }
+    }
+    return *this;
 }
 
 // Implementations for new Rectangle methods
