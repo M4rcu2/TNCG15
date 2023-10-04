@@ -1,5 +1,6 @@
 #pragma once
-#include "../include/ray.h"
+#include "ray.h"
+#include "polygon.h"
 
 
 Ray::Ray(glm::vec3 start, glm::vec3 direction, ColorDBL color, Ray* prev, Ray* next)

@@ -1,6 +1,7 @@
 #pragma once
-#include "../include/glm/glm.hpp"
-#include "../include/polygon.h"
+
+#include "polygon.h"
+#include "ray.h"
 
 
 // Rectangle subclass----------------------------------------------------------------------

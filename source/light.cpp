@@ -1,7 +1,20 @@
 #pragma once
-#include "../include/light.h"
+#include "light.h"
+#include "polygon.h"
+#include "colorDBL.h"
 #include <random>
 
+// Constructor
+Light::Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const glm::vec3& intensity) {
+    ColorDBL c = ColorDBL(intensity.x, intensity.y, intensity.z);
+    surface_ = new Rectangle(p1, p2, p3, p4, c);
+    Rectangle(p1, p2, p3, p4, c);
+    intensity_ = intensity;
+
+    //creates e1 and e2 along each side
+    e1 = p1 - p2;
+    e2 = p1 - p3;
+}
 
 glm::vec3 Light::getIntensity() const {
     return intensity_;

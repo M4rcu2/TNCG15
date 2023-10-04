@@ -1,5 +1,5 @@
 #pragma once
-#include "../include/scene.h"
+#include "scene.h"
 
 Scene::Scene() {
     std::cout << "Created a scene" << std::endl << std::endl;

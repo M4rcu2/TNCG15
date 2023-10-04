@@ -1,27 +1,14 @@
 #pragma once
 
-#include "../include/glm/glm.hpp"
-#include "../include/polygon.h"
+#include "glm/glm.hpp"
 
-//// Forward declaration
-//class Rectangle;
+// Forward declaration
+class Polygon;
 
 class Light {
 public:
     // Constructor
-    Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const glm::vec3& intensity){
-        ColorDBL c = ColorDBL(intensity.x, intensity.y, intensity.z);
-        surface_ = new Rectangle(p1, p2, p3, p4,c);
-        Rectangle(p1, p2, p3, p4,c);
-        constantAttenuation_ = 1.0f;
-        linearAttenuation_ = 0.1f;
-        quadraticAttenuation_ = 0.01f;
-        intensity_ = intensity;
-
-        //creates e1 and e2 along each side
-        e1 = p1 - p2;
-        e2 = p1 - p3;
-    }
+    Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const glm::vec3& intensity);
 
     // Getters for light properties
     glm::vec3 getIntensity() const;
@@ -32,10 +19,6 @@ public:
 
 private:
     glm::vec3 intensity_; // Intensity (color) of the light  
-    
-    float constantAttenuation_;
-    float linearAttenuation_ ;
-    float quadraticAttenuation_ ;
     glm::vec3 e1;
     glm::vec3 e2;
 };
