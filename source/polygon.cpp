@@ -49,6 +49,16 @@ glm::vec3 Rectangle::getNormal() const{
     return normal;
 }
 
+// Copy assignment operator
+Rectangle& Rectangle::operator=(const Rectangle& other) {
+    if (this != &other) {
+        for (int i = 0; i < 4; ++i) {
+            vertices[i] = other.vertices[i];
+        }
+    }
+    return *this;
+}
+
 // Implementations for new Rectangle methods
 float Rectangle::getWidth() const {
     // Assuming vertices[1] and vertices[0] are adjacent edges of the rectangle

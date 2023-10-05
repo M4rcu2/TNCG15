@@ -8,19 +8,38 @@ Ray::Ray(glm::vec3 start, glm::vec3 direction, ColorDBL color, Ray* prev, Ray* n
     glm::normalize(direction); // Normalizes the direction vector
 }
 
-ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource) {//Should change lightsource to a lightsource instead of polygon
+ColorDBL Ray::castShadowRay(const Rectangle fromPolygon, const Light& lightsource) {//Should change lightsource to a lightsource instead of polygon
     //implement function to see if there is an object in the way
     int nmrOfShadowrays = 5;
-
+    
     for (int i = 0; i <= nmrOfShadowrays; i++) {
-
+        
         glm::vec3 p = lightsource.getRandomPointOnLight();
-
+        
         Ray castedShadowRay(p, glm::normalize(p - endVertex));
-
-        lightsource.surface_->PointInPolygon(castedShadowRay);
-
+        
+        lightsource.surface_.PointInPolygon(castedShadowRay);
+        
     }
+    return this->color;
+}
+    
+ColorDBL Ray::castShadowRay(const Triangle fromPolygon, const Light& lightsource) {//Should change lightsource to a lightsource instead of polygon
+    //implement function to see if there is an object in the way
+    int nmrOfShadowrays = 5;
+    
+    for (int i = 0; i <= nmrOfShadowrays; i++) {
+        
+        glm::vec3 p = lightsource.getRandomPointOnLight();
+        
+        Ray castedShadowRay(p, glm::normalize(p - endVertex));
+        
+        lightsource.surface_.PointInPolygon(castedShadowRay);
+        
+    }
+    return this->color;
+}
+
 
 
     //The shadow ray
@@ -34,5 +53,3 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
             this->color = this->color.mult(lightsource->getIntensity());
         }
     }*/
-    return this->color;
-}
