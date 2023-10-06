@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glm/glm.hpp"
+#include "../include/glm/glm.hpp"
 
 class Material {
 public:

@@ -16,12 +16,6 @@ endfunction()
 file(GLOB SOURCES "source/*.cpp")
 file(GLOB HEADERS "include/*.h")
 
-
 add_executable(Raytracing ${SOURCES} ${HEADERS})
-target_include_directories(Raytracing PUBLIC include ext/stb)
-
 
 enable_warnings(Raytracing)
-
-add_subdirectory(ext/glm)
-target_link_libraries(Raytracing PUBLIC glm::glm)

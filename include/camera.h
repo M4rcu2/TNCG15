@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "ray.h"
-#include "pixel.h"
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
+#include "../include/ray.h"
+#include "../include/pixel.h"
 
 class Camera {
 public:

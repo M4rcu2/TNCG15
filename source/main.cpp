@@ -3,11 +3,11 @@
 #include <vector>
 #include <limits> // for std::numeric_limits
 
-#include "glm/glm.hpp"
-#include "colorDBL.h"
-#include "camera.h" 
-#include "ray.h" 
-#include "scene.h" 
+#include "../include/glm/glm.hpp"
+#include "../include/colorDBL.h"
+#include "../include/camera.h" 
+#include "../include/ray.h" 
+#include "../include/scene.h" 
 
 int main() {
     // Creates the scene

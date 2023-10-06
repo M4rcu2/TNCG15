@@ -1,10 +1,10 @@
 #pragma once
 
 #include <vector>
-#include "light.h"
-#include "camera.h" 
-#include "polygon.h" 
-#include "colorDBL.h" 
+#include "../include/light.h"
+#include "../include/camera.h" 
+#include "../include/polygon.h" 
+#include "../include/colorDBL.h" 
 
 class Scene {
 public:
