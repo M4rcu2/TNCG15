@@ -2,9 +2,9 @@
 #include "camera.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb/stb_image_write.h"
+#include "ext/stb/stb_image_write.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb/stb_image.h"
+#include "ext/stb/stb_image.h"
 
 Camera::Camera(const glm::vec3& eye, int imageWidth, int imageHeight)
     : eye_(eye), imageWidth_(imageWidth), imageHeight_(imageHeight) {
