@@ -55,6 +55,9 @@ void Scene::addPolygon(Polygon* polygon) {
 
 void Scene::addLight(Light light) {
     std::cout << "Added a light to the scene" << std::endl << std::endl;
+
+    theRoom.push_back(light.surface_);
+
     lights.push_back(light);
 }
 

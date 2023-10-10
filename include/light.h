@@ -16,10 +16,13 @@ public:
     
     glm::vec3 getRandomPointOnLight() const;  //gets a random point on light where we have to implement two e1 and e2 vectors for the ligth and add these new variables to the constructor to initialize.s
     Polygon* surface_;
+    double area;
 
 private:
     glm::vec3 intensity_; // Intensity (color) of the light  
+    glm::vec3 p1;
     glm::vec3 e1;
     glm::vec3 e2;
+    
 };
 

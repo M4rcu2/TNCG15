@@ -29,11 +29,11 @@ int main() {
     theScene.addCamera(theCamera);
 
     // Add objects (e.g., spheres, triangles) to the scene
-    //theScene.addPolygon(new Triangle(glm::vec3(9, 5, -4), glm::vec3(9, -5, -4), glm::vec3(9, 5, 4), ColorDBL(0.98, 0.51, 0.01)));
+    theScene.addPolygon(new Triangle(glm::vec3(9, 5, -4), glm::vec3(9, -5, -4), glm::vec3(9, 5, 4), ColorDBL(0.98, 0.51, 0.01)));
 
 
     // Adds a light to the scene
-    Light theLight = Light(glm::vec3(9, -2, 4.999), glm::vec3(7, -2, 4.999), glm::vec3(9, 2, 4.999), glm::vec3(7, 2, 4.999), glm::vec3(1, 1, 1));
+    Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1));
     theScene.addLight(theLight);
    
     // Loop through each pixel in the matrix and assigns the color -----------------------------------------------------
@@ -73,11 +73,13 @@ int main() {
                     if (t < closestT) {
                         closestT = t;
                         closestIntersectionPoint = intersectionPoint;
-                        closestColor = p->color_.add(obtainedLight);
+                        closestColor = p->color_.mult(obtainedLight);
                         closestPolygon = p; // Update the closest polygon
                     }
                 }
             }
+
+            //std::cout << closestColor.r << " + " << closestColor.g << " + " << closestColor.b << std::endl;
 
             // Assign the color of the closest intersection
             imagePlane[imageWidth - 1 - row][col] = closestColor;
@@ -86,8 +88,8 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../rendered_image.png";
-    std::cout<<"done";
+    const char* outputPath = "../outputImage/rendered_image.png";
+    
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
     return 0;
