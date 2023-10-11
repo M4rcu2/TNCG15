@@ -4,10 +4,9 @@
 #include <vector>
 #include <cmath>
 #include "glm/glm.hpp"
-#include "../include/colorDBL.h"
-#include "../include/glm/glm.hpp"
+#include "colorDBL.h"
 
-#include "../include/ray.h"
+
 class Ray; // Forward declaration
 
 // Base class for Polygon
@@ -27,6 +26,8 @@ public:
     ColorDBL getColor() const {
         return color_;
     };
+protected:
+    Polygon() = default;
 };
 
 // Rectangle subclass----------------------------------------------------------------------

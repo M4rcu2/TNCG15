@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/glm/glm.hpp"
+#include "glm/glm.hpp"
 #include <vector>
 
 class ColorDBL {
@@ -23,8 +23,18 @@ public:
     // Method to multiply two colors
     ColorDBL mult(const ColorDBL& otherColor);
 
+    // Method to subtract two colors
+    ColorDBL subtract(const ColorDBL& otherColor);
+
+    // -= operator for subtracting colors
+    ColorDBL& operator-=(const ColorDBL& other);
+
     // += operator for adding colors
     ColorDBL& operator+=(const ColorDBL& other);
+
+    //// - operator for subtracting colors
+    //ColorDBL operator-(const ColorDBL& left, const ColorDBL& right);
+
 
     double r, g, b;
 

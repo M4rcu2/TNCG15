@@ -1,9 +1,10 @@
-#include "../include/camera.h"
+#pragma once
+#include "camera.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "../include/stb/stb/stb_image_write.h"
+#include "stb_image_write.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "../include/stb/stb/stb_image.h"
+#include "stb_image.h"
 
 Camera::Camera(const glm::vec3& eye, int imageWidth, int imageHeight)
     : eye_(eye), imageWidth_(imageWidth), imageHeight_(imageHeight) {
@@ -28,8 +29,6 @@ Ray Camera::castRay(float pixelX, float pixelY) {
     return ray;
 }
 
-
-
 void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imageHeight, std::vector<std::vector<ColorDBL>> matrix) {
 
     // Create an array to store the image data
@@ -43,9 +42,9 @@ void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imag
 
             ColorDBL pixelColor = matrix[x][y];
 
-            imageData[index++] = static_cast<unsigned char>(pixelColor.r * 255); // Red
-            imageData[index++] = static_cast<unsigned char>(pixelColor.g * 255); // Green
-            imageData[index++] = static_cast<unsigned char>(pixelColor.b * 255); // Blue
+            imageData[index++] = static_cast<unsigned char>(std::min(255.0,pixelColor.r * 255.0)); // Red
+            imageData[index++] = static_cast<unsigned char>(std::min(255.0,pixelColor.g * 255.0)); // Green
+            imageData[index++] = static_cast<unsigned char>(std::min(255.0,pixelColor.b * 255.0)); // Blue
         }
     }
 
@@ -56,12 +55,3 @@ void Camera::renderAndSaveImage(const char* outputPath, int imageWidth, int imag
     // Clean up allocated memory
     delete[] imageData;
 }
-
-
-
-
-
-
-
-
-

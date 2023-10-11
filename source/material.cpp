@@ -1,4 +1,5 @@
-#include "../include/material.h"
+#pragma once
+#include "material.h"
 
 Material::Material() {
     // Default constructor initializes properties to reasonable defaults
