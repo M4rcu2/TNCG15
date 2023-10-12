@@ -1,4 +1,3 @@
-#pragma once
 #include "light.h"
 #include "polygon.h"
 #include "colorDBL.h"

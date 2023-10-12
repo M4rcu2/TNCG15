@@ -1,4 +1,3 @@
-#pragma once
 #include "ray.h"
 #include "polygon.h"
 #include <cmath>

@@ -1,5 +1,3 @@
-#pragma once
-
 #include "polygon.h"
 #include "ray.h"
 

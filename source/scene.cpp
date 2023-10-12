@@ -1,4 +1,3 @@
-#pragma once
 #include "scene.h"
 
 Scene::Scene() {
