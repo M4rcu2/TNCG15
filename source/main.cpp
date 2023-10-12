@@ -29,7 +29,7 @@ int main() {
     theScene.addCamera(theCamera);
 
     // Add objects (e.g., spheres, triangles) to the scene
-    theScene.addPolygon(new Triangle(glm::vec3(9, 5, -4), glm::vec3(9, -5, -4), glm::vec3(9, 5, 4), ColorDBL(0.98, 0.51, 0.01)));
+    theScene.addPolygon(new Triangle(glm::vec3(7, -2, -3), glm::vec3(4, -2, -4), glm::vec3(6, -4, 0), ColorDBL(0.98, 0.51, 0.01)));
 
 
     // Adds a light to the scene
@@ -64,7 +64,7 @@ int main() {
                     // Initializes the end vertex
                     rayFromPixel.endVertex = intersectionPoint;
 
-                    ColorDBL obtainedLight = rayFromPixel.castShadowRay(p,theLight);
+                    ColorDBL obtainedLight = rayFromPixel.castShadowRay(p,theLight,theScene.getTheRoom());
 
                     // Calculate t value for the intersection
                     float t = glm::length(intersectionPoint - rayFromPixel.startVertex);
@@ -78,8 +78,6 @@ int main() {
                     }
                 }
             }
-
-            //std::cout << closestColor.r << " + " << closestColor.g << " + " << closestColor.b << std::endl;
 
             // Assign the color of the closest intersection
             imagePlane[imageWidth - 1 - row][col] = closestColor;

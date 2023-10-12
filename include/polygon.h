@@ -20,6 +20,8 @@ public:
     virtual bool IntersectPlane(const Ray& ray) const = 0;
     //returns the normal, should be used in the constructor
     virtual glm::vec3 getNormal() const = 0;
+    // Checks if a point is obstructed with an other object, causing shadow
+    virtual bool IsPointObstructed(const Ray& ray, glm::vec3& intersectionPoint) const = 0;
     //returns the color of the polygon
     ColorDBL color_;
     glm::vec3 normal;
@@ -42,6 +44,7 @@ public:
         color_ = color;
     }
     glm::vec3 PointInPolygon(const Ray& ray) const override;
+    bool IsPointObstructed(const Ray& ray, glm::vec3& intersectionPoint) const override;
     glm::vec3 recNormal;
     float getWidth() const;
     float getHeight() const;
@@ -65,6 +68,7 @@ public:
     }
     // Implement the Intersect method for triangles
     glm::vec3 PointInPolygon(const Ray& ray) const override;
+    bool IsPointObstructed(const Ray& ray, glm::vec3& intersectionPoint) const override;
     glm::vec3 triNormal;
 private:
     bool IntersectPlane(const Ray& ray) const override;
