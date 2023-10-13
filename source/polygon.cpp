@@ -109,15 +109,6 @@ glm::vec3 Triangle::getNormal() const{
     }
     return *this;
 }*/
-
-<<<<<<< Updated upstream
-//// tetrahedra subclass----------------------------------------------------------------------
-//glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
-//    for(Triangle* t : faces){
-//        t->PointInPolygon(ray);
-//    }
-//}
-=======
 // tetrahedra subclass----------------------------------------------------------------------
 glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
     /*for(Triangle* t : faces){
@@ -133,5 +124,4 @@ glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
     }
     return glm::vec3(-100, -100, -100);
 }
->>>>>>> Stashed changes
 

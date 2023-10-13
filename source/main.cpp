@@ -29,22 +29,13 @@ int main() {
     theScene.addCamera(theCamera);
 
     // Add objects (e.g., spheres, triangles) to the scene
-<<<<<<< Updated upstream
+
     theScene.addPolygon(new Triangle(glm::vec3(4, -4, -4), glm::vec3(4, -2, -4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01)));
     theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(4, -2, -4), glm::vec3(6, -4, 1), ColorDBL(0.98, 0.51, 0.01)));
     theScene.addPolygon(new Triangle(glm::vec3(4, -2, -4), glm::vec3(4, -4, -4), glm::vec3(6, -4, 1), ColorDBL(0.98, 0.51, 0.01)));
     theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(6, -4, 1), glm::vec3(4, -4, -4), ColorDBL(0.98, 0.51, 0.01)));
-=======
     //theScene.addPolygon(new Triangle(glm::vec3(10, 3, 0), glm::vec3(10, -3, 0), glm::vec3(3, 3, 2), ColorDBL(0.98, 0.51, 0.01)));
-    //theScene.addTetra(new Tetrahedron(glm::vec3(2,0,-5), glm::vec3(8,-3,3), glm::vec3(3,0 ,3), glm::vec3(8,3,3), ColorDBL(0.4, 0.1, 0.6)));
-    //theScene.addTetra(new Tetrahedron(glm::vec3(6,-4,1), glm::vec3(7,-2,4), glm::vec3(4,-2,4), glm::vec3(4,-4,-4), ColorDBL(0.4, 0.1, 0.6)));
-    // (V0, V1, V2, V3)
-    //theScene.addTetra(new Tetrahedron(glm::vec3(7,1,-3), glm::vec3(5,-2,-2),glm::vec3(5,1,-2), glm::vec3(6,0,0), ColorDBL(0.1, 0.1, 0.6))); //INVERTED
-    theScene.addPolygon(new Triangle(glm::vec3(4, -4, -4), glm::vec3(4, -2, -4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01)));
-        theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(4, -2, -4), glm::vec3(6, -4, 1), ColorDBL(0.98, 0.51, 0.01)));
-        theScene.addPolygon(new Triangle(glm::vec3(4, -2, -4), glm::vec3(4, -4, -4), glm::vec3(6, -4, 1), ColorDBL(0.98, 0.51, 0.01)));
-        theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(6, -4, 1), glm::vec3(4, -4, -4), ColorDBL(0.98, 0.51, 0.01)));
->>>>>>> Stashed changes
+    theScene.addTetra(new Tetrahedron(glm::vec3(9,0,2), glm::vec3(10,2,-4), glm::vec3(8,-1,-4), glm::vec3(8,-3,-4), ColorDBL(0.4, 0.1, 0.6)));
 
     // Adds a light to the scene
     Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1));
@@ -108,7 +99,7 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../outputImage/rendered_image.png";
+    const char* outputPath = "rendered_image.png";
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
