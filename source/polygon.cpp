@@ -112,11 +112,7 @@ glm::vec3 Triangle::getNormal() const{
 // tetrahedra subclass----------------------------------------------------------------------
 glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
     for(Triangle* t : faces){
-        glm::vec3 a = t->PointInPolygon(ray);
-        if(a != glm::vec3(-100, -100, -100)){
-            return a;
-        }
+        t->PointInPolygon(ray);
     }
-    return glm::vec3(-100, -100, -100);
 }
 
