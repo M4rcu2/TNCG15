@@ -99,7 +99,7 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "rendered_image.png";
+    const char* outputPath = "../outputImage/rendered_image.png";
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
