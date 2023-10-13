@@ -31,6 +31,9 @@ public:
     
     //Get a room baby
     std::vector<Polygon*> getTheRoom() const;
+    
+    //Add tetrahedra
+    void addTetra(Tetrahedron* tetra); 
 
 private:
     std::vector<Light> lights;   // List of lights in the scene

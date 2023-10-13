@@ -77,6 +77,12 @@ std::vector<Polygon*> Scene::getTheRoom() const {
     return theRoom;
 }
 
+void Scene::addTetra(Tetrahedron* tetra){
+    for(Polygon* t : tetra->faces){
+        this->addPolygon(t);
+    }
+}
+
 //bool Scene::isShadowed(const glm::vec3& point, const Light* light) const {
 //    // Get the direction from the point to the light source
 //    glm::vec3 toLight = glm::normalize(light->getPosition() - point);

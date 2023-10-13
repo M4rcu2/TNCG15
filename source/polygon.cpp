@@ -1,6 +1,7 @@
 #include "polygon.h"
 #include "ray.h"
 
+#include <glm/gtx/string_cast.hpp>  //to string for vec
 
 // Rectangle subclass----------------------------------------------------------------------
 glm::vec3 Rectangle::PointInPolygon(const Ray& ray) const{
@@ -109,10 +110,28 @@ glm::vec3 Triangle::getNormal() const{
     return *this;
 }*/
 
+<<<<<<< Updated upstream
 //// tetrahedra subclass----------------------------------------------------------------------
 //glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
 //    for(Triangle* t : faces){
 //        t->PointInPolygon(ray);
 //    }
 //}
+=======
+// tetrahedra subclass----------------------------------------------------------------------
+glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
+    /*for(Triangle* t : faces){
+        glm::vec3 a = t->PointInPolygon(ray);
+        if(a != glm::vec3(-100, -100, -100)){
+            return a;
+        }
+    }*/
+    glm::vec3 a = faces[1]->PointInPolygon(ray);
+    std::cout<<"normal face1 "<<glm::to_string(faces[1]->normal);
+    if(a != glm::vec3(-100, -100, -100)){
+        return a;
+    }
+    return glm::vec3(-100, -100, -100);
+}
+>>>>>>> Stashed changes
 

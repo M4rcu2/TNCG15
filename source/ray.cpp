@@ -13,7 +13,11 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
     ColorDBL shadowIntensity = ColorDBL(0.0, 0.0, 0.0);
 
     // Number of shadow rays
+<<<<<<< Updated upstream
     int nmrOfShadowrays = 5;
+=======
+    int nmrOfShadowrays = 6;
+>>>>>>> Stashed changes
 
     for (int i = 0; i < nmrOfShadowrays; i++) {
 
@@ -28,6 +32,7 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
         Ray castedShadowRay(this->endVertex, glm::normalize(di));
 
         // Check for intersections with objects in the scene
+<<<<<<< Updated upstream
         if (lightsource.surface_->PointInPolygon(castedShadowRay) != glm::vec3(-100, -100, -100)) {
 
             float di_distance2 = std::numeric_limits<float>::max();
@@ -48,6 +53,21 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
             }
             else { // Otherwise, return calculated color
 
+=======
+        if (lightsource.surface_->PointInPolygon(castedShadowRay) != glm::vec3(-100, -100, -100)) {     //should always be true;
+            int hits = 0;
+            for(Polygon* p : allPolygons){
+                if(p != fromPolygon){
+                    if(p->PointInPolygon(castedShadowRay) != glm::vec3(-100, -100, -100)){
+                        hits++;
+                    }
+                }
+            }
+            if(hits<=2){
+                glm::vec3 normal = fromPolygon->getNormal();
+                glm::vec3 lightDirection = glm::normalize(p - this->endVertex);
+                
+>>>>>>> Stashed changes
                 // Calculate cosines of the angles between the surface normal and light direction
                 float cosThetaX = glm::dot(glm::normalize(fromPolygon->getNormal()), glm::normalize(di));
                 float cosThetaY = glm::dot(glm::normalize(lightsource.surface_->getNormal()), glm::normalize(di));

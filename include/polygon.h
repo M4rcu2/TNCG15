@@ -12,7 +12,7 @@ class Ray; // Forward declaration
 // Base class for Polygon
 class Polygon {
 public:
-    const float errorMargin = 10e-4f; //error margin i guess ;)
+    const float errorMargin = 10e-2f; //error margin i guess ;)
     
     //Calculate the point where we intersect the plane and then if it is in the polygon and returns that point
     virtual glm::vec3 PointInPolygon(const Ray& ray) const = 0;
