@@ -102,13 +102,7 @@ glm::vec3 Triangle::getNormal() const{
     normal = glm::normalize(normal);
     return normal;
 }
-//Assignment operator
-/*Triangle& Triangle::operator=(const Triangle& other) {
-    if (this != &other) {  // Avoid self-assignment
-        this->vertices = other.vertices;    //assign vertecies from other to this
-    }
-    return *this;
-}*/
+
 // tetrahedra subclass----------------------------------------------------------------------
 glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
     /*for(Triangle* t : faces){

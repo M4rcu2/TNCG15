@@ -12,7 +12,7 @@
 int main() {
     // Creates the scene
     Scene theScene;
-    int aaaaaaaa = 0;
+
     // Adds the room
     theScene.addRoom();
     
@@ -29,13 +29,13 @@ int main() {
     theScene.addCamera(theCamera);
 
     // Add objects (e.g., spheres, triangles) to the scene
-
-    theScene.addPolygon(new Triangle(glm::vec3(4, -4, -4), glm::vec3(4, -2, -4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01)));
+    /*theScene.addPolygon(new Triangle(glm::vec3(4, -4, -4), glm::vec3(4, -2, -4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01)));
     theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(4, -2, -4), glm::vec3(6, -4, 1), ColorDBL(0.98, 0.51, 0.01)));
     theScene.addPolygon(new Triangle(glm::vec3(4, -2, -4), glm::vec3(4, -4, -4), glm::vec3(6, -4, 1), ColorDBL(0.98, 0.51, 0.01)));
-    theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(6, -4, 1), glm::vec3(4, -4, -4), ColorDBL(0.98, 0.51, 0.01)));
-    //theScene.addPolygon(new Triangle(glm::vec3(10, 3, 0), glm::vec3(10, -3, 0), glm::vec3(3, 3, 2), ColorDBL(0.98, 0.51, 0.01)));
-    theScene.addTetra(new Tetrahedron(glm::vec3(9,0,2), glm::vec3(10,2,-4), glm::vec3(8,-1,-4), glm::vec3(8,-3,-4), ColorDBL(0.4, 0.1, 0.6)));
+    theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(6, -4, 1), glm::vec3(4, -4, -4), ColorDBL(0.98, 0.51, 0.01)));*/
+    
+    theScene.addTetra(new Tetrahedron(glm::vec3(6, -4, 1), glm::vec3(4, -2, -4), glm::vec3(4,-4,-4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01)));
+    theScene.addTetra(new Tetrahedron(glm::vec3(9, 0, 2), glm::vec3(10, 2, -4), glm::vec3(8, -1, -4), glm::vec3(8, -3, -4), ColorDBL(0.4, 0.1, 0.6)));
 
     // Adds a light to the scene
     Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1));
@@ -66,8 +66,6 @@ int main() {
 
                 // If the ray intersects the polygon
                 if (intersectionPoint != glm::vec3(-100, -100, -100)) {
-                    //std::cout<<"intersected normal: "<< glm::to_string(p->normal)<<"\n";
-                    //std::cout<<"The intersection point "<< glm::to_string(intersectionPoint) <<"\n";
 
                     // Initializes the end vertex
                     rayFromPixel.endVertex = intersectionPoint;
@@ -84,17 +82,11 @@ int main() {
                         closestColor = p->color_.mult(obtainedLight);
                         closestPolygon = p; // Update the closest polygon
                     }
-                    else{
-                        aaaaaaaa = aaaaaaaa+1;
-                    }
                 }
             }
 
-            //std::cout << closestColor.r << " + " << closestColor.g << " + " << closestColor.b << std::endl;
-
             // Assign the color of the closest intersection
             imagePlane[imageWidth - 1 - row][col] = closestColor;
-
         }
     }
 
@@ -103,6 +95,5 @@ int main() {
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
-    std::cout<<"\n aaaaa"<<aaaaaaaa;
     return 0;
 }

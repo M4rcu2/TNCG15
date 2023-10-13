@@ -29,16 +29,22 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
         Ray castedShadowRay(this->endVertex, glm::normalize(di));
 
         // Check for intersections with objects in the scene
-        if (lightsource.surface_->PointInPolygon(castedShadowRay) != glm::vec3(-100, -100, -100)) {     //should always be true;
+        if(lightsource.surface_->PointInPolygon(castedShadowRay) != glm::vec3(-100, -100, -100)) {     //should always be true;
+
             int hits = 0;
+
             for(Polygon* p : allPolygons){
+
                 if(p != fromPolygon){
+
                     if(p->PointInPolygon(castedShadowRay) != glm::vec3(-100, -100, -100)){
                         hits++;
                     }
                 }
             }
-            if(hits<=2){
+
+            if( hits <= 2){
+
                 glm::vec3 normal = fromPolygon->getNormal();
                 glm::vec3 lightDirection = glm::normalize(p - this->endVertex);
                 
