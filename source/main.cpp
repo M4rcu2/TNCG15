@@ -33,7 +33,7 @@ int main() {
 
 
     // Adds a light to the scene
-    Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1));
+    Light theLight = Light(glm::vec3(-2, -2, 4.9), glm::vec3(-2, 2, 4.9), glm::vec3(2, -2, 4.9), glm::vec3(2, 2, 4.9), glm::vec3(1, 1, 1));
     theScene.addLight(theLight);
    
     // Loop through each pixel in the matrix and assigns the color -----------------------------------------------------

@@ -17,23 +17,24 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
 
     for (int i = 0; i < nmrOfShadowrays; i++) {
         // Get a random point on the light source
-        glm::vec3 p = lightsource.getRandomPointOnLight();
+        glm::vec3 pointOnLightsource = lightsource.getRandomPointOnLight();
+
+        glm::vec3 lightDirection = glm::normalize(pointOnLightsource - this->endVertex);
 
         // Create a shadow ray from the hit point to the light source
-        Ray castedShadowRay(this->endVertex, glm::normalize(p - this->endVertex));
+        Ray castedShadowRay(this->endVertex, lightDirection);
 
         // Check for intersections with objects in the scene
         if (lightsource.surface_->PointInPolygon(castedShadowRay) != glm::vec3(-100, -100, -100)) {
 
-            glm::vec3 normal = fromPolygon->getNormal();
-            glm::vec3 lightDirection = glm::normalize(p - this->endVertex);
+            float cosThetaX = glm::dot(glm::normalize(fromPolygon->getNormal()), lightDirection);
+            float cosThetaY = glm::dot(glm::vec3(0, 0, -1), lightDirection);
 
-            float cosThetaX = glm::dot(normal, lightDirection);
-            float cosThetaY = glm::dot(normal, castedShadowRay.direction);
+            //std::cout << lightsource.getNormal().x << " + " << lightsource.getNormal().y << " + " << lightsource.getNormal().z;
 
-            float denominator = pow(glm::length(p - this->endVertex), 2);
+            float denominator = pow(glm::length(lightDirection), 2);
 
-            double lamb = std::min(1.0, ((lightsource.area * 3.14f * cosThetaX * cosThetaY) / denominator));
+            double lamb = std::max(0.0, ((lightsource.area * 1/3.14f * cosThetaX * cosThetaY) / denominator));
 
             shadowIntensity += ColorDBL(lamb, lamb, lamb);
         }
