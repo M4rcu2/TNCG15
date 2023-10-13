@@ -46,7 +46,6 @@ public:
     float getWidth() const;
     float getHeight() const;
     glm::vec3 getNormal() const override;
-private:
     bool IntersectPlane(const Ray& ray) const override;
     
     glm::vec3 vertices[4];
@@ -66,9 +65,23 @@ public:
     // Implement the Intersect method for triangles
     glm::vec3 PointInPolygon(const Ray& ray) const override;
     glm::vec3 triNormal;
-private:
     bool IntersectPlane(const Ray& ray) const override;
     glm::vec3 getNormal() const override;
     glm::vec3 vertices[3]; // Defines vertices of the triangle
+    Triangle& operator=(const Triangle& other); //Copy constructor 
 };
 
+
+// tetrahedra subclass----------------------------------------------------------------------
+class Tetrahedron {
+public:
+    Tetrahedron(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3, const ColorDBL c) {
+        faces[0] = new Triangle(v0, v1, v2, c);
+        faces[1] = new Triangle(v0, v2, v3, c);
+        faces[2] = new Triangle(v0, v3, v1, c);
+        faces[3] = new Triangle(v1, v3, v2, c);
+    }
+    glm::vec3 pointOnTetra(const Ray& ray);
+    //Faces of the tetrahedra
+    Triangle* faces[4];
+};

@@ -28,13 +28,12 @@ int main() {
     theScene.addCamera(theCamera);
 
     // Add objects (e.g., spheres, triangles) to the scene
-    theScene.addPolygon(new Triangle(glm::vec3(9, 5, -4), glm::vec3(9, -5, -4), glm::vec3(9, 5, 4), ColorDBL(0.98, 0.51, 0.01)));
-
+    theScene.addPolygon(new Triangle(glm::vec3(10, 3, 0), glm::vec3(10, -3, 0), glm::vec3(3, 3, 2), ColorDBL(0.98, 0.51, 0.01)));
 
     // Adds a light to the scene
     Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1));
     theScene.addLight(theLight);
-   
+    
     // Loop through each pixel in the matrix and assigns the color -----------------------------------------------------
     for (int row = 0; row < imageWidth; ++row) {
         for (int col = 0; col < imageHeight; ++col) {
@@ -63,7 +62,7 @@ int main() {
                     // Initializes the end vertex
                     rayFromPixel.endVertex = intersectionPoint;
 
-                    ColorDBL obtainedLight = rayFromPixel.castShadowRay(p,theLight);
+                    ColorDBL obtainedLight = rayFromPixel.castShadowRay(p,theLight,theScene.getTheRoom());
 
                     // Calculate t value for the intersection
                     float t = glm::length(intersectionPoint - rayFromPixel.startVertex);
@@ -87,7 +86,7 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../outputImage/rendered_image.png";
+    const char* outputPath = "rendered_image.png";
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
