@@ -12,7 +12,7 @@ class Ray; // Forward declaration
 // Base class for Polygon
 class Polygon {
 public:
-    const float errorMargin = 10e-2f; //error margin i guess ;)
+    float errorMargin = 10e-2f; //error margin i guess ;)
     
     //Calculate the point where we intersect the plane and then if it is in the polygon and returns that point
     virtual glm::vec3 PointInPolygon(const Ray& ray) const = 0;
@@ -25,7 +25,8 @@ public:
     virtual glm::vec3 getNormal() const = 0;
     //returns the color of the polygon
     ColorDBL color_;
-    //::vec3 normal;
+    
+
     ColorDBL getColor() const {
         return color_;
     };
@@ -89,4 +90,23 @@ public:
     glm::vec3 pointOnTetra(const Ray& ray);
     //Faces of the tetrahedra
     Triangle* faces[4];
+};
+
+// sphere subclass-------------------------------------------------------------------------- (Yeah spheres aren't polygons but it eases the calculations)
+class Sphere {
+public:
+    Sphere(const double& r, const glm::vec3& center, const ColorDBL c) {
+        radius = r;
+        sphereCenter = center;
+        sphereColor = c;
+        
+    }
+
+    bool collision(const Ray& ray, glm::vec3& refIntersection);
+    
+    double radius;
+    glm::vec3 sphereCenter;
+    ColorDBL sphereColor;
+    glm::vec3 spheNormal;
+
 };

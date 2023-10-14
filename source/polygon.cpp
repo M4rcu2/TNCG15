@@ -188,3 +188,53 @@ glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
     return glm::vec3(-100, -100, -100);
 }
 
+// sphere subclass-------------------------------------------------------------------------
+bool Sphere::collision(const Ray& ray, glm::vec3& refIntersection) {
+    
+    glm::vec3 directionVector = ray.startVertex - this->sphereCenter;
+
+    double C_1 = glm::dot(ray.direction, ray.direction);                            // C_1 = D^2
+    double C_2 = glm::dot(glm::vec3(2.0,2.0,2.0) * ray.direction, directionVector); // C_2 = 2D(S-C)
+    double C_3 = glm::dot(directionVector, directionVector) - pow(this->radius, 2); // (S - C)^2 - r^2
+
+    double arg = pow(C_2, 2) - 4.0 * C_1 * C_3;
+    float errorMargin = 10e-2f;
+
+    if (abs(arg) < errorMargin) {
+        glm::vec3 xr = ray.startVertex + ray.direction * glm::vec3(-C_2 / 2.0, -C_2 / 2.0,-C_2 / 2.0);
+
+        spheNormal = glm::normalize((xr - this->sphereCenter));
+
+        refIntersection = xr;
+
+        return true;
+    }
+    else if (arg > 0.0) {
+
+        double t1 = (-C_2 + sqrt(arg)) / (2.0 * C_1);
+        double t2 = (-C_2 - sqrt(arg)) / (2.0 * C_1);
+
+        double t = glm::min(t1, t2);
+
+        // If the new intersection point is very close to the starting point of the ray, the ray does not intersect the surface
+        if (t <= errorMargin) {
+
+            if ((glm::max(t1, t2)) <= errorMargin) {
+
+                return false;
+            }
+            t = glm::max(t1, t2);
+        }
+
+        glm::vec3 xr = ray.startVertex + ray.direction * glm::vec3(t,t,t);
+
+        spheNormal = glm::normalize((xr - this->sphereCenter));
+
+        refIntersection = xr;
+
+        return true;
+    }
+
+    return false;
+}
+

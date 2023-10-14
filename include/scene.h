@@ -35,6 +35,9 @@ public:
     //Add tetrahedra
     void addTetra(Tetrahedron* tetra); 
 
+    //Add Sphere
+    void addSphere(Sphere* sphere);
+
 private:
     std::vector<Light> lights;   // List of lights in the scene
     std::vector<Camera> cameras; // List of cameras in the scene
