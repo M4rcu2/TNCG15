@@ -40,7 +40,7 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
             for(Polygon* p : allPolygons){ // Checks all polygons in the scene
 
                 if( p != fromPolygon && p->collision(castedShadowRay,objectPoint)){ // if point hits something
-                   
+                    
                     float newDistance = glm::length(objectPoint - pointOnPolygon) + EPSILON; // calculates the distance from the polygon to the intersectionpoint
 
                     if (newDistance < di_distance2) { // Want to keep shortest distance to compare
@@ -49,7 +49,7 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
                     }
                 }
             }           
-
+            
             if (di_distance2 < di_distance) { // If di_distance2 is smaller, means that the collision is not on the lightsource, hence something is in the way
 
                 v_1 = 0.2;

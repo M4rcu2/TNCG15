@@ -38,7 +38,8 @@ int main() {
     //theScene.addTetra(new Tetrahedron(glm::vec3(9, 0, 2), glm::vec3(10, 2, -4), glm::vec3(8, -1, -4), glm::vec3(8, -3, -4), ColorDBL(0.4, 0.1, 0.6)));
 
     // Adds a light to the scene
-    Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1));
+    //Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1));
+    Light theLight = Light(glm::vec3(6, -1, 5), glm::vec3(4, -1, 5), glm::vec3(6, 1, 5), glm::vec3(4, 1, 5), glm::vec3(1, 1, 1));
     theScene.addLight(theLight);
 
     
