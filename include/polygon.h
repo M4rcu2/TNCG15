@@ -18,11 +18,14 @@ public:
     virtual glm::vec3 PointInPolygon(const Ray& ray) const = 0;
     //Used to calculate if the ray intercepts the infinitaly large plane (should be used to get the point later)
     virtual bool IntersectPlane(const Ray& ray) const = 0;
+    //Collision, bool for checking if it intersects
+    virtual bool collision(const Ray& ray, glm::vec3& refIntersection) const = 0;
+
     //returns the normal, should be used in the constructor
     virtual glm::vec3 getNormal() const = 0;
     //returns the color of the polygon
     ColorDBL color_;
-    glm::vec3 normal;
+    //::vec3 normal;
     ColorDBL getColor() const {
         return color_;
     };
@@ -47,6 +50,7 @@ public:
     float getHeight() const;
     glm::vec3 getNormal() const override;
     bool IntersectPlane(const Ray& ray) const override;
+    bool collision(const Ray& ray, glm::vec3& refIntersection) const override;
     
     glm::vec3 vertices[4];
 };
@@ -69,6 +73,7 @@ public:
     glm::vec3 getNormal() const override;
     glm::vec3 vertices[3]; // Defines vertices of the triangle
     Triangle& operator=(const Triangle& other); //Copy constructor 
+    bool collision(const Ray& ray, glm::vec3& refIntersection) const override;
 };
 
 

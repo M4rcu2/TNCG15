@@ -15,7 +15,7 @@ glm::vec3 Rectangle::PointInPolygon(const Ray& ray) const{
         glm::vec3 c1 = vertices[1]-v;
         glm::vec3 c2 = vertices[2]-v;
         float t = glm::dot((v-s),recNormal)/glm::dot(d,recNormal);
-        glm::vec3 intersectionPoint = s + t*d;
+        glm::vec3 intersectionPoint = s + t * d;
 
         //a and b criterion
         float a = glm::dot((intersectionPoint-v),c1)/glm::dot(c1,c1);
@@ -43,9 +43,9 @@ bool Rectangle::IntersectPlane(const Ray& ray) const{
 glm::vec3 Rectangle::getNormal() const{
     glm::vec3 edge1 = vertices[1]-vertices[0];
     glm::vec3 edge2 = vertices[2]-vertices[0];
-    glm::vec3 normal = glm::cross(edge1, edge2);
-    normal = glm::normalize(normal);
-    return normal;
+    glm::vec3 theNormal = glm::cross(edge1, edge2);
+    theNormal = glm::normalize(theNormal);
+    return theNormal;
 }
 
 // Implementations for new Rectangle methods
@@ -59,9 +59,45 @@ float Rectangle::getHeight() const {
     return glm::length(vertices[2] - vertices[0]);
 }
 
+bool Rectangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
+
+    bool isOnPlane = IntersectPlane(ray);
+
+    if (isOnPlane) {
+        double t = glm::dot((vertices[0] - ray.startVertex), recNormal) / glm::dot(ray.direction, recNormal);
+        //std::cout << recNormal.x << " + " << recNormal.y << " + " << recNormal.z << std::endl;
+        glm::vec3 c1 = vertices[1] - vertices[0];
+        glm::vec3 c2 = vertices[3] - vertices[0];
+        glm::vec3 x;
+
+        x.x= ray.startVertex.x + t * ray.direction.x;
+        x.y = ray.startVertex.y + t * ray.direction.y;
+        x.z = ray.startVertex.z + t * ray.direction.z;
+
+
+        // Extra check to see if the intersecting surface is very close to the last intersection point
+        if (t <= 0.01) {
+            return false;
+        }
+
+        double a = glm::dot((x - vertices[0]), c1) / glm::dot(c1, c1);
+        double b = glm::dot((x - vertices[0]), c2) / glm::dot(c2, c2);
+
+
+        if ((0.0 <= a && a <= 1.0 && 0.0 <= b && b <= 1.0) || (abs(a) <= errorMargin && 0.0 <= b && b <= 1.0) || (abs(b) <= errorMargin && 0.0 <= a && a <= 1.0)) {
+            refIntersection = x;
+            //std::cout << refIntersection.x << " + " << refIntersection.y << " + " << refIntersection.z << std::endl;
+            return true;
+        }
+    }
+    return false;
+}
+
 // Triangle subclass----------------------------------------------------------------------
 glm::vec3 Triangle::PointInPolygon(const Ray& ray) const{
+
     bool isOnPlane = IntersectPlane(ray);
+
     if(isOnPlane){
         glm::vec3 E1 = vertices[1]-vertices[0];
         glm::vec3 E2 = vertices[2]-vertices[0];
@@ -98,21 +134,54 @@ bool Triangle::IntersectPlane(const Ray &ray) const{
 glm::vec3 Triangle::getNormal() const{
     glm::vec3 edge1 = vertices[1]-vertices[0];
     glm::vec3 edge2 = vertices[2]-vertices[0];
-    glm::vec3 normal = glm::cross(edge1, edge2);
-    normal = glm::normalize(normal);
-    return normal;
+    glm::vec3 theNormal = glm::cross(edge1, edge2);
+    theNormal = glm::normalize(theNormal);
+    return theNormal;
+}
+
+bool Triangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
+
+    // Check if the normal is facing the ray
+    bool isOnPlane = IntersectPlane(ray);
+
+    if (isOnPlane) {
+
+        // Möller-Trumbore algoritm
+        glm::vec3 T = ray.startVertex - vertices[0];
+        glm::vec3 E1 = vertices[1] - vertices[0];
+        glm::vec3 E2 = vertices[2] - vertices[0];
+        glm::vec3 D = ray.direction;
+        glm::vec3 P = glm::cross(D, E2);
+        glm::vec3 Q = glm::cross(T, E1);
+
+        glm::vec3 result = (1.0 / glm::dot(P, E1)) * glm::dvec3(glm::dot(Q, E2), glm::dot(P, T), glm::dot(Q, D));
+        double t = result.x;
+        double u = result.y;
+        double v = result.z;
+
+        if ((0.0 <= u && 0.0 <= v && (u + v) <= 1.0) || (abs(u) <= errorMargin && 0.0 <= v && v <= 1.0) || (abs(v) <= errorMargin && 0.0 <= u && u <= 1.0)) {
+            
+            refIntersection.x = ray.startVertex.x + t * D.x;
+            refIntersection.y = ray.startVertex.y + t * D.y;
+            refIntersection.z = ray.startVertex.z + t * D.z;
+
+            // Extra check to see if the intersecting surface is very close to the last intersection point
+            if (t <= 0.01) {
+                return false;
+            }
+
+            return true;
+        }
+
+    }
+    return false;
 }
 
 // tetrahedra subclass----------------------------------------------------------------------
 glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
-    /*for(Triangle* t : faces){
-        glm::vec3 a = t->PointInPolygon(ray);
-        if(a != glm::vec3(-100, -100, -100)){
-            return a;
-        }
-    }*/
+    
     glm::vec3 a = faces[1]->PointInPolygon(ray);
-    std::cout<<"normal face1 "<<glm::to_string(faces[1]->normal);
+    std::cout<<"normal face1 "<<glm::to_string(faces[1]->triNormal);
     if(a != glm::vec3(-100, -100, -100)){
         return a;
     }

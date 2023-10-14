@@ -23,7 +23,8 @@ glm::vec3 Light::getIntensity() const {
 
 glm::vec3 Light::getNormal() const {
     // Get the normal direction of the light source (pointing towards the scene)
-    return surface_->normal;
+    //return surface_->normal;
+    return glm::vec3(0,0,-1);
 }
 
 glm::vec3 Light::getRandomPointOnLight() const {

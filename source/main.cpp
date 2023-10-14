@@ -35,7 +35,7 @@ int main() {
     theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(6, -4, 1), glm::vec3(4, -4, -4), ColorDBL(0.98, 0.51, 0.01)));*/
     
     theScene.addTetra(new Tetrahedron(glm::vec3(6, -4, 1), glm::vec3(4, -2, -4), glm::vec3(4,-4,-4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01)));
-    theScene.addTetra(new Tetrahedron(glm::vec3(9, 0, 2), glm::vec3(10, 2, -4), glm::vec3(8, -1, -4), glm::vec3(8, -3, -4), ColorDBL(0.4, 0.1, 0.6)));
+    //theScene.addTetra(new Tetrahedron(glm::vec3(9, 0, 2), glm::vec3(10, 2, -4), glm::vec3(8, -1, -4), glm::vec3(8, -3, -4), ColorDBL(0.4, 0.1, 0.6)));
 
     // Adds a light to the scene
     Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1));
@@ -70,8 +70,6 @@ int main() {
                     // Initializes the end vertex
                     rayFromPixel.endVertex = intersectionPoint;
 
-                    ColorDBL obtainedLight = rayFromPixel.castShadowRay(p,theLight,theScene.getTheRoom());
-
                     // Calculate t value for the intersection
                     float t = glm::length(intersectionPoint - rayFromPixel.startVertex);
 
@@ -79,8 +77,9 @@ int main() {
                     if (t < closestT) {
                         closestT = t;
                         closestIntersectionPoint = intersectionPoint;
-                        closestColor = p->color_.mult(obtainedLight);
                         closestPolygon = p; // Update the closest polygon
+                        ColorDBL obtainedLight = rayFromPixel.castShadowRay(closestPolygon,theLight,theScene.getTheRoom());
+                        closestColor = p->color_.mult(obtainedLight);                        
                     }
                 }
             }
