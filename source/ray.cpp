@@ -34,40 +34,37 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
         // Create a shadow ray from the hit point to the light source
         Ray castedShadowRay(pointOnPolygon, glm::normalize(di));
 
-        // Check for intersections with objects in the scene
-        if(lightsource.surface_->PointInPolygon(castedShadowRay) != glm::vec3(-100, -100, -100)) { //should always be true
-            
-            for(Polygon* p : allPolygons){ // Checks all polygons in the scene
+        for(Polygon* p : allPolygons){ // Checks all polygons in the scene
 
-                if( p != fromPolygon && p->collision(castedShadowRay,objectPoint)){ // if point hits something
+            if( p != fromPolygon && p->collision(castedShadowRay,objectPoint)){ // if point hits something
                     
-                    float newDistance = glm::length(objectPoint - pointOnPolygon) + EPSILON; // calculates the distance from the polygon to the intersectionpoint
+                float newDistance = glm::length(objectPoint - pointOnPolygon) + EPSILON; // calculates the distance from the polygon to the intersectionpoint
 
-                    if (newDistance < di_distance2) { // Want to keep shortest distance to compare
+                if (newDistance < di_distance2) { // Want to keep shortest distance to compare
 
-                        di_distance2 = newDistance;
-                    }
+                    di_distance2 = newDistance;
                 }
-            }           
-            
-            if (di_distance2 < di_distance) { // If di_distance2 is smaller, means that the collision is not on the lightsource, hence something is in the way
-
-                v_1 = 0.2;
             }
-                
-            // Calculate cosines of the angles between the surface normal and light direction
-            float cosThetaX = glm::dot(glm::normalize(fromPolygon->getNormal()), glm::normalize(di));
-            float cosThetaY = glm::dot(glm::normalize(lightsource.surface_->getNormal()), glm::normalize(di));
-
-            // Calculate the denominator of the Lambertian reflection formula
-            float denominator = pow(abs(di_distance), 2);
-
-            double lamb = std::max(((v_1 * lightsource.area * 3.14f * cosThetaX * (-cosThetaY)) / denominator), 0.0);
-
-            // Update shadow intensity using Lambertian reflection formula
-            shadowIntensity += ColorDBL(lamb, lamb, lamb);
+        }           
             
+        if (di_distance2 < di_distance) { // If di_distance2 is smaller, means that the collision is not on the lightsource, hence something is in the way
+
+            v_1 = 0.2;
         }
+                
+        // Calculate cosines of the angles between the surface normal and light direction
+        float cosThetaX = glm::dot(glm::normalize(fromPolygon->getNormal()), glm::normalize(di));
+        float cosThetaY = glm::dot(glm::normalize(lightsource.surface_->getNormal()), glm::normalize(di));
+
+        // Calculate the denominator of the Lambertian reflection formula
+        float denominator = pow(abs(di_distance), 2);
+
+        double lamb = std::max(((v_1 * lightsource.area * 3.14f * cosThetaX * (-cosThetaY)) / denominator), 0.0);
+
+        // Update shadow intensity using Lambertian reflection formula
+        shadowIntensity += ColorDBL(lamb, lamb, lamb);
+            
+       
     }
 
     return shadowIntensity;

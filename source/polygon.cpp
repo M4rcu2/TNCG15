@@ -4,29 +4,7 @@
 #include <glm/gtx/string_cast.hpp>  //to string for vec
 
 // Rectangle subclass----------------------------------------------------------------------
-glm::vec3 Rectangle::PointInPolygon(const Ray& ray) const{
 
-    bool isOnPlane = IntersectPlane(ray);
-
-    if(isOnPlane){
-        glm::vec3 s = ray.startVertex;
-        glm::vec3 d = ray.direction;
-        glm::vec3 v = vertices[0];
-        glm::vec3 c1 = vertices[1]-v;
-        glm::vec3 c2 = vertices[2]-v;
-        float t = glm::dot((v-s),recNormal)/glm::dot(d,recNormal);
-        glm::vec3 intersectionPoint = s + t * d;
-
-        //a and b criterion
-        float a = glm::dot((intersectionPoint-v),c1)/glm::dot(c1,c1);
-        float b = glm::dot((intersectionPoint-v),c2)/glm::dot(c2,c2);
-        if(a>=0 && a<=1 && b>=0 && b<=1){
-            return intersectionPoint + recNormal*errorMargin;
-        }
-    }
-    glm::vec3 notOnPlane(-100,-100,-100);//Vector for when we do not intersect with the rectangle
-    return notOnPlane;
-}
 bool Rectangle::IntersectPlane(const Ray& ray) const{
     //Calculate if the normal of the infinitally large plane is opposoite direction of the ray to know if the ray goes away from the plane or not
     //Dot product calculation
@@ -39,7 +17,42 @@ bool Rectangle::IntersectPlane(const Ray& ray) const{
         return false;//Not opposite direction
     } 
 }
-//Calculate the normal and normalizes it before returning
+
+bool Rectangle::collision(const Ray& ray, glm::vec3& pointAtIntersection) const {
+
+    bool isOnPlane = IntersectPlane(ray);
+
+    if (isOnPlane) {
+
+        double t = glm::dot((vertices[0] - ray.startVertex), recNormal) / glm::dot(ray.direction, recNormal);
+        glm::vec3 C_1 = vertices[1] - vertices[0];
+        glm::vec3 C_2 = vertices[3] - vertices[0];
+        glm::vec3 intersection;
+        double EPSILON = 0.00000001;
+
+        intersection.x = ray.startVertex.x + t * ray.direction.x; 
+        intersection.y = ray.startVertex.y + t * ray.direction.y; 
+        intersection.z = ray.startVertex.z + t * ray.direction.z; 
+
+
+        // if the intersecting surface is very close to the last intersection point
+        if (t <= 0.01) {
+            return false;
+        }
+
+        double a = glm::dot((intersection - vertices[0]), C_1) / glm::dot(C_1, C_1);
+        double b = glm::dot((intersection - vertices[0]), C_2) / glm::dot(C_2, C_2);
+
+
+        if ((0.0 <= a && a <= 1.0 && 0.0 <= b && b <= 1.0) || (abs(a) <= EPSILON && 0.0 <= b && b <= 1.0) || (abs(b) <= EPSILON && 0.0 <= a && a <= 1.0)) {
+            pointAtIntersection = intersection;
+            
+            return true;
+        }
+    }
+    return false;
+}
+
 glm::vec3 Rectangle::getNormal() const{
     glm::vec3 edge1 = vertices[1]-vertices[0];
     glm::vec3 edge2 = vertices[2]-vertices[0];
@@ -48,7 +61,6 @@ glm::vec3 Rectangle::getNormal() const{
     return theNormal;
 }
 
-// Implementations for new Rectangle methods
 float Rectangle::getWidth() const {
     // Assuming vertices[1] and vertices[0] are adjacent edges of the rectangle
     return glm::length(vertices[1] - vertices[0]);
@@ -59,65 +71,10 @@ float Rectangle::getHeight() const {
     return glm::length(vertices[2] - vertices[0]);
 }
 
-bool Rectangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
 
-    bool isOnPlane = IntersectPlane(ray);
-
-    if (isOnPlane) {
-        double t = glm::dot((vertices[0] - ray.startVertex), recNormal) / glm::dot(ray.direction, recNormal);
-        //std::cout << recNormal.x << " + " << recNormal.y << " + " << recNormal.z << std::endl;
-        glm::vec3 c1 = vertices[1] - vertices[0];
-        glm::vec3 c2 = vertices[3] - vertices[0];
-        glm::vec3 x;
-
-        x.x= ray.startVertex.x + t * ray.direction.x;
-        x.y = ray.startVertex.y + t * ray.direction.y;
-        x.z = ray.startVertex.z + t * ray.direction.z;
-
-
-        // Extra check to see if the intersecting surface is very close to the last intersection point
-        if (t <= 0.01) {
-            return false;
-        }
-
-        double a = glm::dot((x - vertices[0]), c1) / glm::dot(c1, c1);
-        double b = glm::dot((x - vertices[0]), c2) / glm::dot(c2, c2);
-
-
-        if ((0.0 <= a && a <= 1.0 && 0.0 <= b && b <= 1.0) || (abs(a) <= errorMargin && 0.0 <= b && b <= 1.0) || (abs(b) <= errorMargin && 0.0 <= a && a <= 1.0)) {
-            refIntersection = x;
-            //std::cout << refIntersection.x << " + " << refIntersection.y << " + " << refIntersection.z << std::endl;
-            return true;
-        }
-    }
-    return false;
-}
 
 // Triangle subclass----------------------------------------------------------------------
-glm::vec3 Triangle::PointInPolygon(const Ray& ray) const{
 
-    bool isOnPlane = IntersectPlane(ray);
-
-    if(isOnPlane){
-        glm::vec3 E1 = vertices[1]-vertices[0];
-        glm::vec3 E2 = vertices[2]-vertices[0];
-        glm::vec3 T = ray.startVertex-vertices[0];
-        glm::vec3 D = ray.direction;
-        glm::vec3 P = glm::cross(D, E2);
-        glm::vec3 Q = glm::cross(T, E1);
-        //float t = dot(Q,E2)/dot(P,E1);
-        float u = dot(P,T)/dot(P,E1);
-        float v = dot(Q,D)/dot(P,E1);
-        //implement intersectionPoint
-        glm::vec3 intersectionPoint = (1-u-v)*vertices[0] + u*vertices[1] + v*vertices[2];
-        if(u>=0 && v>=0 && u+v<=1){
-            return intersectionPoint + triNormal*errorMargin;
-        }
-    }
-    glm::vec3 notOnPlane(-100,-100,-100); //Vector for when we do not intersect with the triangle
-    return notOnPlane;
-}
-//Function to know if the ray intersects the triangle (or more like "does it come from the right direction")
 bool Triangle::IntersectPlane(const Ray &ray) const{
     //Calculate if the normal of the infinitally large plane is opposoite direction of the ray to know if the ray goes away from the plane or not
     //Dot product calculation
@@ -130,23 +87,14 @@ bool Triangle::IntersectPlane(const Ray &ray) const{
         return false; //Not opposite direction
     }
 }
-//Calculate the normal and normalizes it before returning
-glm::vec3 Triangle::getNormal() const{
-    glm::vec3 edge1 = vertices[1]-vertices[0];
-    glm::vec3 edge2 = vertices[2]-vertices[0];
-    glm::vec3 theNormal = glm::cross(edge1, edge2);
-    theNormal = glm::normalize(theNormal);
-    return theNormal;
-}
 
-bool Triangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
+bool Triangle::collision(const Ray& ray, glm::vec3& pointAtIntersection) const {
 
-    // Check if the normal is facing the ray
     bool isOnPlane = IntersectPlane(ray);
 
     if (isOnPlane) {
 
-        // Möller-Trumbore algoritm
+        // Möller
         glm::vec3 T = ray.startVertex - vertices[0];
         glm::vec3 E1 = vertices[1] - vertices[0];
         glm::vec3 E2 = vertices[2] - vertices[0];
@@ -158,14 +106,15 @@ bool Triangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
         double t = result.x;
         double u = result.y;
         double v = result.z;
+        double EPSILON = 0.00000001;
 
-        if ((0.0 <= u && 0.0 <= v && (u + v) <= 1.0) || (abs(u) <= errorMargin && 0.0 <= v && v <= 1.0) || (abs(v) <= errorMargin && 0.0 <= u && u <= 1.0)) {
+        if ((0.0 <= u && 0.0 <= v && (u + v) <= 1.0) || (abs(u) <= EPSILON && 0.0 <= v && v <= 1.0) || (abs(v) <= EPSILON && 0.0 <= u && u <= 1.0)) {
             
-            refIntersection.x = ray.startVertex.x + t * D.x;
-            refIntersection.y = ray.startVertex.y + t * D.y;
-            refIntersection.z = ray.startVertex.z + t * D.z;
+            pointAtIntersection.x = ray.startVertex.x + t * D.x; 
+            pointAtIntersection.y = ray.startVertex.y + t * D.y; 
+            pointAtIntersection.z = ray.startVertex.z + t * D.z; 
 
-            // Extra check to see if the intersecting surface is very close to the last intersection point
+            // if the intersecting surface is very close to the last intersection point
             if (t <= 0.01) {
                 return false;
             }
@@ -177,19 +126,27 @@ bool Triangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
     return false;
 }
 
-// tetrahedra subclass----------------------------------------------------------------------
-glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
-    
-    glm::vec3 a = faces[1]->PointInPolygon(ray);
-    std::cout<<"normal face1 "<<glm::to_string(faces[1]->triNormal);
-    if(a != glm::vec3(-100, -100, -100)){
-        return a;
-    }
-    return glm::vec3(-100, -100, -100);
+glm::vec3 Triangle::getNormal() const{
+    glm::vec3 edge1 = vertices[1]-vertices[0];
+    glm::vec3 edge2 = vertices[2]-vertices[0];
+    glm::vec3 theNormal = glm::cross(edge1, edge2);
+    theNormal = glm::normalize(theNormal);
+    return theNormal;
 }
 
+// tetrahedra subclass----------------------------------------------------------------------
+//glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
+//    
+//    glm::vec3 a = faces[1]->PointInPolygon(ray);
+//    std::cout<<"normal face1 "<<glm::to_string(faces[1]->triNormal);
+//    if(a != glm::vec3(-100, -100, -100)){
+//        return a;
+//    }
+//    return glm::vec3(-100, -100, -100);
+//}
+
 // sphere subclass-------------------------------------------------------------------------
-bool Sphere::collision(const Ray& ray, glm::vec3& refIntersection) {
+bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
     
     glm::vec3 directionVector = ray.startVertex - this->sphereCenter;
 
@@ -198,14 +155,14 @@ bool Sphere::collision(const Ray& ray, glm::vec3& refIntersection) {
     double C_3 = glm::dot(directionVector, directionVector) - pow(this->radius, 2); // (S - C)^2 - r^2
 
     double arg = pow(C_2, 2) - 4.0 * C_1 * C_3;
-    float errorMargin = 10e-2f;
+    double EPSILON = 0.00000001;
 
-    if (abs(arg) < errorMargin) {
-        glm::vec3 xr = ray.startVertex + ray.direction * glm::vec3(-C_2 / 2.0, -C_2 / 2.0,-C_2 / 2.0);
+    if (abs(arg) < EPSILON) {
+        glm::vec3 intersection = ray.startVertex + ray.direction * glm::vec3(-C_2 / 2.0, -C_2 / 2.0,-C_2 / 2.0);
 
-        spheNormal = glm::normalize((xr - this->sphereCenter));
+        spheNormal = glm::normalize((intersection - this->sphereCenter));
 
-        refIntersection = xr;
+        pointAtIntersection = intersection;
 
         return true;
     }
@@ -217,20 +174,20 @@ bool Sphere::collision(const Ray& ray, glm::vec3& refIntersection) {
         double t = glm::min(t1, t2);
 
         // If the new intersection point is very close to the starting point of the ray, the ray does not intersect the surface
-        if (t <= errorMargin) {
+        if (t <= EPSILON) {
 
-            if ((glm::max(t1, t2)) <= errorMargin) {
+            if ((glm::max(t1, t2)) <= EPSILON) {
 
                 return false;
             }
             t = glm::max(t1, t2);
         }
 
-        glm::vec3 xr = ray.startVertex + ray.direction * glm::vec3(t,t,t);
+        glm::vec3 intersection = ray.startVertex + ray.direction * glm::vec3(t,t,t);
 
-        spheNormal = glm::normalize((xr - this->sphereCenter));
+        spheNormal = glm::normalize((intersection - this->sphereCenter));
 
-        refIntersection = xr;
+        pointAtIntersection = intersection;
 
         return true;
     }

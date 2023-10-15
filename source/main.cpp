@@ -40,8 +40,8 @@ int main() {
     //theScene.addTetra(new Tetrahedron(glm::vec3(9, 0, 2), glm::vec3(10, 2, -4), glm::vec3(8, -1, -4), glm::vec3(8, -3, -4), ColorDBL(0.4, 0.1, 0.6)));
 
     // Adds a light to the scene
-    //Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1)); // Original light
-    Light theLight = Light(glm::vec3(6, -1, 5), glm::vec3(4, -1, 5), glm::vec3(6, 1, 5), glm::vec3(4, 1, 5), glm::vec3(1, 1, 1)); 
+    Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1)); // Original light
+    //Light theLight = Light(glm::vec3(6, -1, 5), glm::vec3(4, -1, 5), glm::vec3(6, 1, 5), glm::vec3(4, 1, 5), glm::vec3(1, 1, 1)); 
     theScene.addLight(theLight);
 
     
@@ -65,10 +65,9 @@ int main() {
             // Loop through each polygon in the scene
             for (Polygon* p : theScene.getTheRoom()) {
 
-                glm::vec3 intersectionPoint = p->PointInPolygon(rayFromPixel);
-
-                // If the ray intersects the polygon
-                if (intersectionPoint != glm::vec3(-100, -100, -100)) {
+                glm::vec3 intersectionPoint;
+                
+                if (p->collision(rayFromPixel,intersectionPoint)) {
 
                     // Initializes the end vertex
                     rayFromPixel.endVertex = intersectionPoint;
@@ -85,6 +84,10 @@ int main() {
                         closestColor = p->color_.mult(obtainedLight);                        
                     }
                 }
+            }
+
+            for (Sphere* s : theScene.getSpheres()) {
+
             }
 
             // Assign the color of the closest intersection

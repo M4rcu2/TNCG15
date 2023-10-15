@@ -72,7 +72,7 @@ void Scene::addTetra(Tetrahedron* tetra){
 }
 
 void Scene::addSphere(Sphere* sphere) {
-    // Will be implemented
+    spheres.push_back(sphere);
 }
 
 const std::vector<Light>& Scene::getLights() const {
@@ -85,6 +85,10 @@ const std::vector<Camera>& Scene::getCameras() const {
 
 std::vector<Polygon*> Scene::getTheRoom() const {
     return theRoom;
+}
+
+std::vector<Sphere*> Scene::getSpheres() const {
+    return spheres;
 }
 
 
