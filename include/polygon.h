@@ -12,23 +12,22 @@ class Ray; // Forward declaration
 // Base class for Polygon
 class Polygon {
 public:
-    const float errorMargin = 10e-2f; //error margin i guess ;)
-    
-    //Calculate the point where we intersect the plane and then if it is in the polygon and returns that point
-    virtual glm::vec3 PointInPolygon(const Ray& ray) const = 0;
+ 
     //Used to calculate if the ray intercepts the infinitaly large plane (should be used to get the point later)
     virtual bool IntersectPlane(const Ray& ray) const = 0;
+
     //Collision, bool for checking if it intersects
-    virtual bool collision(const Ray& ray, glm::vec3& refIntersection) const = 0;
+    virtual bool collision(const Ray& ray, glm::vec3& pointAtIntersection) const = 0;
 
     //returns the normal, should be used in the constructor
     virtual glm::vec3 getNormal() const = 0;
+
     //returns the color of the polygon
     ColorDBL color_;
-    //::vec3 normal;
     ColorDBL getColor() const {
         return color_;
     };
+
 protected:
     Polygon() = default;
 };
@@ -44,14 +43,14 @@ public:
         recNormal = getNormal();
         color_ = color;
     }
-    glm::vec3 PointInPolygon(const Ray& ray) const override;
-    glm::vec3 recNormal;
+
+    bool IntersectPlane(const Ray& ray) const override; 
+    bool collision(const Ray& ray, glm::vec3& pointAtIntersection) const override;
+    glm::vec3 getNormal() const override;
     float getWidth() const;
     float getHeight() const;
-    glm::vec3 getNormal() const override;
-    bool IntersectPlane(const Ray& ray) const override;
-    bool collision(const Ray& ray, glm::vec3& refIntersection) const override;
-    
+
+    glm::vec3 recNormal;
     glm::vec3 vertices[4];
 };
 
@@ -66,14 +65,14 @@ public:
         triNormal = getNormal();
         color_ = color;
     }
-    // Implement the Intersect method for triangles
-    glm::vec3 PointInPolygon(const Ray& ray) const override;
-    glm::vec3 triNormal;
+    
     bool IntersectPlane(const Ray& ray) const override;
+    bool collision(const Ray& ray, glm::vec3& pointAtIntersection) const override;
     glm::vec3 getNormal() const override;
-    glm::vec3 vertices[3]; // Defines vertices of the triangle
     Triangle& operator=(const Triangle& other); //Copy constructor 
-    bool collision(const Ray& ray, glm::vec3& refIntersection) const override;
+    
+    glm::vec3 triNormal;
+    glm::vec3 vertices[3]; // Defines vertices of the triangle
 };
 
 
@@ -89,4 +88,23 @@ public:
     glm::vec3 pointOnTetra(const Ray& ray);
     //Faces of the tetrahedra
     Triangle* faces[4];
+};
+
+// sphere subclass-------------------------------------------------------------------------- (Yeah spheres aren't polygons but it eases the calculations)
+class Sphere {
+public:
+    Sphere(const double& r, const glm::vec3& center, const ColorDBL c) {
+        radius = r;
+        sphereCenter = center;
+        sphereColor = c;
+        
+    }
+
+    bool collision(const Ray& ray, glm::vec3& pointAtIntersection);
+    
+    double radius;
+    glm::vec3 sphereCenter;
+    ColorDBL sphereColor;
+    glm::vec3 spheNormal;
+
 };
