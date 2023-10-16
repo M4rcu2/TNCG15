@@ -34,7 +34,7 @@ int main() {
     theScene.addPolygon(new Triangle(glm::vec3(4, -2, -4), glm::vec3(4, -4, -4), glm::vec3(6, -4, 1), ColorDBL(0.98, 0.51, 0.01)));
     theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(6, -4, 1), glm::vec3(4, -4, -4), ColorDBL(0.98, 0.51, 0.01)));*/
     
-    theScene.addTetra(new Tetrahedron(glm::vec3(6, -4, 1), glm::vec3(4, -2, -4), glm::vec3(4,-4,-4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01)));
+    theScene.addTetra(new Tetrahedron(glm::vec3(6, -4, 1), glm::vec3(4, -2, -4), glm::vec3(4,-4,-4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01),1));
     //theScene.addTetra(new Tetrahedron(glm::vec3(9, 0, 2), glm::vec3(10, 2, -4), glm::vec3(8, -1, -4), glm::vec3(8, -3, -4), ColorDBL(0.4, 0.1, 0.6)));
 
     // Adds a light to the scene
@@ -58,12 +58,12 @@ int main() {
             float closestT = std::numeric_limits<float>::infinity();
             glm::vec3 closestIntersectionPoint;
             ColorDBL closestColor;
-            const Polygon* closestPolygon = nullptr; // Added variable to store the closest polygon
+            const Object* closestPolygon = nullptr; // Added variable to store the closest polygon
 
             // Loop through each polygon in the scene
-            for (Polygon* p : theScene.getTheRoom()) {
+            for (Object* p : theScene.getTheRoom()) {
 
-                glm::vec3 intersectionPoint = p->PointInPolygon(rayFromPixel);
+                glm::vec3 intersectionPoint = p->PointInObject(rayFromPixel);
 
                 // If the ray intersects the polygon
                 if (intersectionPoint != glm::vec3(-100, -100, -100)) {
@@ -80,7 +80,7 @@ int main() {
                         closestIntersectionPoint = intersectionPoint;
                         closestPolygon = p; // Update the closest polygon
                         ColorDBL obtainedLight = rayFromPixel.castShadowRay(closestPolygon,theLight,theScene.getTheRoom());
-                        closestColor = p->color_.mult(obtainedLight);                        
+                        closestColor = p->color_.mult(obtainedLight);  i
                     }
                 }
             }
@@ -91,7 +91,7 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../outputImage/rendered_image.png";
+    const char* outputPath = "rendered_image.png";
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     

@@ -7,7 +7,7 @@ Ray::Ray(glm::vec3 start, glm::vec3 direction, ColorDBL color, Ray* prev, Ray* n
     : startVertex(start), direction(glm::normalize(direction)), previousRay(prev), nextRay(next), color(color) {
 }
 
-ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource, const std::vector<Polygon*>& allPolygons) {
+ColorDBL Ray::castShadowRay(const Object* fromPolygon, const Light& lightsource, const std::vector<Object*>& allPolygons) {
 
     // Creates a white color
     ColorDBL shadowIntensity = ColorDBL(0.0, 0.0, 0.0);
@@ -35,11 +35,12 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
         Ray castedShadowRay(pointOnPolygon, glm::normalize(di));
 
         // Check for intersections with objects in the scene
-        if(lightsource.surface_->PointInPolygon(castedShadowRay) != glm::vec3(-100, -100, -100)) { //should always be true
+        if(lightsource.surface_->PointInObject(castedShadowRay) != glm::vec3(-100, -100, -100)) { //should always be true
             
-            for(Polygon* p : allPolygons){ // Checks all polygons in the scene
-
-                if( p != fromPolygon && p->collision(castedShadowRay,objectPoint)){ // if point hits something
+            for(Object* p : allPolygons){ // Checks all polygons in the scene
+                glm::vec3 intersectPointAAAA = p->PointInObject(castedShadowRay);
+                
+                if( p != fromPolygon && intersectPointAAAA != glm::vec3(-100, -100, -100)){ // if point hits something
                     
                     float newDistance = glm::length(objectPoint - pointOnPolygon) + EPSILON; // calculates the distance from the polygon to the intersectionpoint
 

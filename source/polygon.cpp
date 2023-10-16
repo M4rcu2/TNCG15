@@ -4,7 +4,7 @@
 #include <glm/gtx/string_cast.hpp>  //to string for vec
 
 // Rectangle subclass----------------------------------------------------------------------
-glm::vec3 Rectangle::PointInPolygon(const Ray& ray) const{
+glm::vec3 Rectangle::PointInObject(const Ray& ray) const{
 
     bool isOnPlane = IntersectPlane(ray);
 
@@ -58,7 +58,7 @@ float Rectangle::getHeight() const {
     // Assuming vertices[2] and vertices[0] are adjacent edges of the rectangle
     return glm::length(vertices[2] - vertices[0]);
 }
-
+/*
 bool Rectangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
 
     bool isOnPlane = IntersectPlane(ray);
@@ -91,10 +91,10 @@ bool Rectangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
         }
     }
     return false;
-}
+}*/
 
 // Triangle subclass----------------------------------------------------------------------
-glm::vec3 Triangle::PointInPolygon(const Ray& ray) const{
+glm::vec3 Triangle::PointInObject(const Ray& ray) const{
 
     bool isOnPlane = IntersectPlane(ray);
     
@@ -138,8 +138,8 @@ glm::vec3 Triangle::getNormal() const{
     theNormal = glm::normalize(theNormal);
     return theNormal;
 }
-
-bool Triangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
+/*
+bool Triangle::PointInObject(const Ray& ray) const {
 
     // Check if the normal is facing the ray
     bool isOnPlane = IntersectPlane(ray);
@@ -175,21 +175,10 @@ bool Triangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
 
     }
     return false;
-}
-
-// tetrahedra subclass----------------------------------------------------------------------
-glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
-    
-    glm::vec3 a = faces[1]->PointInPolygon(ray);
-    std::cout<<"normal face1 "<<glm::to_string(faces[1]->triNormal);
-    if(a != glm::vec3(-100, -100, -100)){
-        return a;
-    }
-    return glm::vec3(-100, -100, -100);
-}
+}*/
 
 // sphere subclass-------------------------------------------------------------------------
-bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
+/*bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
 
     glm::vec3 directionVector = ray.startVertex - this->sphereCenter;
 
@@ -236,4 +225,9 @@ bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
     }
 
     return false;
+}*/
+
+glm::vec3 PointInObject(const Ray& ray) {
+    //IMPLEMENT POINT ON SPHERE FUNCTION
+    return glm::vec3(1,1,1);
 }

@@ -15,7 +15,7 @@ public:
     void addRoom();
 
     // Adds a single polygon to the scene
-    void addPolygon(Polygon* polygon);        
+    void addPolygon(Object* polygon);
 
     // Add a light to the scene
     void addLight(Light light);
@@ -30,7 +30,7 @@ public:
     const std::vector<Camera>& getCameras() const;
     
     //Get a room baby
-    std::vector<Polygon*> getTheRoom() const;
+    std::vector<Object*> getTheRoom() const;
     
     //Add tetrahedra
     void addTetra(Tetrahedron* tetra); 
@@ -38,5 +38,5 @@ public:
 private:
     std::vector<Light> lights;   // List of lights in the scene
     std::vector<Camera> cameras; // List of cameras in the scene
-    std::vector<Polygon*> theRoom;
+    std::vector<Object*> theRoom;
 };

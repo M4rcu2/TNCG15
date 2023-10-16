@@ -48,8 +48,8 @@ void Scene::addRoom() {
     std::cout << "Added a room to the scene" << std::endl << std::endl;
 }
 
-void Scene::addPolygon(Polygon* polygon) {
-    theRoom.push_back(polygon);
+void Scene::addPolygon(Object* object) {
+    theRoom.push_back(object);
 }
 
 void Scene::addLight(Light light) {
@@ -73,12 +73,12 @@ const std::vector<Camera>& Scene::getCameras() const {
     return cameras;
 }
 
-std::vector<Polygon*> Scene::getTheRoom() const {
+std::vector<Object*> Scene::getTheRoom() const {
     return theRoom;
 }
 
 void Scene::addTetra(Tetrahedron* tetra){
-    for(Polygon* t : tetra->faces){
+    for(Object* t : tetra->faces){
         this->addPolygon(t);
     }
 }
