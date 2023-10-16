@@ -97,7 +97,7 @@ bool Rectangle::collision(const Ray& ray, glm::vec3& refIntersection) const {
 glm::vec3 Triangle::PointInPolygon(const Ray& ray) const{
 
     bool isOnPlane = IntersectPlane(ray);
-
+    
     if(isOnPlane){
         glm::vec3 E1 = vertices[1]-vertices[0];
         glm::vec3 E2 = vertices[2]-vertices[0];

@@ -11,6 +11,7 @@ class Ray; // Forward declaration
 
 //Object head class mega big strong independent forcefull powerfull fighting raging firespitting class ;) ----------------
 class Object {
+public:
     //returns the normal, should be used in the constructor
     virtual glm::vec3 getNormal() const = 0;
     //gets colooouur
@@ -18,9 +19,14 @@ class Object {
         return color_;
     };
     //get material
-    virtual int getMaterial() const = 0;
+    virtual int getMaterial() const{
+        return material;
+    };
     ColorDBL color_;
-}
+    //MATERIAL GIRL (0 är diffuse, 69 är mirror och 420 är glas)
+    //0=diff    69=mirro    420=glas(shine bright like dimond)
+    int material;
+};
 
 // Base class for Polygon ------------------------------------
 class Polygon : public Object{
@@ -33,7 +39,6 @@ public:
     virtual bool IntersectPlane(const Ray& ray) const = 0;
     //Collision, bool for checking if it intersects
     virtual bool collision(const Ray& ray, glm::vec3& refIntersection) const = 0;
-    //returns the color of the polygon
 protected:
     Polygon() = default;
 };
@@ -74,6 +79,7 @@ public:
     // Implement the Intersect method for triangles
     glm::vec3 PointInPolygon(const Ray& ray) const override;
     glm::vec3 triNormal;
+    
     bool IntersectPlane(const Ray& ray) const override;
     glm::vec3 getNormal() const override;
     glm::vec3 vertices[3]; // Defines vertices of the triangle
@@ -85,7 +91,7 @@ public:
 // tetrahedra subclass----------------------------------------------------------------------
 class Tetrahedron {
 public:
-    Tetrahedron(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3, const ColorDBL c) {
+    Tetrahedron(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3, const ColorDBL& c, const int& materialGIRL) {
         faces[0] = new Triangle(v0, v1, v2, c);
         faces[1] = new Triangle(v0, v2, v3, c);
         faces[2] = new Triangle(v0, v3, v1, c);

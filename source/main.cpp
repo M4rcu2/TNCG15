@@ -27,7 +27,7 @@ int main() {
     std::vector<std::vector<ColorDBL>> imagePlane(imageWidth, std::vector<ColorDBL>(imageHeight));
     Camera theCamera(glm::vec3(-1, 0, 0), imageWidth, imageHeight);
     theScene.addCamera(theCamera);
-
+    
     // Add objects (e.g., spheres, triangles) to the scene
     /*theScene.addPolygon(new Triangle(glm::vec3(4, -4, -4), glm::vec3(4, -2, -4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01)));
     theScene.addPolygon(new Triangle(glm::vec3(7, -2, -4), glm::vec3(4, -2, -4), glm::vec3(6, -4, 1), ColorDBL(0.98, 0.51, 0.01)));
