@@ -95,3 +95,23 @@ public:
     //Faces of the tetrahedra
     Triangle* faces[4];
 };
+
+// sphere subclass-------------------------------------------------------------------------- (Yeah spheres aren't polygons but it eases the calculations)
+class Sphere {
+public:
+    Sphere(const double& r, const glm::vec3& center, const ColorDBL color, std::string material) {
+        radius = r;
+        sphereCenter = center;
+        sphereColor = color;
+        sphereMaterial = material;
+    }
+
+    bool collision(const Ray& ray, glm::vec3& pointAtIntersection);
+
+    double radius;
+    glm::vec3 sphereCenter;
+    ColorDBL sphereColor;
+    glm::vec3 spheNormal;
+    std::string sphereMaterial;
+
+};
