@@ -1,5 +1,7 @@
 #include "ray.h"
 #include "polygon.h"
+#include "scene.h"  //Tar in scene för att använda
+#include <random>
 #include <cmath>
 
 
@@ -7,7 +9,7 @@ Ray::Ray(glm::vec3 start, glm::vec3 direction, ColorDBL color, Ray* prev, Ray* n
     : startVertex(start), direction(glm::normalize(direction)), previousRay(prev), nextRay(next), color(color) {
 }
 
-ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource, const std::vector<Polygon*>& allPolygons) {
+ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource, const std::vector<Polygon*>& allPolygons) {   //change to multiple lightsources???
 
     // Creates a white color
     ColorDBL shadowIntensity = ColorDBL(0.0, 0.0, 0.0);
@@ -71,4 +73,54 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
     }
 
     return shadowIntensity;
+}
+
+//Function to call when we want to make recursion
+ColorDBL Ray::reflectionRecursion(const int nmrOfReflections, const Scene& theScene){
+    // Initialize variables to store information about the closest intersection
+    float closestT = std::numeric_limits<float>::infinity();
+    glm::vec3 closestIntersectionPoint;
+    ColorDBL closestColor;
+    ColorDBL obtainedLight;
+    const Polygon* closestPolygon = nullptr; // Added variable to store the closest polygon
+    
+    for (Polygon* p : theScene.getTheRoom()) {
+
+        glm::vec3 intersectionPoint = p->PointInPolygon(*this);
+
+        // If the ray intersects the polygon
+        if (intersectionPoint != glm::vec3(-100, -100, -100)) {
+            // Calculate t value for the intersection
+            float t = glm::length(intersectionPoint - this->startVertex);
+
+            // Check if this intersection is closer than the current closest one
+            if (t < closestT) {
+                closestT = t;
+                closestIntersectionPoint = intersectionPoint;
+                closestPolygon = p; // Update the closest polygon
+                obtainedLight = this->castShadowRay(closestPolygon,theScene.getLights()[0],theScene.getTheRoom());
+                // Initializes the end vertex if it is the closest
+                this->endVertex = intersectionPoint;
+            }
+        }
+    }
+    if(nmrOfReflections > 0){
+        glm::vec3 randDirection = randomGaussValue(closestPolygon->getNormal());
+        Ray newReflectedRay(this->endVertex,randDirection);
+        ColorDBL recursiveLight = reflectionRecursion(nmrOfReflections-1, theScene);
+    }
+    
+    
+    
+    closestColor = closestPolygon->color_.mult(obtainedLight);
+    return ColorDBL(0.3, 0.3, 0.8);
+}
+
+float Ray::randomGaussValue(glm::vec3 normal){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    float mean = (normal.x + normal.y + normal.z)/3.0f;
+    float stddv = 0.1f; //Standard avvikelse, kan vara 0.5 ksk
+    std::normal_distribution<float> distribution(mean,stddv);
+    return distribution(gen);
 }

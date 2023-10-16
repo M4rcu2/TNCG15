@@ -54,36 +54,9 @@ int main() {
             // Create a ray with startpos at the eye and endpos at the camera plane
             Ray rayFromPixel = theCamera.castRay(ndcX, ndcY);
 
-            // Initialize variables to store information about the closest intersection
-            float closestT = std::numeric_limits<float>::infinity();
-            glm::vec3 closestIntersectionPoint;
-            ColorDBL closestColor;
-            const Polygon* closestPolygon = nullptr; // Added variable to store the closest polygon
-
             // Loop through each polygon in the scene
-            for (Polygon* p : theScene.getTheRoom()) {
-
-                glm::vec3 intersectionPoint = p->PointInPolygon(rayFromPixel);
-
-                // If the ray intersects the polygon
-                if (intersectionPoint != glm::vec3(-100, -100, -100)) {
-
-                    // Initializes the end vertex
-                    rayFromPixel.endVertex = intersectionPoint;
-
-                    // Calculate t value for the intersection
-                    float t = glm::length(intersectionPoint - rayFromPixel.startVertex);
-
-                    // Check if this intersection is closer than the current closest one
-                    if (t < closestT) {
-                        closestT = t;
-                        closestIntersectionPoint = intersectionPoint;
-                        closestPolygon = p; // Update the closest polygon
-                        ColorDBL obtainedLight = rayFromPixel.castShadowRay(closestPolygon,theLight,theScene.getTheRoom());
-                        closestColor = p->color_.mult(obtainedLight);                        
-                    }
-                }
-            }
+            //There will be a function here that we call with the ray, it's starting point aka from the camera and then it will calculate the light in a specific pixel.
+            ColorDBL closestColor = rayFromPixel.reflectionRecursion(nmrOfReflections, theScene);
 
             // Assign the color of the closest intersection
             imagePlane[imageWidth - 1 - row][col] = closestColor;
@@ -91,7 +64,7 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../outputImage/rendered_image.png";
+    const char* outputPath = "rendered_image.png";
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
