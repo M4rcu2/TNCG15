@@ -9,8 +9,21 @@
 
 class Ray; // Forward declaration
 
-// Base class for Polygon
-class Polygon {
+//Object head class mega big strong independent forcefull powerfull fighting raging firespitting class ;) ----------------
+class Object {
+    //returns the normal, should be used in the constructor
+    virtual glm::vec3 getNormal() const = 0;
+    //gets colooouur
+    ColorDBL getColor() const {
+        return color_;
+    };
+    //get material
+    virtual int getMaterial() const = 0;
+    ColorDBL color_;
+}
+
+// Base class for Polygon ------------------------------------
+class Polygon : public Object{
 public:
     const float errorMargin = 10e-2f; //error margin i guess ;)
     
@@ -20,15 +33,7 @@ public:
     virtual bool IntersectPlane(const Ray& ray) const = 0;
     //Collision, bool for checking if it intersects
     virtual bool collision(const Ray& ray, glm::vec3& refIntersection) const = 0;
-
-    //returns the normal, should be used in the constructor
-    virtual glm::vec3 getNormal() const = 0;
     //returns the color of the polygon
-    ColorDBL color_;
-    //::vec3 normal;
-    ColorDBL getColor() const {
-        return color_;
-    };
 protected:
     Polygon() = default;
 };
