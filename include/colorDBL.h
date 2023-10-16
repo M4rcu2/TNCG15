@@ -32,12 +32,6 @@ public:
     // += operator for adding colors
     ColorDBL& operator+=(const ColorDBL& other);
 
-    //// - operator for subtracting colors
-    //ColorDBL operator-(const ColorDBL& left, const ColorDBL& right);
-
-
     double r, g, b;
-
-private:
     
 };

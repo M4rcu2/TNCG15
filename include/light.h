@@ -1,9 +1,11 @@
 #pragma once
 
 #include "glm/glm.hpp"
+#include "polygon.h"
+#include "colorDBL.h"
+#include <random>
 
-// Forward declaration
-class Polygon;
+class Rectangle;
 
 class Light {
 public:
@@ -15,7 +17,7 @@ public:
     glm::vec3 getNormal() const;
     
     glm::vec3 getRandomPointOnLight() const;  //gets a random point on light where we have to implement two e1 and e2 vectors for the ligth and add these new variables to the constructor to initialize.s
-    Polygon* surface_;
+    Rectangle surface_;
     double area;
 
 private:

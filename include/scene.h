@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
+#include "polygon.h" 
 #include "light.h"
 #include "camera.h" 
-#include "polygon.h" 
 #include "colorDBL.h" 
 
 class Scene {
@@ -12,10 +12,7 @@ public:
     Scene();
 
     // Adds a room in the scene
-    void addRoom();
-
-    // Adds a single polygon to the scene
-    void addPolygon(Polygon* polygon);        
+    void addRoom();       
 
     // Add a light to the scene
     void addLight(Light light);
@@ -30,20 +27,17 @@ public:
     const std::vector<Camera>& getCameras() const;
     
     // Get a room baby
-    std::vector<Polygon*> getTheRoom() const;
-
-    // Get a room baby
-    std::vector<Sphere*> getSpheres() const;
+    const std::vector<std::shared_ptr<Object>>& getTheRoom() const;
     
     //Add tetrahedra
-    void addTetra(Tetrahedron* tetra); 
+    void addTetra(Tetrahedron tetra); 
 
     //Add Sphere
-    void addSphere(Sphere* sphere);
+    void addSphere(Sphere sphere);
 
 private:
     std::vector<Light> lights;   // List of lights in the scene
     std::vector<Camera> cameras; // List of cameras in the scene
-    std::vector<Polygon*> theRoom;
-    std::vector<Sphere*> spheres;
+    std::vector<std::shared_ptr<Object>> theRoom;
+
 };

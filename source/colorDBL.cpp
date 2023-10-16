@@ -10,7 +10,6 @@ std::vector<double> ColorDBL::getColor(){
     return  std::vector<double>{r,g,b};
 }
 
-// += operator for adding colors
 ColorDBL& ColorDBL::operator+=(const ColorDBL& other) {
     r += other.r;
     g += other.g;
