@@ -21,7 +21,7 @@ int main() {
     int imageHeight = 600;
     
     //Number of reflections the ray can do
-    //int nmrOfReflections = 2;
+    int nmrOfReflections = 0;
 
     // Creates the camera with an image plane
     std::vector<std::vector<ColorDBL>> imagePlane(imageWidth, std::vector<ColorDBL>(imageHeight));
@@ -50,41 +50,11 @@ int main() {
             // Create a ray with startpos at the eye and endpos at the camera plane
             Ray rayFromPixel = theCamera.castRay(ndcX, ndcY);
 
-            // Initialize variables to store information about the closest intersection
-            float closestTobject = std::numeric_limits<float>::infinity();
-            glm::vec3 closestIntersectionPoint;
-            ColorDBL closestColor;
-            std::shared_ptr<Object> closestObject = nullptr; // Added variable to store the closest object's surface
-
-            // Loop through each object in the scene
-            for (std::shared_ptr<Object> objectInTheRoom : theScene.getTheRoom()) {
-
-                glm::vec3 intersectionPoint;
-                
-                if (objectInTheRoom->collision(rayFromPixel,intersectionPoint)) {
-
-                    // Initializes the end vertex
-                    rayFromPixel.endVertex = intersectionPoint;
-
-                    // Calculate t value for the intersection
-                    float t = glm::length(intersectionPoint - rayFromPixel.startVertex);
-
-                    // Check if this intersection is closer than the current closest one
-                    if (t < closestTobject) {
-                        closestTobject = t;
-                        closestIntersectionPoint = intersectionPoint;
-                        closestObject = objectInTheRoom; // Update the closest polygon
-                        ColorDBL obtainedLight = rayFromPixel.castShadowRay(closestObject,theLight,theScene.getTheRoom());
-                        closestColor = objectInTheRoom->color_.mult(obtainedLight);                        
-                    }
-                }
-            }
-            // Loop through each polygon in the scene
             //There will be a function here that we call with the ray, it's starting point aka from the camera and then it will calculate the light in a specific pixel.
-            ColorDBL closestColor = rayFromPixel.reflectionRecursion(nmrOfReflections, theScene);
+            ColorDBL closestColor = rayFromPixel.reflectionRecursion(rayFromPixel, nmrOfReflections, theScene);
 
-                // Assign the color of the closest intersection
-                imagePlane[imageWidth - 1 - row][col] = closestColor;
+            // Assign the color of the closest intersection
+            imagePlane[imageWidth - 1 - row][col] = closestColor;
         }
     }
 

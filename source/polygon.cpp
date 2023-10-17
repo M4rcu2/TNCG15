@@ -84,8 +84,10 @@ float Rectangle::getHeight() const {
 // Triangle subclass----------------------------------------------------------------------
 
 bool Triangle::IntersectPlane(const Ray &ray) const{
+
     //Calculate if the normal of the infinitally large plane is opposoite direction of the ray to know if the ray goes away from the plane or not
     //Dot product calculation
+
     float dotProd = glm::dot(triNormal, ray.direction);
     //Is dot product positive, negative or zero?
     if(dotProd < 0){

@@ -5,7 +5,7 @@ Light::Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, cons
 
     ColorDBL c = ColorDBL(intensity.x, intensity.y, intensity.z);
     surface_ = Rectangle(p1, p2, p3, p4, c, "MATERIAL");
-    intensity_ = intensity;
+    color_ = intensity;
 
     //creates e1 and e2 along each side
     e1 = p2 - p1;
@@ -15,7 +15,7 @@ Light::Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, cons
 }
 
 glm::vec3 Light::getIntensity() const {
-    return intensity_;
+    return color_;
 }
 
 glm::vec3 Light::getNormal() const {

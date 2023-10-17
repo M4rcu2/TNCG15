@@ -21,7 +21,7 @@ public:
     double area;
 
 private:
-    glm::vec3 intensity_; // Intensity (color) of the light  
+    glm::vec3 color_; // Intensity (color) of the light  
     glm::vec3 p1;
     glm::vec3 e1;
     glm::vec3 e2;
