@@ -104,23 +104,37 @@ ColorDBL Ray::reflectionRecursion(const int nmrOfReflections, const Scene& theSc
             }
         }
     }
+    ColorDBL outLight;
     if(nmrOfReflections > 0){
         glm::vec3 randDirection = randomGaussValue(closestPolygon->getNormal());
         Ray newReflectedRay(this->endVertex,randDirection);
         ColorDBL recursiveLight = reflectionRecursion(nmrOfReflections-1, theScene);
+        outLight = obtainedLight + 0.3*recursiveLight;
+        return outLight;
     }
+    outLight = obtainedLight;
+    return outLight;
     
-    
-    
-    closestColor = closestPolygon->color_.mult(obtainedLight);
-    return ColorDBL(0.3, 0.3, 0.8);
+    //closestColor = closestPolygon->color_.mult(obtainedLight);
+    //return ColorDBL(0.3, 0.3, 0.8);
 }
 
-float Ray::randomGaussValue(glm::vec3 normal){
+glm::vec3 Ray::randomGaussValue(glm::vec3 normal){
     std::random_device rd;
     std::mt19937 gen(rd());
-    float mean = (normal.x + normal.y + normal.z)/3.0f;
-    float stddv = 0.1f; //Standard avvikelse, kan vara 0.5 ksk
-    std::normal_distribution<float> distribution(mean,stddv);
-    return distribution(gen);
+    std::normal_distribution<double> distribution(0.0, 1.0);
+
+    double randomValueNorm = distribution(gen);
+    while (randomValueNorm < -1.0 || randomValueNorm > 1.0) {
+        randomValueNorm = distribution(gen);
+    }
+    std::uniform_real_distribution<double> distributionEven(-1.0, 1.0);
+    
+    float theta = 0.5 * M_PI * randomValueNorm;
+    float phi = 2.0f * M_PI * distributionEven(gen);
+    float x = std::sin(theta) * std::cos(phi);
+    float y = std::sin(theta) * std::sin(phi);
+    float z = std::cos(theta);
+    glm::vec3 randDirection =normal+glm::vec3(x,y,z);
+    return randDirection;   //NOT DONE
 }

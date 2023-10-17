@@ -25,6 +25,6 @@ public:
     ColorDBL castShadowRay(const Polygon* fromPolygon, const Light& lightsource, const std::vector<Polygon*>& allPolygons);
     ColorDBL reflectionRecursion(const int nmrOfReflections, const Scene& theScene);
     glm::vec3 newBounceDirection(const glm::vec3& normal);  //returns a new direction in the hemisphere where the normal is in the middle
-    float randomGaussValue(glm::vec3 normal);
+    glm::vec3 randomGaussValue(glm::vec3 normal);
 
 };
