@@ -38,7 +38,7 @@ bool Rectangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
         glm::vec3 C_1 = vertices[1] - vertices[0];
         glm::vec3 C_2 = vertices[3] - vertices[0];
         glm::vec3 intersection;
-        double EPSILON = 0.00000001;
+        double EPSILON = 0.00001;
 
         intersection.x = ray.startVertex.x + t * ray.direction.x; 
         intersection.y = ray.startVertex.y + t * ray.direction.y; 

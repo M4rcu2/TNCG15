@@ -20,12 +20,12 @@ void Scene::addRoom() {
 
     // Ceiling
     theRoom.push_back(std::make_shared<Triangle>(glm::vec3(10, -6, 5),glm::vec3(10, 6, 5),glm::vec3(13, 0, 5),whiteColor, "MATERIAL"));
-    theRoom.push_back(std::make_shared<Triangle>(glm::vec3(0, 6, 5), glm::vec3(-3, 0, 5), glm::vec3(0, -6, 5), whiteColor, "MATERIAL"));
+    theRoom.push_back(std::make_shared<Triangle>(glm::vec3(0, 6, 5), glm::vec3(0, -6, 5), glm::vec3(-3, 0, 5), whiteColor, "MATERIAL"));
     theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(0, 6, 5), glm::vec3(10, 6, 5), glm::vec3(0, -6, 5), glm::vec3(10, -6, 5), whiteColor, "MATERIAL"));
 
     // Floor
     theRoom.push_back(std::make_shared<Triangle>(glm::vec3(10, 6, -5), glm::vec3(10, -6, -5), glm::vec3(13, 0, -5), whiteColor, "MATERIAL"));
-    theRoom.push_back(std::make_shared<Triangle>(glm::vec3(0, 6, -5), glm::vec3(0, -6, -5), glm::vec3(-3, 0, -5), whiteColor, "MATERIAL"));
+    theRoom.push_back(std::make_shared<Triangle>(glm::vec3(0, 6, -5), glm::vec3(-3, 0, -5),glm::vec3(0, -6, -5), whiteColor, "MATERIAL"));
     theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(0, -6, -5), glm::vec3(10, -6, -5), glm::vec3(0, 6, -5), glm::vec3(10, 6, -5), whiteColor, "MATERIAL"));
 
     // Wall LF
@@ -44,7 +44,7 @@ void Scene::addRoom() {
     theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(10, -6, -5), glm::vec3(0, -6, -5), glm::vec3(10, -6, 5), glm::vec3(0, -6, 5), greenColor, "MATERIAL"));
 
     // Wall RB
-    theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(0, -6, -5), glm::vec3(-3, 0, -5), glm::vec3(0, -6, 5), glm::vec3(-3, 0, 5), blueColor, "MATERIAL"));
+    theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(0, -6, -5), glm::vec3(-3, 0, -5), glm::vec3(0, -6, 5), glm::vec3(-3, 0, 5), yellowColor, "MATERIAL"));
 
     std::cout << "Added a room to the scene" << std::endl << std::endl;
 }

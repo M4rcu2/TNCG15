@@ -59,8 +59,8 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../outputImage/rendered_image.png"; // For Marcus (Windows)
-    //const char* outputPath = "rendered_image.png"; // For Filip (Mac)
+    //const char* outputPath = "../outputImage/rendered_image.png"; // For Marcus (Windows)
+    const char* outputPath = "rendered_image.png"; // For Filip (Mac)
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     

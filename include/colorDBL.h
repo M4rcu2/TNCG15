@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glm/glm.hpp"
+#include <iostream>
 #include <vector>
 
 class ColorDBL {
@@ -31,7 +32,19 @@ public:
 
     // += operator for adding colors
     ColorDBL& operator+=(const ColorDBL& other);
-
+    
+    //Color divider
+    ColorDBL divideComponents(double divisor) const {
+        return ColorDBL(r / divisor, g / divisor, b / divisor);
+    }
+    
+    //print for color
+    friend std::ostream& operator<<(std::ostream& os, const ColorDBL& color) {
+        os << " RGB(" << color.r << ", " << color.g << ", " << color.b << ")\n";
+        return os;
+    }
+    
     double r, g, b;
+    
     
 };

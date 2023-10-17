@@ -7,10 +7,10 @@
 
 Camera::Camera(const glm::vec3& eye, int imageWidth, int imageHeight)
     : eye_(eye), imageWidth_(imageWidth), imageHeight_(imageHeight) {
-    c1 = glm::vec3(0,-1,-1);
-    c2 = glm::vec3(0, 1, -1);
-    c3 = glm::vec3(0, 1, 1);
-    c4 = glm::vec3(0, -1, 1);
+    c1 = glm::vec3(3,-1,-1);
+    c2 = glm::vec3(3, 1, -1);
+    c3 = glm::vec3(3, 1, 1);
+    c4 = glm::vec3(3, -1, 1);
 }
 
 glm::vec3 Camera::getPos() {
