@@ -11,7 +11,6 @@ class Ray; // Forward declaration
 
 class Object {
 public:
-
     //Collision, bool for checking if it intersects
     virtual bool collision(const Ray& ray, glm::vec3& pointAtIntersection) = 0;
 

@@ -21,5 +21,8 @@ public:
 
     // Cast shadowray and will return the new ColorDBL from the light (if hit)
     ColorDBL castShadowRay(const std::shared_ptr<Object>& fromObject, const Light& lightsource, const std::vector<std::shared_ptr<Object>>& allObjects);
+    ColorDBL reflectionRecursion(const int nmrOfReflections, const Scene& theScene);
+    glm::vec3 newBounceDirection(const glm::vec3& normal);  //returns a new direction in the hemisphere where the normal is in the middle
+    float randomGaussValue(glm::vec3 normal);
 
 };

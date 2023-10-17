@@ -79,6 +79,9 @@ int main() {
                     }
                 }
             }
+            // Loop through each polygon in the scene
+            //There will be a function here that we call with the ray, it's starting point aka from the camera and then it will calculate the light in a specific pixel.
+            ColorDBL closestColor = rayFromPixel.reflectionRecursion(nmrOfReflections, theScene);
 
                 // Assign the color of the closest intersection
                 imagePlane[imageWidth - 1 - row][col] = closestColor;
