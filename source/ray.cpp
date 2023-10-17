@@ -48,18 +48,6 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
                     di_distance2 = newDistance;
                 }
             }
-                
-            // Calculate cosines of the angles between the surface normal and light direction
-            float cosThetaX = glm::dot(glm::normalize(fromPolygon->getNormal()), glm::normalize(di));
-            float cosThetaY = glm::dot(glm::normalize(lightsource.surface_->getNormal()), glm::normalize(di));
-
-            // Calculate the denominator of the Lambertian reflection formula
-            float denominator = pow(abs(di_distance), 2);
-
-            double lamb = std::max(((v_1 * lightsource.area * 3.14f * cosThetaX * (-cosThetaY)) / denominator), 0.0);
-
-            // Update shadow intensity using Lambertian reflection formula
-            shadowIntensity += ColorDBL(lamb, lamb, lamb);
         }
 
         if (di_distance2 < di_distance) { // If di_distance2 is smaller, means that the collision is not on the lightsource, hence something is in the way
@@ -151,8 +139,8 @@ glm::vec3 Ray::randomGaussValue(glm::vec3 normal){
     //polar coord. for normal and generated direction
     float thetaNormal = std::acos(normal.z/ std::sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z));
     float phiNormal = std::atan2(normal.y, normal.x);
-    float theta = 0.5 * M_PI * randomValueNorm;
-    float phi = 2.0f * M_PI * distributionEven(gen);
+    float theta = 0.5 * 3.14f * randomValueNorm;
+    float phi = 2.0f * 3.14f * distributionEven(gen);
     
     float thetaOut = theta + thetaNormal;
     float phiOut = phi + phiNormal;
