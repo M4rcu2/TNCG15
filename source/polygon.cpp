@@ -102,7 +102,7 @@ bool Triangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
 
     if (isOnPlane) {
 
-        // Möller
+        // Mï¿½ller
         glm::vec3 T = ray.startVertex - vertices[0];
         glm::vec3 E1 = vertices[1] - vertices[0];
         glm::vec3 E2 = vertices[2] - vertices[0];
@@ -132,7 +132,7 @@ bool Triangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
 
     }
     return false;
-}
+}*/
 
 glm::vec3 Triangle::getNormal() const{
     glm::vec3 edge1 = vertices[1]-vertices[0];
@@ -191,7 +191,7 @@ bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
             t = glm::max(t1, t2);
         }
 
-        glm::vec3 intersection = ray.startVertex + ray.direction * glm::vec3(t,t,t);
+        glm::vec3 intersection = ray.startVertex + ray.direction * glm::vec3(t, t, t);
 
         spheNormal = glm::normalize((intersection - this->sphereCenter));
 
