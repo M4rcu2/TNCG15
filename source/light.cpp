@@ -1,13 +1,10 @@
 #include "light.h"
-#include "polygon.h"
-#include "colorDBL.h"
-#include <random>
 
 // Constructor
 Light::Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const glm::vec3& intensity) {
 
     ColorDBL c = ColorDBL(intensity.x, intensity.y, intensity.z);
-    surface_ = new Rectangle(p1, p2, p3, p4, c);
+    surface_ = Rectangle(p1, p2, p3, p4, c, "MATERIAL");
     intensity_ = intensity;
 
     //creates e1 and e2 along each side
@@ -33,8 +30,6 @@ glm::vec3 Light::getRandomPointOnLight() const {
     float t = (float) rand()/RAND_MAX;
     glm::vec3 v1 = e1*s;
     glm::vec3 v2 = e2*t;
-
-    //std::cout << (p1 + v1 + v2).x << " + " << (p1 + v1 + v2).y << " + " << (p1 + v1 + v2).z << std::endl;
 
     return p1+v1+v2;
 }

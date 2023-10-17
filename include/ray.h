@@ -3,9 +3,7 @@
 #include "glm/glm.hpp"
 #include "colorDBL.h"
 #include "light.h"
-
-class Polygon; // Forward declaration
-class Sphere;
+#include "polygon.h"
 
 class Ray {
 public:
@@ -15,15 +13,13 @@ public:
     Ray* previousRay;
     Ray* nextRay;
     ColorDBL color;
-    Polygon* startingVertexSurface;
-    Sphere* startingSphereSurface;
+    std::shared_ptr<Object> startingVertexSurface;
+    
 
     // Constructor
     Ray(glm::vec3 start, glm::vec3 direction, ColorDBL color = ColorDBL(0.0, 0.0, 0.0), Ray* prev = nullptr, Ray* next = nullptr);
 
-    //Cast shadowray and will return the new ColorDBL from the light (if hit)
-    ColorDBL castShadowRay(const Polygon* fromPolygon, const Light& lightsource, const std::vector<Polygon*>& allPolygons, const std::vector<Sphere*>& allSpheres);
+    // Cast shadowray and will return the new ColorDBL from the light (if hit)
+    ColorDBL castShadowRay(const std::shared_ptr<Object>& fromObject, const Light& lightsource, const std::vector<std::shared_ptr<Object>>& allObjects);
 
-    //Cast shadowray and will return the new ColorDBL from the light (if hit)
-    ColorDBL castShadowRay(const Sphere* fromSphere, const Light& lightsource, const std::vector<Sphere*>& allSpheres, const std::vector<Polygon*>& allPolygons);
 };

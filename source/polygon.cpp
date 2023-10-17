@@ -3,6 +3,16 @@
 
 #include <glm/gtx/string_cast.hpp>  //to string for vec
 
+// Polygon subclass------------------------------------------------------------------------
+
+glm::vec3 Polygon::getNormal() const {
+    return glm::vec3(0, 0, 0); // Should NOT be used
+}
+
+bool Polygon::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
+    return false; // Should NOT be used
+}
+
 // Rectangle subclass----------------------------------------------------------------------
 
 bool Rectangle::IntersectPlane(const Ray& ray) const{
@@ -18,7 +28,7 @@ bool Rectangle::IntersectPlane(const Ray& ray) const{
     } 
 }
 
-bool Rectangle::collision(const Ray& ray, glm::vec3& pointAtIntersection) const {
+bool Rectangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
 
     bool isOnPlane = IntersectPlane(ray);
 
@@ -71,8 +81,6 @@ float Rectangle::getHeight() const {
     return glm::length(vertices[2] - vertices[0]);
 }
 
-
-
 // Triangle subclass----------------------------------------------------------------------
 
 bool Triangle::IntersectPlane(const Ray &ray) const{
@@ -88,7 +96,7 @@ bool Triangle::IntersectPlane(const Ray &ray) const{
     }
 }
 
-bool Triangle::collision(const Ray& ray, glm::vec3& pointAtIntersection) const {
+bool Triangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
 
     bool isOnPlane = IntersectPlane(ray);
 
@@ -135,17 +143,17 @@ glm::vec3 Triangle::getNormal() const{
 }
 
 // tetrahedra subclass----------------------------------------------------------------------
-//glm::vec3 Tetrahedron::pointOnTetra(const Ray& ray) {
-//    
-//    glm::vec3 a = faces[1]->PointInPolygon(ray);
-//    std::cout<<"normal face1 "<<glm::to_string(faces[1]->triNormal);
-//    if(a != glm::vec3(-100, -100, -100)){
-//        return a;
-//    }
-//    return glm::vec3(-100, -100, -100);
-//}
+
+glm::vec3 Tetrahedron::getNormal() const {
+    return glm::vec3(0, 0, 0); // Is never used (For now)
+}
+
+bool Tetrahedron::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
+    return false; // Should NOT be used
+}
 
 // sphere subclass-------------------------------------------------------------------------
+
 bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
     
     glm::vec3 directionVector = ray.startVertex - this->sphereCenter;
@@ -195,3 +203,6 @@ bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
     return false;
 }
 
+glm::vec3 Sphere::getNormal() const {
+    return spheNormal; // Should NOT be used
+}
