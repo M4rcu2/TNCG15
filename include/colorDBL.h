@@ -35,6 +35,9 @@ public:
     
     //Color divider
     ColorDBL divideComponents(double divisor) const {
+        if(divisor <= 0){
+            return ColorDBL(1,1,1);
+        }
         return ColorDBL(r / divisor, g / divisor, b / divisor);
     }
     

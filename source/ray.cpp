@@ -15,7 +15,7 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
     ColorDBL shadowIntensity = ColorDBL(0.0, 0.0, 0.0);
 
     // Number of shadow rays
-    int nmrOfShadowrays = 4;
+    int nmrOfShadowrays = 300;
 
     const float EPSILON = 10e-3f;
 
@@ -64,7 +64,7 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
         // Update shadow intensity using Lambertian reflection formula
         shadowIntensity += ColorDBL(lamb, lamb, lamb);
     }
-    return shadowIntensity.divideComponents(nmrOfShadowrays/4);
+    return shadowIntensity.divideComponents(nmrOfShadowrays/6.0f);
 }
 
 //Function to call when we want to make recursion
