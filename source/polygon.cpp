@@ -132,9 +132,9 @@ bool Triangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
 
     }
     return false;
-}*/
+}
 
-glm::vec3 Triangle::getNormal() const{
+glm::vec3 Triangle::getNormal() const {
     glm::vec3 edge1 = vertices[1]-vertices[0];
     glm::vec3 edge2 = vertices[2]-vertices[0];
     glm::vec3 theNormal = glm::cross(edge1, edge2);
