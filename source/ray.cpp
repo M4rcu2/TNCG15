@@ -68,7 +68,6 @@ ColorDBL Ray::castShadowRay(const Polygon* fromPolygon, const Light& lightsource
 
             // Update shadow intensity using Lambertian reflection formula
             shadowIntensity += ColorDBL(lamb, lamb, lamb);
-            
         }
     }
 
@@ -120,21 +119,28 @@ ColorDBL Ray::reflectionRecursion(const int nmrOfReflections, const Scene& theSc
 }
 
 glm::vec3 Ray::randomGaussValue(glm::vec3 normal){
+    //Random generation
     std::random_device rd;
     std::mt19937 gen(rd());
     std::normal_distribution<double> distribution(0.0, 1.0);
-
     double randomValueNorm = distribution(gen);
-    while (randomValueNorm < -1.0 || randomValueNorm > 1.0) {
+    while (randomValueNorm < -1.0 || randomValueNorm > 1.0) {  //If random value is outside [-1,1]
         randomValueNorm = distribution(gen);
     }
-    std::uniform_real_distribution<double> distributionEven(-1.0, 1.0);
+    std::uniform_real_distribution<double> distributionEven(-1.0, 1.0); //Even distrubution [-1,1]
     
+    //polar coord. for normal and generated direction
+    float thetaNormal = std::acos(normal.z/ std::sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z));
+    float phiNormal = std::atan2(normal.y, normal.x);
     float theta = 0.5 * M_PI * randomValueNorm;
     float phi = 2.0f * M_PI * distributionEven(gen);
-    float x = std::sin(theta) * std::cos(phi);
-    float y = std::sin(theta) * std::sin(phi);
-    float z = std::cos(theta);
-    glm::vec3 randDirection =normal+glm::vec3(x,y,z);
-    return randDirection;   //NOT DONE
+    
+    float thetaOut = theta + thetaNormal;
+    float phiOut = phi + phiNormal;
+    
+    float x = std::sin(thetaOut) * std::cos(phiOut);
+    float y = std::sin(thetaOut) * std::sin(phiOut);
+    float z = std::cos(thetaOut);
+    glm::vec3 randDirection = glm::vec3(x,y,z);
+    return randDirection;
 }
