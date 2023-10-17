@@ -111,21 +111,36 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
     }
 
     // Will continue until nmrOfReflections is zero
-    if(nmrOfReflections > 0){
-        glm::vec3 randDirection = glm::vec3(1 ,1 ,1); //randomGaussValue(closestObject->getNormal()); // Will fix later
+    ColorDBL outLight;
+
+    if (nmrOfReflections > 0) {
+        glm::vec3 randDirection = randomGaussValue(closestObject->getNormal());
         Ray newReflectedRay(this->endVertex, randDirection);
-        ColorDBL recursiveLight = reflectionRecursion(newReflectedRay, nmrOfReflections-1, theScene);
+        ColorDBL recursiveLight = reflectionRecursion(newReflectedRay, nmrOfReflections - 1, theScene);
+        outLight = closestColor.add(recursiveLight); //* 0.3; <- why 0.3 (0_0)
+        return outLight;
     }
-    //std::cout << closestObject->color_.r << " + " << closestObject->color_.g << " + " << closestObject->color_.b << std::endl;
- 
-    return closestColor;
+
+    outLight = closestColor;
+    return outLight;
 }
 
-float Ray::randomGaussValue(glm::vec3 normal){
+glm::vec3 Ray::randomGaussValue(glm::vec3 normal) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    float mean = (normal.x + normal.y + normal.z)/3.0f;
-    float stddv = 0.1f; //Standard avvikelse, kan vara 0.5 ksk
-    std::normal_distribution<float> distribution(mean,stddv);
-    return distribution(gen);
+    std::normal_distribution<double> distribution(0.0, 1.0);
+
+    double randomValueNorm = distribution(gen);
+    while (randomValueNorm < -1.0 || randomValueNorm > 1.0) {
+        randomValueNorm = distribution(gen);
+    }
+    std::uniform_real_distribution<double> distributionEven(-1.0, 1.0);
+
+    float theta = 0.5 * 3.14f * randomValueNorm;
+    float phi = 2.0f * 3.14f * distributionEven(gen);
+    float x = std::sin(theta) * std::cos(phi);
+    float y = std::sin(theta) * std::sin(phi);
+    float z = std::cos(theta);
+    glm::vec3 randDirection = normal + glm::vec3(x, y, z);
+    return randDirection;   //NOT DONE
 }
