@@ -38,11 +38,10 @@ bool Rectangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
         glm::vec3 C_1 = vertices[1] - vertices[0];
         glm::vec3 C_2 = vertices[3] - vertices[0];
         glm::vec3 intersection;
-        double EPSILON = 0.00001;
 
-        intersection.x = ray.startVertex.x + t * ray.direction.x; 
-        intersection.y = ray.startVertex.y + t * ray.direction.y; 
-        intersection.z = ray.startVertex.z + t * ray.direction.z; 
+        intersection.x = ray.startVertex.x + t * ray.direction.x;
+        intersection.y = ray.startVertex.y + t * ray.direction.y;
+        intersection.z = ray.startVertex.z + t * ray.direction.z;
 
 
         // if the intersecting surface is very close to the last intersection point
@@ -55,8 +54,9 @@ bool Rectangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
 
 
         if ((0.0 <= a && a <= 1.0 && 0.0 <= b && b <= 1.0) || (abs(a) <= EPSILON && 0.0 <= b && b <= 1.0) || (abs(b) <= EPSILON && 0.0 <= a && a <= 1.0)) {
-            pointAtIntersection = intersection;
-            
+            pointAtIntersection.x = intersection.x + recNormal.x*EPSILON;
+            pointAtIntersection.y = intersection.y + recNormal.y*EPSILON;
+            pointAtIntersection.z = intersection.z + recNormal.z*EPSILON;
             return true;
         }
     }
@@ -116,13 +116,12 @@ bool Triangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
         double t = result.x;
         double u = result.y;
         double v = result.z;
-        double EPSILON = 0.00000001;
 
         if ((0.0 <= u && 0.0 <= v && (u + v) <= 1.0) || (abs(u) <= EPSILON && 0.0 <= v && v <= 1.0) || (abs(v) <= EPSILON && 0.0 <= u && u <= 1.0)) {
             
-            pointAtIntersection.x = ray.startVertex.x + t * D.x; 
-            pointAtIntersection.y = ray.startVertex.y + t * D.y; 
-            pointAtIntersection.z = ray.startVertex.z + t * D.z; 
+            pointAtIntersection.x = ray.startVertex.x + t * D.x + triNormal.x*EPSILON;
+            pointAtIntersection.y = ray.startVertex.y + t * D.y + triNormal.y*EPSILON;
+            pointAtIntersection.z = ray.startVertex.z + t * D.z + triNormal.z*EPSILON;
 
             // if the intersecting surface is very close to the last intersection point
             if (t <= 0.01) {
@@ -143,6 +142,7 @@ glm::vec3 Triangle::getNormal() const {
     theNormal = glm::normalize(theNormal);
     return theNormal;
 }
+
 
 // tetrahedra subclass----------------------------------------------------------------------
 
@@ -165,7 +165,6 @@ bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
     double C_3 = glm::dot(directionVector, directionVector) - pow(this->radius, 2); // (S - C)^2 - r^2
 
     double arg = pow(C_2, 2) - 4.0 * C_1 * C_3;
-    double EPSILON = 0.00000001;
 
     if (abs(arg) < EPSILON) {
         glm::vec3 intersection = ray.startVertex + ray.direction * glm::vec3(-C_2 / 2.0, -C_2 / 2.0,-C_2 / 2.0);

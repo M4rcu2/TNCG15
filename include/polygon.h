@@ -28,6 +28,7 @@ public:
     std::string getMaterial() const {
         return material_;
     };
+    double EPSILON = 0.001;
 };
 
 // Base class for Polygon

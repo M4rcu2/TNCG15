@@ -13,6 +13,9 @@ int main() {
     // Creates the scene
     Scene theScene;
 
+    //how many pixel did we fuck
+    int fuckedPixels = 0;
+    
     // Adds the room
     theScene.addRoom();
     
@@ -21,7 +24,7 @@ int main() {
     int imageHeight = 600;
     
     //Number of reflections the ray can do
-    int nmrOfReflections = 0;
+    int nmrOfReflections = 1;
 
     // Creates the camera with an image plane
     std::vector<std::vector<ColorDBL>> imagePlane(imageWidth, std::vector<ColorDBL>(imageHeight));
@@ -41,8 +44,10 @@ int main() {
     
     // Loop through each pixel in the matrix and assigns the color -----------------------------------------------------
     for (int row = 0; row < imageWidth; ++row) {
-        std::cout<<row<<" of 600 complete, procentage: "<<round(100*(float)row/(float)imageWidth<<"%\n");
+        //std::cout<<row<<" of 600 complete, procentage: "<<floor(100*(float)row/(float)imageWidth)<<"%\n";
         for (int col = 0; col < imageHeight; ++col) {
+            fuckedPixels = fuckedPixels+1;
+            std::cout<<"Number of pixel "<<fuckedPixels<<"\n";
             // Calculate normalized device coordinates (NDC)
             float ndcX = (2.0f * row / static_cast<float>(imageWidth)) - 1.0f;
             float ndcY = 1.0f - (2.0f * col / static_cast<float>(imageHeight));

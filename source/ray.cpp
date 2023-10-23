@@ -1,6 +1,7 @@
 #include "ray.h"
 #include "polygon.h"
 #include "scene.h"  //Tar in scene för att använda
+#include <glm/gtx/string_cast.hpp>  //print glm::vec
 #include <random>
 #include <cmath>
 
@@ -15,7 +16,7 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
     ColorDBL shadowIntensity = ColorDBL(0.0, 0.0, 0.0);
 
     // Number of shadow rays
-    int nmrOfShadowrays = 300;
+    int nmrOfShadowrays = 2;
 
     const float EPSILON = 10e-3f;
 
@@ -79,8 +80,8 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
     // Loop through each object in the scene
     for (std::shared_ptr<Object> objectInTheRoom : theScene.getTheRoom()) {
         //std::cout<<"new shape check!\n";
-        glm::vec3 intersectionPoint;
-
+        glm::vec3 intersectionPoint = glm::vec3(0,0,0);
+        //std::cout<<"intersection point is: "<<glm::to_string(intersectionPoint)<<"\n";
         if (objectInTheRoom->collision(rayFromPixel, intersectionPoint)) {
             //std::cout<<"collision done!!!\n";
             // Calculate t value for the intersection
@@ -98,7 +99,7 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
 
                 // Goes through all lightsources in the scene (We only have one light)
                 for (const Light& theLight : theScene.getLights()){
-                    closestColor = closestObject->color_.mult(ColorDBL(0.1,0.1,0.1).add(rayFromPixel.castShadowRay(closestObject, theLight, theScene.getTheRoom())));   //(color added so shadows become(0.1,0.1,0.1)
+                    closestColor = closestObject->color_.mult(ColorDBL(0.05,0.05,0.05).add(rayFromPixel.castShadowRay(closestObject, theLight, theScene.getTheRoom())));   //(color added so shadows become(0.1,0.1,0.1)
                 }
 
                 // Initializes the end vertex if it is the closest
@@ -109,15 +110,19 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
             }*/
         }
     }
-
+    
     // Will continue until nmrOfReflections is zero
     ColorDBL outLight;
     if (nmrOfReflections > 0) {
+        /*if(closestObject == nullptr)
+            return ColorDBL(0.784, 0.627, 1.0);*/
         glm::vec3 randDirection = randomGaussValue(closestObject->getNormal());
-        Ray newReflectedRay(this->endVertex, randDirection);
-        /*std::cout<<"new reflected ray ))=== ("<<newReflectedRay.direction.x << ","<<newReflectedRay.direction.y <<","<<newReflectedRay.direction.z<<")\n";
+        //std::cout<<"random direction or shit!!!!!: "<<glm::to_string(randDirection)<<"\n";
+        //Ray* newReflectedRay = new Ray(this->endVertex, randDirection);
+        this->nextRay =  new Ray(this->endVertex, randDirection);//newReflectedRay;
+        /*std::cout<<"new reflected ray ("<<this->nextRay->direction.x << ","<<this->nextRay->direction.y <<","<<this->nextRay->direction.z<<")\n";
         std::cout<<"the normal for the reflexcted plaen = ("<<closestObject->getNormal().x << ","<<closestObject->getNormal().y << ","<<closestObject->getNormal().z<<")\n";*/
-        ColorDBL recursiveLight = newReflectedRay.reflectionRecursion(newReflectedRay, nmrOfReflections - 1, theScene);
+        ColorDBL recursiveLight = this->nextRay->reflectionRecursion(*this->nextRay, nmrOfReflections - 1, theScene);
         //std::cout<<"closest color: "<<closestColor;
         outLight = closestColor.add(recursiveLight);
         return outLight;
@@ -134,23 +139,30 @@ glm::vec3 Ray::randomGaussValue(glm::vec3 normal){
     std::mt19937 gen(rd());
     std::normal_distribution<double> distribution(0.0, 1.0);
     double randomValueNorm = distribution(gen);
-    while (randomValueNorm < -1.0 || randomValueNorm > 1.0) {  //If random value is outside [-1,1]
+    while (randomValueNorm < -0.95 || randomValueNorm > 0.95) {  //If random value is outside [-1,1]
         randomValueNorm = distribution(gen);
     }
     std::uniform_real_distribution<double> distributionEven(-1.0, 1.0); //Even distrubution [-1,1]
-    
+
     //polar coord. for normal and generated direction
-    float thetaNormal = std::acos(normal.z/ std::sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z));
-    float phiNormal = std::atan2(normal.y, normal.x);
-    float theta = 0.5 * 3.14f * randomValueNorm;
-    float phi = 2.0f * 3.14f * distributionEven(gen);
+    float thetaNormal = std::atan2(normal.y, normal.x);
+    float phiNormal = std::acos(normal.z/ (std::sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z)));
+
+    float theta = 2.0f * 3.14f * distributionEven(gen);
+    float phi = 0.5f * 3.14f * randomValueNorm;
     
     float thetaOut = theta + thetaNormal;
     float phiOut = phi + phiNormal;
     
-    float x = std::sin(thetaOut) * std::cos(phiOut);
-    float y = std::sin(thetaOut) * std::sin(phiOut);
-    float z = std::cos(thetaOut);
+    float x = std::sin(phiOut) * std::cos(thetaOut);
+    float y = std::sin(phiOut) * std::sin(thetaOut);
+    float z = std::cos(phiOut);
     glm::vec3 randDirection = glm::normalize(glm::vec3(x,y,z));
+    
+    //std::cout<<"dot prodsuct: "<< glm::dot(randDirection, normal)<<"\n";
+    if(glm::dot(randDirection, normal)<=0)
+        randDirection = glm::vec3(-randDirection.x,-randDirection.y,-randDirection.z);
+    //std::cout<<"dot prodsuct after: "<< glm::dot(randDirection, normal)<<"\n";
+    //std::cout<<"randdirection : "<<glm::to_string(randDirection)<<"\n";
     return randDirection;
 }
