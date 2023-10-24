@@ -25,6 +25,10 @@ ColorDBL ColorDBL::mult(const ColorDBL& otherColor) {
     return ColorDBL(r * otherColor.r, g * otherColor.g, b * otherColor.b);
 }
 
+ColorDBL ColorDBL::mult(const double mult){
+    return ColorDBL(r * mult, g * mult, b * mult);
+}
+
 ColorDBL ColorDBL::subtract(const ColorDBL& otherColor) {
     return ColorDBL(r - otherColor.r, g - otherColor.g, b - otherColor.b);
 }

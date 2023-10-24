@@ -1,10 +1,9 @@
 #include "ray.h"
 #include "polygon.h"
 #include "scene.h"  //Tar in scene för att använda
-#include <glm/gtx/string_cast.hpp>  //print glm::vec
 #include <random>
 #include <cmath>
-
+#include <glm/gtc/random.hpp>
 
 Ray::Ray(glm::vec3 start, glm::vec3 direction, ColorDBL color, Ray* prev, Ray* next)
     : startVertex(start), direction(glm::normalize(direction)), previousRay(prev), nextRay(next), color(color) {
@@ -16,7 +15,7 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
     ColorDBL shadowIntensity = ColorDBL(0.0, 0.0, 0.0);
 
     // Number of shadow rays
-    int nmrOfShadowrays = 2;
+    int nmrOfShadowrays = 3;
 
     const float EPSILON = 10e-3f;
 
@@ -65,12 +64,21 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
         // Update shadow intensity using Lambertian reflection formula
         shadowIntensity += ColorDBL(lamb, lamb, lamb);
     }
+    ColorDBL a = shadowIntensity.divideComponents(nmrOfShadowrays/6.0f);
+    std::cout<<"shadow values "<<a;
+    
+    if(a.r >=1 or a.g >= 1 or a.b>=1){
+        std::cout<<"WHYYYYYYYY-----------------------"; //WHY DO WE GET LARGER THAN 1 In shadows???????-------------------
+        std::cin.ignore();
+    }
     return shadowIntensity.divideComponents(nmrOfShadowrays/6.0f);
 }
 
 //Function to call when we want to make recursion
-ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections, const Scene& theScene){
+ColorDBL Ray::reflectionRecursion(const int nmrOfReflections, const Scene& theScene){
+    //std::cout<<"reflection called with ray as:\n"<<*this;
     //std::cout<<"\n\n new refecltion recurs called\n";
+    //std::cout<<"THE RAY direction "<<glm::to_string(this->direction)<<" start "<< glm::to_string(this->startVertex)<< " end  "<<glm::to_string(this->endVertex)<<"\n";
     // Initialize variables to store information about the closest intersection
     float closestTobject = std::numeric_limits<float>::infinity();
     glm::vec3 closestIntersectionPoint;
@@ -80,14 +88,14 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
     // Loop through each object in the scene
     for (std::shared_ptr<Object> objectInTheRoom : theScene.getTheRoom()) {
         //std::cout<<"new shape check!\n";
-        glm::vec3 intersectionPoint = glm::vec3(0,0,0);
+        glm::vec3 intersectionPoint;// = glm::vec3(0,0,0);
         //std::cout<<"intersection point is: "<<glm::to_string(intersectionPoint)<<"\n";
-        if (objectInTheRoom->collision(rayFromPixel, intersectionPoint)) {
+        if (objectInTheRoom->collision(*this, intersectionPoint)) {
             //std::cout<<"collision done!!!\n";
             // Calculate t value for the intersection
-            float t = glm::length(intersectionPoint - rayFromPixel.startVertex);
+            float t = abs(glm::length(intersectionPoint - this->startVertex));
             //std::cout<<"tt value "<<t<<"\n";
-
+            
             // Check if this intersection is closer than the current closest one
             if (t < closestTobject) {
                 //std::cout<<"new closest\n";
@@ -95,51 +103,56 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
                 closestIntersectionPoint = intersectionPoint;
                 closestObject = objectInTheRoom; // Update the closest polygon
                 // Initializes the end vertex
-                rayFromPixel.endVertex = intersectionPoint;
-
+                this->endVertex = intersectionPoint;
+                
                 // Goes through all lightsources in the scene (We only have one light)
                 for (const Light& theLight : theScene.getLights()){
-                    closestColor = closestObject->color_.mult(ColorDBL(0.05,0.05,0.05).add(rayFromPixel.castShadowRay(closestObject, theLight, theScene.getTheRoom())));   //(color added so shadows become(0.1,0.1,0.1)
+                    //Adds 0.08 to ambient light.
+                    ColorDBL shadowRayAndAmb = ColorDBL(0.08,0.08,0.08).add(this->castShadowRay(closestObject, theLight, theScene.getTheRoom()));
+                    
+                    closestColor = closestObject->color_.mult(shadowRayAndAmb); //CHECK THIS TOO; AND THEN A LITTLE BIT LOWER TOO AND ABOVE IN THE SHADOW SHIT
                 }
-
-                // Initializes the end vertex if it is the closest
-                this->endVertex = intersectionPoint;
+                
+                //std::cout<<"new closest objecT\n"<<*this;
             }
-            /*else{
-                std::cout<<"not closest";
-            }*/
         }
+    }
+    if(closestObject == nullptr){
+        return ColorDBL(2.0,2.0,2.0);
     }
     
     // Will continue until nmrOfReflections is zero
     ColorDBL outLight;
-    if (nmrOfReflections > 0) {
-        /*if(closestObject == nullptr)
-            return ColorDBL(0.784, 0.627, 1.0);*/
-        glm::vec3 randDirection = randomGaussValue(closestObject->getNormal());
-        //std::cout<<"random direction or shit!!!!!: "<<glm::to_string(randDirection)<<"\n";
-        //Ray* newReflectedRay = new Ray(this->endVertex, randDirection);
-        this->nextRay =  new Ray(this->endVertex, randDirection);//newReflectedRay;
-        /*std::cout<<"new reflected ray ("<<this->nextRay->direction.x << ","<<this->nextRay->direction.y <<","<<this->nextRay->direction.z<<")\n";
-        std::cout<<"the normal for the reflexcted plaen = ("<<closestObject->getNormal().x << ","<<closestObject->getNormal().y << ","<<closestObject->getNormal().z<<")\n";*/
-        ColorDBL recursiveLight = this->nextRay->reflectionRecursion(*this->nextRay, nmrOfReflections - 1, theScene);
-        //std::cout<<"closest color: "<<closestColor;
-        outLight = closestColor.add(recursiveLight);
+    ColorDBL recursiveLight;
+    if(nmrOfReflections <= 0){
+        return closestColor;
+    }
+    else if (nmrOfReflections > 0) {
+        do{
+            glm::vec3 randDirection = randomGaussValue(closestObject->getNormal());
+            this->nextRay = new Ray(this->endVertex, randDirection);//newReflectedRay;
+            recursiveLight = this->nextRay->reflectionRecursion(nmrOfReflections - 1, theScene);
+        }while(recursiveLight.Equal(ColorDBL(2.0,2.0,2.0)));
+        //Clear the next ray when done using it
+        delete this->nextRay;
+        this->nextRay = nullptr;
+
+        double reflectiveness = 0.6f;
+        /*outLight = closestColor.add(recursiveLight.mult(ColorDBL(reflectiveness,reflectiveness,reflectiveness)));
+        return outLight.divideComponents(1.1);*/
+
+        outLight = closestColor.add(recursiveLight.mult(reflectiveness));
         return outLight;
     }
-
-    outLight = closestColor;
-    //std::cout<<"outcolor set\n\n";
-    return outLight;
 }
 
 glm::vec3 Ray::randomGaussValue(glm::vec3 normal){
     //Random generation
-    std::random_device rd;
+ std::random_device rd;
     std::mt19937 gen(rd());
     std::normal_distribution<double> distribution(0.0, 1.0);
     double randomValueNorm = distribution(gen);
-    while (randomValueNorm < -0.95 || randomValueNorm > 0.95) {  //If random value is outside [-1,1]
+    while (randomValueNorm < -1 || randomValueNorm > 1) {  //If random value is outside [-1,1]
         randomValueNorm = distribution(gen);
     }
     std::uniform_real_distribution<double> distributionEven(-1.0, 1.0); //Even distrubution [-1,1]
@@ -160,7 +173,7 @@ glm::vec3 Ray::randomGaussValue(glm::vec3 normal){
     glm::vec3 randDirection = glm::normalize(glm::vec3(x,y,z));
     
     //std::cout<<"dot prodsuct: "<< glm::dot(randDirection, normal)<<"\n";
-    if(glm::dot(randDirection, normal)<=0)
+    if(glm::dot(randDirection, normal)<=0)  //UGLY SOLUTION
         randDirection = glm::vec3(-randDirection.x,-randDirection.y,-randDirection.z);
     //std::cout<<"dot prodsuct after: "<< glm::dot(randDirection, normal)<<"\n";
     //std::cout<<"randdirection : "<<glm::to_string(randDirection)<<"\n";

@@ -23,6 +23,7 @@ public:
 
     // Method to multiply two colors
     ColorDBL mult(const ColorDBL& otherColor);
+    ColorDBL mult(const double mult);
 
     // Method to subtract two colors
     ColorDBL subtract(const ColorDBL& otherColor);
@@ -36,7 +37,7 @@ public:
     //Color divider
     ColorDBL divideComponents(double divisor) const {
         if(divisor <= 0){
-            return ColorDBL(1,1,1);
+            return ColorDBL(1,0,1);
         }
         return ColorDBL(r / divisor, g / divisor, b / divisor);
     }
@@ -45,6 +46,9 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const ColorDBL& color) {
         os << " RGB(" << color.r << ", " << color.g << ", " << color.b << ")\n";
         return os;
+    }
+    bool Equal(const ColorDBL& other) {
+        return (r == other.r) && (g == other.g) && (b == other.b);
     }
     
     double r, g, b;

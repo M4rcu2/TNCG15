@@ -120,8 +120,8 @@ bool Triangle::collision(const Ray& ray, glm::vec3& pointAtIntersection)  {
         if ((0.0 <= u && 0.0 <= v && (u + v) <= 1.0) || (abs(u) <= EPSILON && 0.0 <= v && v <= 1.0) || (abs(v) <= EPSILON && 0.0 <= u && u <= 1.0)) {
             
             pointAtIntersection.x = ray.startVertex.x + t * D.x + triNormal.x*EPSILON;
-            pointAtIntersection.y = ray.startVertex.y + t * D.y + triNormal.y*EPSILON;
-            pointAtIntersection.z = ray.startVertex.z + t * D.z + triNormal.z*EPSILON;
+            pointAtIntersection.y = ray.startVertex.y + u * D.y + triNormal.y*EPSILON;
+            pointAtIntersection.z = ray.startVertex.z + v * D.z + triNormal.z*EPSILON;
 
             // if the intersecting surface is very close to the last intersection point
             if (t <= 0.01) {
@@ -147,10 +147,12 @@ glm::vec3 Triangle::getNormal() const {
 // tetrahedra subclass----------------------------------------------------------------------
 
 glm::vec3 Tetrahedron::getNormal() const {
-    return glm::vec3(0, 0, 0); // Is never used (For now)
+    std::cout<<"OH NO THIS SHOULD NOT BE USED?!";
+    return glm::vec3(1, 0, 0); // Is never used (For now)
 }
 
 bool Tetrahedron::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
+    std::cout<<"WAIT WAIT WAIT NO NO NO\n";
     return false; // Should NOT be used
 }
 
@@ -162,7 +164,7 @@ bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
 
     double C_1 = glm::dot(ray.direction, ray.direction);                            // C_1 = D^2
     double C_2 = glm::dot(glm::vec3(2.0,2.0,2.0) * ray.direction, directionVector); // C_2 = 2D(S-C)
-    double C_3 = glm::dot(directionVector, directionVector) - pow(this->radius, 2); // (S - C)^2 - r^2
+    double C_3 = pow(glm::dot(directionVector, directionVector),2) - pow(this->radius, 2); // (S - C)^2 - r^2
 
     double arg = pow(C_2, 2) - 4.0 * C_1 * C_3;
 
@@ -205,5 +207,6 @@ bool Sphere::collision(const Ray& ray, glm::vec3& pointAtIntersection) {
 }
 
 glm::vec3 Sphere::getNormal() const {
+    std::cout<<"OH FUCK OH SHIT THIS IS NOT SUPPOSED TO BE USED\n";
     return spheNormal; // Should NOT be used
 }

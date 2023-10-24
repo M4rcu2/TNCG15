@@ -4,6 +4,7 @@
 #include "stb_image_write.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include <glm/gtx/string_cast.hpp>
 
 Camera::Camera(const glm::vec3& eye, int imageWidth, int imageHeight)
     : eye_(eye), imageWidth_(imageWidth), imageHeight_(imageHeight) {
@@ -24,7 +25,7 @@ Ray Camera::castRay(float pixelX, float pixelY) {
 
     // Initializes the ray
     Ray ray(eye_, rayDirection);
-
+    
     return ray;
 }
 

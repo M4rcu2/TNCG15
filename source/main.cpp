@@ -34,8 +34,9 @@ int main() {
     int imageHeight = 600;
     
     //Number of reflections the ray can do
-    int nmrOfReflections = 1;
-    int sampels = 4;
+    int nmrOfReflections = 3;
+    int sampels = 3
+    ;
 
 
     // Creates the camera with an image plane
@@ -44,9 +45,9 @@ int main() {
     theScene.addCamera(theCamera);
 
     // Adds objects to the scene
-    theScene.addSphere(Sphere(1.0,glm::vec3(10, 0, -4),ColorDBL(0.0, 0.6, 0.6),"MATERIAL"));
+    //theScene.addSphere(Sphere(1.0,glm::vec3(10, 0, -4),ColorDBL(0.0, 0.6, 0.6),"MATERIAL"));
     theScene.addTetra(Tetrahedron(glm::vec3(6, -4, 1), glm::vec3(4, -2, -4), glm::vec3(4,-4,-4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01), "MATERIAL"));
-    theScene.addTetra(Tetrahedron(glm::vec3(9, 0, 3), glm::vec3(10, 2, -1), glm::vec3(8, -1, -1), glm::vec3(8, -3, -1), ColorDBL(0.4, 0.1, 0.6), "MATERIAL"));
+    theScene.addTetra(Tetrahedron(glm::vec3(9, 0, 3), glm::vec3(10, 2, -1), glm::vec3(8, -1, -1), glm::vec3(8, -3, -1), ColorDBL(0.9, 0.3, 0.6), "MATERIAL"));
 
     // Adds a light to the scene
     //Light theLight = Light(glm::vec3(-2, -2, 5), glm::vec3(-2, 2, 5), glm::vec3(2, -2, 5), glm::vec3(2, 2, 5), glm::vec3(1, 1, 1)); // Original light
@@ -56,13 +57,12 @@ int main() {
     
     // Loop through each pixel in the matrix and assigns the color -----------------------------------------------------
     for (int row = 0; row < imageWidth; ++row) {
-        std::cout<<row<<" of 600 complete, procentage: "<<floor(100*(float)row/(float)imageWidth)<<"%\n";
+        //std::cout<<row<<" of 600 complete, procentage: "<<floor(100*(float)row/(float)imageWidth)<<"%\n";
         for (int col = 0; col < imageHeight; ++col) {
             ColorDBL closestColor = ColorDBL(0,0,0);
+            fuckedPixels = fuckedPixels+1;
+            std::cout<<"Number of pixel "<<fuckedPixels<<"\n";
             for(int n = 0; n < sampels; ++n){
-                
-                fuckedPixels = fuckedPixels+1;
-                //std::cout<<"Number of pixel "<<fuckedPixels<<"\n";
                 // Calculate normalized device coo rdinates (NDC)
                 float ndcX = (2.0f * row / static_cast<float>(imageWidth)) - 1.0f + randomizeEpsilon();
                 float ndcY = 1.0f - (2.0f * col / static_cast<float>(imageHeight)) + randomizeEpsilon();
@@ -71,7 +71,7 @@ int main() {
                 Ray rayFromPixel = theCamera.castRay(ndcX, ndcY);
                 
                 //There will be a function here that we call with the ray, it's starting point aka from the camera and then it will calculate the light in a specific pixel.
-                closestColor = closestColor.add(rayFromPixel.reflectionRecursion(rayFromPixel, nmrOfReflections, theScene));
+                closestColor = closestColor.add(rayFromPixel.reflectionRecursion(nmrOfReflections, theScene));
             }
             // Assign the color of the closest intersection
             imagePlane[imageWidth - 1 - row][col] = closestColor.divideComponents(sampels);

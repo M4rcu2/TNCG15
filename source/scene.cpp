@@ -19,14 +19,14 @@ void Scene::addRoom() {
     ColorDBL whiteColor = ColorDBL(0.8, 0.8, 0.8);
 
     // Ceiling
-    theRoom.push_back(std::make_shared<Triangle>(glm::vec3(10, -6, 5),glm::vec3(10, 6, 5),glm::vec3(13, 0, 5),whiteColor, "MATERIAL"));
-    theRoom.push_back(std::make_shared<Triangle>(glm::vec3(0, 6, 5), glm::vec3(0, -6, 5), glm::vec3(-3, 0, 5), whiteColor, "MATERIAL"));
-    theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(0, 6, 5), glm::vec3(10, 6, 5), glm::vec3(0, -6, 5), glm::vec3(10, -6, 5), whiteColor, "MATERIAL"));
+    //theRoom.push_back(std::make_shared<Triangle>(glm::vec3(10, -6, 5),glm::vec3(10, 6, 5),glm::vec3(13, 0, 5),whiteColor, "MATERIAL"));
+    //theRoom.push_back(std::make_shared<Triangle>(glm::vec3(0, 6, 5), glm::vec3(0, -6, 5), glm::vec3(-3, 0, 5), whiteColor, "MATERIAL"));
+    theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(-3, 6, 5), glm::vec3(13, 6, 5), glm::vec3(-3, -6, 5), glm::vec3(13, -6, 5), whiteColor, "MATERIAL"));
 
     // Floor
-    theRoom.push_back(std::make_shared<Triangle>(glm::vec3(10, 6, -5), glm::vec3(10, -6, -5), glm::vec3(13, 0, -5), whiteColor, "MATERIAL"));
-    theRoom.push_back(std::make_shared<Triangle>(glm::vec3(0, 6, -5), glm::vec3(-3, 0, -5),glm::vec3(0, -6, -5), whiteColor, "MATERIAL"));
-    theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(0, -6, -5), glm::vec3(10, -6, -5), glm::vec3(0, 6, -5), glm::vec3(10, 6, -5), whiteColor, "MATERIAL"));
+    //theRoom.push_back(std::make_shared<Triangle>(glm::vec3(10, 6, -5), glm::vec3(10, -6, -5), glm::vec3(13, 0, -5), whiteColor, "MATERIAL"));
+    //theRoom.push_back(std::make_shared<Triangle>(glm::vec3(0, 6, -5), glm::vec3(-3, 0, -5),glm::vec3(0, -6, -5), whiteColor, "MATERIAL"));
+    theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(-3, -6, -5), glm::vec3(13, -6, -5), glm::vec3(-3, 6, -5), glm::vec3(13, 6, -5), whiteColor, "MATERIAL"));
 
     // Wall LF
     theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(10, 6, -5), glm::vec3(13, 0, -5), glm::vec3(10, 6, 5), glm::vec3(13, 0, 5), blueColor, "MATERIAL"));
