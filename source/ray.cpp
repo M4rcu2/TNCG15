@@ -16,7 +16,7 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
     ColorDBL shadowIntensity = ColorDBL(0.0, 0.0, 0.0);
 
     // Number of shadow rays
-    int nmrOfShadowrays = 2;
+    int nmrOfShadowrays = 20;
 
     const float EPSILON = 10e-3f;
 
@@ -60,7 +60,7 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
         // Calculate the denominator of the Lambertian reflection formula
         float denominator = static_cast<float>(pow(abs(di_distance), 2));
 
-        double lamb = std::max(((v_1 * lightsource.area * M_PI * cosThetaX * (-cosThetaY)) / denominator), 0.0);
+        double lamb = std::max(((v_1 * lightsource.area * 3.1415f * cosThetaX * (-cosThetaY)) / denominator), 0.0);
 
         // Update shadow intensity using Lambertian reflection formula
         shadowIntensity += ColorDBL(lamb, lamb, lamb);
@@ -70,23 +70,21 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
 
 //Function to call when we want to make recursion
 ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections, const Scene& theScene){
-    //std::cout<<"\n\n new refecltion recurs called\n";
+    
     // Initialize variables to store information about the closest intersection
     float closestTobject = std::numeric_limits<float>::infinity();
     glm::vec3 closestIntersectionPoint;
     ColorDBL closestColor;
     std::shared_ptr<Object> closestObject = nullptr; // Added variable to store the closest object's surface
-
+    glm::vec3 intersectionPoint;
+    
     // Loop through each object in the scene
     for (std::shared_ptr<Object> objectInTheRoom : theScene.getTheRoom()) {
-        //std::cout<<"new shape check!\n";
-        glm::vec3 intersectionPoint = glm::vec3(0,0,0);
-        //std::cout<<"intersection point is: "<<glm::to_string(intersectionPoint)<<"\n";
+
         if (objectInTheRoom->collision(rayFromPixel, intersectionPoint)) {
-            //std::cout<<"collision done!!!\n";
+           
             // Calculate t value for the intersection
             float t = glm::length(intersectionPoint - rayFromPixel.startVertex);
-            //std::cout<<"tt value "<<t<<"\n";
 
             // Check if this intersection is closer than the current closest one
             if (t < closestTobject) {
@@ -105,25 +103,19 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
                 // Initializes the end vertex if it is the closest
                 this->endVertex = intersectionPoint;
             }
-            /*else{
-                std::cout<<"not closest";
-            }*/
         }
     }
     
     // Will continue until nmrOfReflections is zero
     ColorDBL outLight;
     if (nmrOfReflections > 0) {
-        /*if(closestObject == nullptr)
-            return ColorDBL(0.784, 0.627, 1.0);*/
+        
         glm::vec3 randDirection = randomGaussValue(closestObject->getNormal());
-        //std::cout<<"random direction or shit!!!!!: "<<glm::to_string(randDirection)<<"\n";
-        //Ray* newReflectedRay = new Ray(this->endVertex, randDirection);
-        this->nextRay =  new Ray(this->endVertex, randDirection);//newReflectedRay;
-        /*std::cout<<"new reflected ray ("<<this->nextRay->direction.x << ","<<this->nextRay->direction.y <<","<<this->nextRay->direction.z<<")\n";
-        std::cout<<"the normal for the reflexcted plaen = ("<<closestObject->getNormal().x << ","<<closestObject->getNormal().y << ","<<closestObject->getNormal().z<<")\n";*/
+      
+        this->nextRay =  new Ray(this->endVertex, randDirection); //newReflectedRay;
+     
         ColorDBL recursiveLight = this->nextRay->reflectionRecursion(*this->nextRay, nmrOfReflections - 1, theScene);
-        //std::cout<<"closest color: "<<closestColor;
+
         outLight = closestColor.add(recursiveLight);
         return outLight;
     }
@@ -159,10 +151,7 @@ glm::vec3 Ray::randomGaussValue(glm::vec3 normal){
     float z = std::cos(phiOut);
     glm::vec3 randDirection = glm::normalize(glm::vec3(x,y,z));
     
-    //std::cout<<"dot prodsuct: "<< glm::dot(randDirection, normal)<<"\n";
     if(glm::dot(randDirection, normal)<=0)
         randDirection = glm::vec3(-randDirection.x,-randDirection.y,-randDirection.z);
-    //std::cout<<"dot prodsuct after: "<< glm::dot(randDirection, normal)<<"\n";
-    //std::cout<<"randdirection : "<<glm::to_string(randDirection)<<"\n";
     return randDirection;
 }

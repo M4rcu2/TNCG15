@@ -34,8 +34,8 @@ int main() {
     int imageHeight = 600;
     
     //Number of reflections the ray can do
-    int nmrOfReflections = 1;
-    int sampels = 4;
+    int nmrOfReflections = 2;
+    int sampels = 5;
 
 
     // Creates the camera with an image plane
@@ -79,8 +79,8 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    //const char* outputPath = "../outputImage/rendered_image.png"; // For Marcus (Windows)
-    const char* outputPath = "rendered_image.png"; // For Filip (Mac)
+    const char* outputPath = "../outputImage/rendered_image.png"; // For Marcus (Windows)
+    //const char* outputPath = "rendered_image.png"; // For Filip (Mac)
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
