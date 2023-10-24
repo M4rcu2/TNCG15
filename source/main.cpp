@@ -21,7 +21,7 @@ int main() {
     int imageHeight = 600;
     
     //Number of reflections the ray can do
-    int nmrOfReflections = 0;
+    int nmrOfReflections = 1;
 
     // Creates the camera with an image plane
     std::vector<std::vector<ColorDBL>> imagePlane(imageWidth, std::vector<ColorDBL>(imageHeight));
@@ -51,7 +51,7 @@ int main() {
             Ray rayFromPixel = theCamera.castRay(ndcX, ndcY);
 
             //There will be a function here that we call with the ray, it's starting point aka from the camera and then it will calculate the light in a specific pixel.
-            ColorDBL closestColor = rayFromPixel.reflectionRecursion(rayFromPixel, nmrOfReflections, theScene);
+            ColorDBL closestColor = rayFromPixel.reflectionForLoop(nmrOfReflections, theScene);
 
             // Assign the color of the closest intersection
             imagePlane[imageWidth - 1 - row][col] = closestColor;
@@ -59,8 +59,8 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../outputImage/rendered_image.png"; // For Marcus (Windows)
-    //const char* outputPath = "rendered_image.png"; // For Filip (Mac)
+    //const char* outputPath = "../outputImage/rendered_image.png"; // For Marcus (Windows)
+    const char* outputPath = "rendered_image.png"; // For Filip (Mac)
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
     
