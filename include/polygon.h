@@ -19,15 +19,16 @@ public:
 
     //returns the color & the material of the polygon
     ColorDBL color_;
-    std::string material_;
+    int material_;
     
     ColorDBL getColor() const {
         return color_;
     };
 
-    std::string getMaterial() const {
+    int getMaterial() const {
         return material_;
     };
+
     double EPSILON = 0.001;
 };
 
@@ -50,7 +51,7 @@ class Rectangle : public Polygon {
 public:
     Rectangle() = default;
 
-    Rectangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, ColorDBL color, std::string material) {
+    Rectangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, ColorDBL color, int material) {
         vertices[0] = p1;
         vertices[1] = p2;
         vertices[2] = p3;
@@ -75,7 +76,7 @@ class Triangle : public Polygon {
 public:
     Triangle() = default;
 
-    Triangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, ColorDBL color, std::string material) {
+    Triangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, ColorDBL color, int material) {
         vertices[0] = p1;
         vertices[1] = p2;
         vertices[2] = p3;
@@ -96,7 +97,7 @@ public:
 // tetrahedra subclass----------------------------------------------------------------------
 class Tetrahedron : public Object {
 public:
-    Tetrahedron(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3, const ColorDBL color, std::string material) {
+    Tetrahedron(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3, const ColorDBL color, int material) {
         faces[0] = std::make_shared<Triangle>(v0, v1, v2, color, material);
         faces[1] = std::make_shared<Triangle>(v0, v2, v3, color, material);
         faces[2] = std::make_shared<Triangle>(v0, v3, v1, color, material);
@@ -115,7 +116,7 @@ class Sphere : public Object {
 public:
     Sphere() = default;
 
-    Sphere(const double& r, const glm::vec3& center, const ColorDBL color, std::string material) {
+    Sphere(const double& r, const glm::vec3& center, const ColorDBL color, int material) {
         radius = r;
         sphereCenter = center;
         color_ = color;

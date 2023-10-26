@@ -1,10 +1,9 @@
 #include "light.h"
 
 // Constructor
-Light::Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const glm::vec3& intensity) {
+Light::Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4, const ColorDBL& intensity) {
 
-    ColorDBL c = ColorDBL(intensity.x, intensity.y, intensity.z);
-    surface_ = Rectangle(p1, p2, p3, p4, c, "MATERIAL");
+    surface_ = Rectangle(p1, p2, p3, p4, intensity, 0);
     color_ = intensity;
 
     //creates e1 and e2 along each side
@@ -14,7 +13,7 @@ Light::Light(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, cons
     area = glm::length(e1) * glm::length(e2);
 }
 
-glm::vec3 Light::getIntensity() const {
+ColorDBL Light::getIntensity() const {
     return color_;
 }
 

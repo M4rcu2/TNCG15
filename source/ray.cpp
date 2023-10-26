@@ -16,7 +16,7 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
     ColorDBL shadowIntensity = ColorDBL(0.0, 0.0, 0.0);
 
     // Number of shadow rays
-    int nmrOfShadowrays = 20;
+    int nmrOfShadowrays = 5;
 
     const float EPSILON = 10e-3f;
 
@@ -77,6 +77,9 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
     ColorDBL closestColor;
     std::shared_ptr<Object> closestObject = nullptr; // Added variable to store the closest object's surface
     glm::vec3 intersectionPoint;
+
+    // Will continue until nmrOfReflections is zero
+    ColorDBL outLight;
     
     // Loop through each object in the scene
     for (std::shared_ptr<Object> objectInTheRoom : theScene.getTheRoom()) {
@@ -88,40 +91,63 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
 
             // Check if this intersection is closer than the current closest one
             if (t < closestTobject) {
-                //std::cout<<"new closest\n";
                 closestTobject = t;
                 closestIntersectionPoint = intersectionPoint;
                 closestObject = objectInTheRoom; // Update the closest polygon
-                // Initializes the end vertex
-                rayFromPixel.endVertex = intersectionPoint;
-
+       
+                rayFromPixel.endVertex = intersectionPoint; // Initializes the end vertex
+                
                 // Goes through all lightsources in the scene (We only have one light)
                 for (const Light& theLight : theScene.getLights()){
-                    closestColor = closestObject->color_.mult(ColorDBL(0.05,0.05,0.05).add(rayFromPixel.castShadowRay(closestObject, theLight, theScene.getTheRoom())));   //(color added so shadows become(0.1,0.1,0.1)
-                }
 
+                    if (closestObject->getMaterial() == 1) { // Mirror
+
+                        glm::vec3 d_i = this->direction;
+                        glm::vec3 N = closestObject->getNormal();
+
+                        glm::vec3 outDirection = d_i - 2.0f * glm::dot(d_i, N) * N;
+
+                        Ray newReflectedRay(this->endVertex, outDirection);
+
+                        ColorDBL reflectionColor = newReflectedRay.reflectionRecursion(newReflectedRay, (nmrOfReflections-1), theScene);
+
+                        delete this->nextRay;
+                        this->nextRay = nullptr;
+
+                        closestColor = closestColor.add(reflectionColor);
+
+                    } else if (closestObject->getMaterial() == 2) { // Lightsource
+                        closestColor = theLight.getIntensity();
+                        return closestColor;
+
+                    } else {
+                        closestColor = closestObject->color_.mult(ColorDBL(0.05, 0.05, 0.05).add(rayFromPixel.castShadowRay(closestObject, theLight, theScene.getTheRoom())));   //(color added so shadows become(0.1,0.1,0.1)}
+                    }        
+                }
+                
                 // Initializes the end vertex if it is the closest
                 this->endVertex = intersectionPoint;
             }
         }
     }
-    
-    // Will continue until nmrOfReflections is zero
-    ColorDBL outLight;
+
     if (nmrOfReflections > 0) {
-        
+
         glm::vec3 randDirection = randomGaussValue(closestObject->getNormal());
-      
-        this->nextRay =  new Ray(this->endVertex, randDirection); //newReflectedRay;
-     
-        ColorDBL recursiveLight = this->nextRay->reflectionRecursion(*this->nextRay, nmrOfReflections - 1, theScene);
+
+        this->nextRay = new Ray(this->endVertex, randDirection); //newReflectedRay;
+
+        ColorDBL recursiveLight = this->nextRay->reflectionRecursion(*this->nextRay, (nmrOfReflections - 1), theScene);
+
+        delete this->nextRay;
+        this->nextRay = nullptr;
 
         outLight = closestColor.add(recursiveLight);
         return outLight;
     }
 
     outLight = closestColor;
-    //std::cout<<"outcolor set\n\n";
+    
     return outLight;
 }
 
@@ -155,3 +181,5 @@ glm::vec3 Ray::randomGaussValue(glm::vec3 normal){
         randDirection = glm::vec3(-randDirection.x,-randDirection.y,-randDirection.z);
     return randDirection;
 }
+
+
