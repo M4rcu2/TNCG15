@@ -27,16 +27,17 @@ int main() {
     theScene.addRoom();
     
     // Creates a camera placed in the room
-    int imageWidth = 1200;
-    int imageHeight = 1200;
+    int imageWidth = 600;
+    int imageHeight = 600;
 
     // Material definitons
     int standard = 0;
     int mirror = 1;
+    int glas = 5;
     
     // Number of reflections the ray can do
     int nmrOfReflections = 1;
-    int samples = 200;
+    int samples = 1 ;
 
     // Create a time point to measure the rendering time
     auto start = std::chrono::high_resolution_clock::now();
@@ -47,11 +48,11 @@ int main() {
     theScene.addCamera(theCamera);
 
     // Adds objects to the scene
-    theScene.addSphere(Sphere(1.0,glm::vec3(10, 0, -4),ColorDBL(0.0, 0.6, 0.6),standard));
+    theScene.addSphere(Sphere(1.0,glm::vec3(10, 0, 0),ColorDBL(0.0, 0.6, 0.6),standard));
     theScene.addSphere(Sphere(1.25, glm::vec3(0, -1.5, -3), ColorDBL(0.4, 0.1, 0.6), standard));
-    theScene.addTetra(Tetrahedron(glm::vec3(6, -4, 1), glm::vec3(4, -2, -4), glm::vec3(4,-4,-4), glm::vec3(7, -2, -4), ColorDBL(0.98, 0.51, 0.01), standard));
+    theScene.addTetra(Tetrahedron(glm::vec3(6, -3, 1), glm::vec3(4, -2, -4), glm::vec3(6,-4,-4), glm::vec3(7, -1, -4), ColorDBL(0.98, 0.51, 0.01), standard));
     //theScene.addTetra(Tetrahedron(glm::vec3(9, 0, 3), glm::vec3(10, 2, -1), glm::vec3(8, -1, -1), glm::vec3(8, -3, -1), ColorDBL(0.4, 0.1, 0.6), standard));
-
+    theScene.addSphere(Sphere(1.0,glm::vec3(8, 0, -4 ),ColorDBL(1.0, 0.6, 0.6),glas));
     // Adds a light to the scene
     //Light theLight = Light(glm::vec3(-2, -2, 4.999), glm::vec3(-2, 2, 4.999), glm::vec3(2, -2, 4.999), glm::vec3(2, 2, 4.999), ColorDBL(1.0, 1.0, 1.0)); // Original light
     Light theLight = Light(glm::vec3(6, -1, 4.8), glm::vec3(4, -1, 4.8), glm::vec3(6, 1, 4.8), glm::vec3(4, 1, 4.8), ColorDBL(1.0, 1.0, 1.0));
@@ -86,8 +87,8 @@ int main() {
     }
 
     // Saves the rendered picture as a PNG -----------------------------------------------------------------------------
-    const char* outputPath = "../outputImage/rendered_image.png"; // For Marcus (Windows)
-    //const char* outputPath = "rendered_image.png"; // For Filip (Mac)
+    //const char* outputPath = "../outputImage/rendered_image.png"; // For Marcus (Windows)
+    const char* outputPath = "rendered_image.png"; // For Filip (Mac)
     
     theCamera.renderAndSaveImage(outputPath, imageWidth, imageHeight, imagePlane);
 

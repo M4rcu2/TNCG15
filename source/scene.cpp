@@ -20,6 +20,7 @@ void Scene::addRoom() {
 
     int standard = 0;
     int mirror = 1;
+    int glas = 5;
 
     // Wall flying stuff lol
     //theRoom.push_back(std::make_shared<Rectangle>(glm::vec3(7, -1, -1), glm::vec3(7, -1, 1), glm::vec3(7, 1, -1), glm::vec3(7, 1, 1), redColor, standard));

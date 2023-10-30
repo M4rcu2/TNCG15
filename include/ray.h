@@ -16,6 +16,7 @@ public:
     Ray* nextRay;
     ColorDBL color;
     std::shared_ptr<Object> startingVertexSurface;
+    bool isInGlas = false;
     
 
     // Constructor

@@ -16,7 +16,7 @@ ColorDBL Ray::castShadowRay(const std::shared_ptr<Object>& fromObject, const Lig
     ColorDBL shadowIntensity = ColorDBL(0.0, 0.0, 0.0);
 
     // Number of shadow rays
-    int nmrOfShadowrays = 5;
+    int nmrOfShadowrays = 1;
 
     const float EPSILON = 10e-3f;
 
@@ -85,7 +85,7 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
     for (std::shared_ptr<Object> objectInTheRoom : theScene.getTheRoom()) {
 
         if (objectInTheRoom->collision(rayFromPixel, intersectionPoint)) {
-           
+            
             // Calculate t value for the intersection
             float t = glm::length(intersectionPoint - rayFromPixel.startVertex);
 
@@ -116,13 +116,32 @@ ColorDBL Ray::reflectionRecursion(Ray& rayFromPixel, const int nmrOfReflections,
 
                         closestColor = closestColor.add(reflectionColor);
 
-                    } else if (closestObject->getMaterial() == 2) { // Lightsource
+                    } 
+                    else if (closestObject->getMaterial() == 2) { // Lightsource
                         closestColor = theLight.getIntensity();
                         return closestColor;
-
-                    } else {
+                    } 
+                    else if (closestObject->getMaterial() == 5 ) { //Glass
+                        std::cout<<"glas object\n";
+                        float n1 = 1;   //air
+                        float n2 = 1.5; //glass
+                        float ratio = n1/n2;
+                        float cosTheta1 = glm::dot(-this->direction, closestObject->getNormal());
+                        float sinTheta2Squared = ratio * ratio * (1.0f - cosTheta1 * cosTheta1);
+                        
+                        glm::vec3 refractedDirection;
+                        if (sinTheta2Squared <= 1.0f && this->isInGlas) {
+                            float cosTheta2 = sqrt(1.0f - sinTheta2Squared);
+                            refractedDirection = ratio * this->direction + (ratio * cosTheta1 - cosTheta2) * closestObject->getNormal();
+                        } else if(){
+                            // Total internal reflection, so no refraction
+                            Ray(hitPoint, glm::reflect(this->direction, closestObject->getNormal()));
+                        }
+                        Ray refractedRay(hitPoint, refractedDirection);
+                    }
+                    else {
                         closestColor = closestObject->color_.mult(ColorDBL(0.05, 0.05, 0.05).add(rayFromPixel.castShadowRay(closestObject, theLight, theScene.getTheRoom())));   //(color added so shadows become(0.1,0.1,0.1)}
-                    }        
+                    }
                 }
                 
                 // Initializes the end vertex if it is the closest
